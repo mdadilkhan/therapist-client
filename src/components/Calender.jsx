@@ -93,7 +93,7 @@ const Calender = () => {
     gender: "",
     emailId: "",
     phoneNumber: "",
-    dob: "",
+    age: "",
     address: "",
     city: "",
   });
@@ -432,7 +432,7 @@ const Calender = () => {
       gender: formData.gender,
       emailId: formData.emailId,
       phoneNumber: formData.phoneNumber,
-      dob: formData.dob,
+      age: formData.age,
       address: formData.address,
       city: formData.city,
     };
@@ -611,7 +611,6 @@ const Calender = () => {
           <DatePicker
             onChange={handleDateChange}
             value={dateValue}
-            minDate={new Date()}
           />
           <h1 className="text-[#9A93A5] text-[16px] font-medium mt-4">
             {getDatetoDayName(dateValue)}
@@ -1110,11 +1109,39 @@ const Calender = () => {
                             className="p2-sem"
                             style={{ color: "#4A4159" }}
                           >
-                            DOB
+                            Age
                           </label>
-                          <DatePicker
-                            onChange={handleDOBChange}
-                            value={formData.dob}
+                          <TextField
+                            fullWidth
+                            type="text"
+                            required
+                            name="age"
+                            value={formData.age}
+                            onChange={handleAddUserChange}
+                            InputProps={{
+                              sx: {
+                                fontSize: "16px",
+                                fontFamily: "Nunito",
+                                fontStyle: "normal",
+                                fontWeight: 400,
+                                lineHeight: "24px",
+                                letterSpacing: "0.08px",
+                                height: "48px",
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: `#d5d2d9`,
+                                },
+                                "&:hover .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: `#d5d2d9`,
+                                },
+                                "&.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                  {
+                                    borderColor: `#d5d2d9`,
+                                  },
+                                "& input::placeholder": {
+                                  color: `#d5d2d9`,
+                                },
+                              },
+                            }}
                           />
                         </div>
                         <div className="flex sm:w-[48%] w-full flex-col gap-2">

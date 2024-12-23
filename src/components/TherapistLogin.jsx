@@ -128,8 +128,8 @@ const TherapistLogin = () => {
           ? `${API_URL}/auth/sendOtpWithEmail`
           : `${API_URL}/auth/sendOtpWithSms`,
         email
-          ? { email: signin.email }
-          : { phoneNumber: phoneNumber, countryCode: countryCode }
+          ? { email: signin.email , role:"therapist"}
+          : { phoneNumber: phoneNumber, countryCode: countryCode , role:"therapist"}
       )
       .then((res) => {
         if (res.status === 200) {

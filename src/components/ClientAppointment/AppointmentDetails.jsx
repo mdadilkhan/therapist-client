@@ -403,7 +403,7 @@ const AppointmentDetails = () => {
             {" "}
             <img src={LeftArrow} alt="" />
           </div>
-          <h5 className="h5-bold">Appointment detailssd</h5>
+          <h5 className="h5-bold">Appointment details</h5>
         </div>
       </div>
 

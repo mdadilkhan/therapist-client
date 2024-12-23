@@ -128,8 +128,8 @@ const ClientLogin = () => {
           ? `${API_URL}/auth/sendOtpWithEmail`
           : `${API_URL}/auth/sendOtpWithSms`,
         email
-          ? { email: signin.email }
-          : { phoneNumber: phoneNumber, countryCode: countryCode }
+          ? { email: signin.email , role:"user"}
+          : { phoneNumber: phoneNumber, countryCode: countryCode , role:"user"}
       )
       .then((res) => {
         if (res.status === 200) {

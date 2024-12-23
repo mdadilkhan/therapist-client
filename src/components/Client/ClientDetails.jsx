@@ -625,7 +625,7 @@ const ClientDetails = () => {
   const handleClientHistory = () => {
     setClientHistory(!isClientHistory);
   };
-  const clientHistory = () => {
+  const getClientHistory = () => {
     axios
       .get(`${API_URL}/getClientHistory/${id}`)
       .then((res) => {
@@ -672,12 +672,6 @@ const ClientDetails = () => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    if (isClientHistory) {
-      clientHistory();
-    }
-  }, [isClientHistory]);
 
   const handleSessionNote = () => {
     setSessionNote(!isSessionNote);
@@ -777,6 +771,7 @@ const ClientDetails = () => {
   useEffect(() => {
     getClientDetail();
     getSessationList();
+    getClientHistory();
   }, [open]);
 
   const [visibleIndex, setVisibleIndex] = useState(null);
@@ -2087,81 +2082,104 @@ const ClientDetails = () => {
                 <div>
                   <div className="flex flex-col sm:flex-row">
                     <div className="flex flex-col sm:w-[50%] w-full gap-[24px]">
-                      <div>
-                        <p className="body2-sem">Intake Date</p>
-                        <p className="body3-reg">
-                          {clientHistoryDetails?.dateOfIntake || "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="body2-sem">Age</p>
-                        <p className="body3-reg">
-                          {clientHistoryDetails?.age || "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="body2-sem">
-                          Presenting Problem (clients initial explanation of the
-                          problem, duration and pertinent cause)
-                        </p>
-                        <p className="body3-reg">
-                          {clientHistoryDetails?.presentingProblem || "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="body2-sem">Tentative Goals and Plans</p>
-                        <p className="body3-reg">
-                          {clientHistoryDetails?.tentativeGoalsAndPlans ||
-                            "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="body2-sem">
-                          Special Needs of Client (e.g. Need for Interpreter,
-                          Disability, Religious Consultant, etc. if yes, what?
-                        </p>
-                        <p className="body3-reg">
-                          {clientHistoryDetails?.specialNeeds || "N/A"}
-                        </p>
-                      </div>
+                      {clientHistoryDetails?.dateOfIntake && (
+                        <div>
+                          <p className="body2-sem">Intake Date</p>
+                          <p className="body3-reg">
+                            {clientHistoryDetails?.dateOfIntake || "N/A"}
+                          </p>
+                        </div>
+                      )}
+
+                      {clientHistoryDetails?.presentingProblem && (
+                        <div>
+                          <p className="body2-sem">
+                            Presenting Problem (clients initial explanation of
+                            the problem, duration and pertinent cause)
+                          </p>
+                          <p className="body3-reg">
+                            {clientHistoryDetails?.presentingProblem || "N/A"}
+                          </p>
+                        </div>
+                      )}
+
+                      {clientHistoryDetails?.tentativeGoalsAndPlans && (
+                        <div>
+                          <p className="body2-sem">Tentative Goals and Plans</p>
+                          <p className="body3-reg">
+                            {clientHistoryDetails?.tentativeGoalsAndPlans ||
+                              "N/A"}
+                          </p>
+                        </div>
+                      )}
+
+                      {clientHistoryDetails?.specialNeeds && (
+                        <div>
+                          <p className="body2-sem">
+                            Special Needs of Client (e.g. Need for Interpreter,
+                            Disability, Religious Consultant, etc. if yes,
+                            what?)
+                          </p>
+                          <p className="body3-reg">
+                            {clientHistoryDetails?.specialNeeds || "N/A"}
+                          </p>
+                        </div>
+                      )}
                     </div>
+
                     <div className="flex flex-col sm:w-[50%] w-full gap-[24px]">
-                      <div>
-                        <p className="body2-sem">
-                          Family (current living situation)
-                        </p>
-                        <p className="body3-reg">
-                          {clientHistoryDetails?.familyCurrentSituation ||
-                            "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="body2-sem">Family History</p>
-                        <p className="body3-reg">
-                          {clientHistoryDetails?.familyHistory || "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="body2-sem">
-                          Pertinent History (any prior therapy including family,
-                          social, psychological, and medical-declared condition)
-                        </p>
-                        <p className="body3-reg">
-                          {clientHistoryDetails?.pertinentHistory || "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="body2-sem">Observations</p>
-                        <p className="body3-reg">
-                          {clientHistoryDetails?.observations || "N/A"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="body2-sem">Diagnostic Impression</p>
-                        <p className="body3-reg">
-                          {clientHistoryDetails?.diagnosticImpression || "N/A"}
-                        </p>
-                      </div>
+                      {clientHistoryDetails?.familyCurrentSituation && (
+                        <div>
+                          <p className="body2-sem">
+                            Family (current living situation)
+                          </p>
+                          <p className="body3-reg">
+                            {clientHistoryDetails?.familyCurrentSituation ||
+                              "N/A"}
+                          </p>
+                        </div>
+                      )}
+
+                      {clientHistoryDetails?.familyHistory && (
+                        <div>
+                          <p className="body2-sem">Family History</p>
+                          <p className="body3-reg">
+                            {clientHistoryDetails?.familyHistory || "N/A"}
+                          </p>
+                        </div>
+                      )}
+
+                      {clientHistoryDetails?.pertinentHistory && (
+                        <div>
+                          <p className="body2-sem">
+                            Pertinent History (any prior therapy including
+                            family, social, psychological, and medical-declared
+                            condition)
+                          </p>
+                          <p className="body3-reg">
+                            {clientHistoryDetails?.pertinentHistory || "N/A"}
+                          </p>
+                        </div>
+                      )}
+
+                      {clientHistoryDetails?.observations && (
+                        <div>
+                          <p className="body2-sem">Observations</p>
+                          <p className="body3-reg">
+                            {clientHistoryDetails?.observations || "N/A"}
+                          </p>
+                        </div>
+                      )}
+
+                      {clientHistoryDetails?.diagnosticImpression && (
+                        <div>
+                          <p className="body2-sem">Diagnostic Impression</p>
+                          <p className="body3-reg">
+                            {clientHistoryDetails?.diagnosticImpression ||
+                              "N/A"}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -2171,81 +2189,146 @@ const ClientDetails = () => {
                     className="2nd"
                     style={{ display: "flex", flexDirection: "column" }}
                   >
-                    <div>
-                      <h6 className="h6-bold" style={{ color: "#06030D" }}>
-                        MSE
-                      </h6>
-                    </div>
+                    {clientHistoryDetails == null ? (
+                      <div>
+                        <h6 className="h6-bold" style={{ color: "#06030D" }}>
+                          MSE
+                        </h6>
+                      </div>
+                    ) : null}
+
                     <div className="flex sm:flex-row flex-col">
                       <div className="flex flex-col sm:w-[50%] w-full gap-[24px]">
-                        <div>
-                          <p className="body2-sem">Appearance</p>
-                          <p className="body3-reg">
-                            {clientHistoryDetails?.appearance || "N/A"}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="body2-sem">Orientation</p>
-                          <p className="body3-reg">
-                            {clientHistoryDetails?.orientation || "N/A"}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="body2-sem">Speech</p>
-                          <p className="body3-reg">
-                            {clientHistoryDetails?.speech || "N/A"}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="body2-sem">
-                            Thought Process and Content
-                          </p>
-                          <p className="body3-reg">
-                            {clientHistoryDetails?.thoughtProcessContent ||
-                              "N/A"}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="body2-sem">Sleep</p>
-                          <p className="body3-reg">
-                            {clientHistoryDetails?.sleep || "N/A"}
-                          </p>
-                        </div>
+                        {clientHistoryDetails?.appearance && (
+                          <div>
+                            <p className="body2-sem">Appearance</p>
+                            <p className="body3-reg">
+                              {clientHistoryDetails?.appearance || "N/A"}
+                            </p>
+                          </div>
+                        )}
+
+                        {clientHistoryDetails?.orientation && (
+                          <div>
+                            <p className="body2-sem">Orientation</p>
+                            <p className="body3-reg">
+                              {clientHistoryDetails?.orientation || "N/A"}
+                            </p>
+                          </div>
+                        )}
+
+                        {clientHistoryDetails?.speech && (
+                          <div>
+                            <p className="body2-sem">Speech</p>
+                            <p className="body3-reg">
+                              {clientHistoryDetails?.speech || "N/A"}
+                            </p>
+                          </div>
+                        )}
+
+                        {clientHistoryDetails?.thoughtProcessContent && (
+                          <div>
+                            <p className="body2-sem">
+                              Thought Process and Content
+                            </p>
+                            <p className="body3-reg">
+                              {clientHistoryDetails?.thoughtProcessContent ||
+                                "N/A"}
+                            </p>
+                          </div>
+                        )}
+
+                        {clientHistoryDetails?.sleep && (
+                          <div>
+                            <p className="body2-sem">Sleep</p>
+                            <p className="body3-reg">
+                              {clientHistoryDetails?.sleep || "N/A"}
+                            </p>
+                          </div>
+                        )}
                       </div>
                       <div className="flex flex-col sm:w-[50%] w-full gap-[24px]">
-                        <div>
-                          <p className="body2-sem">Behaviour</p>
-                          <p className="body3-reg">
-                            {clientHistoryDetails?.behavior || "N/A"}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="body2-sem">Mood</p>
-                          <p className="body3-reg">
-                            {clientHistoryDetails?.mood || "N/A"}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="body2-sem">Affect</p>
-                          <p className="body3-reg">
-                            {clientHistoryDetails?.affect || "N/A"}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="body2-sem">Judgement</p>
-                          <p className="body3-reg">
-                            {clientHistoryDetails?.judgement || "N/A"}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="body2-sem">Appetite</p>
-                          <p className="body3-reg">
-                            {clientHistoryDetails?.appetite || "N/A"}
-                          </p>
-                        </div>
+                        {clientHistoryDetails?.behavior && (
+                          <div>
+                            <p className="body2-sem">Behaviour</p>
+                            <p className="body3-reg">
+                              {clientHistoryDetails?.behavior || "N/A"}
+                            </p>
+                          </div>
+                        )}
+
+                        {clientHistoryDetails?.mood && (
+                          <div>
+                            <p className="body2-sem">Mood</p>
+                            <p className="body3-reg">
+                              {clientHistoryDetails?.mood || "N/A"}
+                            </p>
+                          </div>
+                        )}
+
+                        {clientHistoryDetails?.affect && (
+                          <div>
+                            <p className="body2-sem">Affect</p>
+                            <p className="body3-reg">
+                              {clientHistoryDetails?.affect || "N/A"}
+                            </p>
+                          </div>
+                        )}
+
+                        {clientHistoryDetails?.judgement && (
+                          <div>
+                            <p className="body2-sem">Judgement</p>
+                            <p className="body3-reg">
+                              {clientHistoryDetails?.judgement || "N/A"}
+                            </p>
+                          </div>
+                        )}
+
+                        {clientHistoryDetails?.appetite && (
+                          <div>
+                            <p className="body2-sem">Appetite</p>
+                            <p className="body3-reg">
+                              {clientHistoryDetails?.appetite || "N/A"}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
+                  {clientHistoryDetails?.importantNotes && (
+                    <div>
+                    <p className="body2-sem">Important Notes</p>
+                    <p className="body3-reg">
+                      {clientHistoryDetails?.importantNotes ||
+                        "N/A"}
+                    </p>
+                  </div>
+                  )}
+                  {clientHistoryDetails?.imageUrl && (
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      sx={{
+                        width: "196px",
+                        height: "48px",
+                        borderRadius: "8px",
+                        border: "1px solid #614298",
+                        background: "#614298",
+                        textTransform: "capitalize",
+                        "&:hover": {
+                          background: "#614298",
+                        },
+                        "@media (max-width: 640px)": {
+                          width: "100%",
+                        },
+                      }}
+                      onClick={() =>
+                        (window.open(clientHistoryDetails.imageUrl, "_blank"))
+                      }
+                    >
+                      <span className="btn1">View</span>
+                    </Button>
+                  )}
                 </div>
               </div>
             )}

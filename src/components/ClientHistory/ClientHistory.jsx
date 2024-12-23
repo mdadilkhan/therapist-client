@@ -166,19 +166,38 @@ const ClientHistory = () => {
     setOpenPrescription(false);
   };
 
-  useEffect(() => { 
-     axios
-      .get(`${API_URL}/getUserDetails/${id}`)
+  const getClientDetails = () =>{
+    axios
+    .get(`${API_URL}/getUserDetails/${id}`)
+    .then((res) => {
+      setClientHistory((prevClientHistory) => ({
+        ...prevClientHistory,
+        name: res.data.data.name,
+        age: calculateAge(res.data.data.profile_details.dob)
+      }));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
+  const getClientHistory = () => {
+    axios
+      .get(`${API_URL}/getClientHistory/${id}`)
       .then((res) => {
         setClientHistory((prevClientHistory) => ({
           ...prevClientHistory,
-          name: res.data.data.name,
-          age: calculateAge(res.data.data.profile_details.dob)
+          ...res.data.data // Spread the properties of `res.data.data` into the new object
         }));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
+  };  
+
+  useEffect(() => { 
+    getClientDetails();
+    getClientHistory();
   }, []);
 
 
@@ -337,7 +356,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="name"
                   value={employeeHistory?.name}
                   onChange={handelChage}
@@ -374,7 +392,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="age"
                   value={employeeHistory?.age}
                   onChange={handelChage}
@@ -949,7 +966,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="appearance"
                   value={employeeHistory?.appearance}
                   onChange={handelChage}
@@ -986,7 +1002,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="behavior"
                   value={employeeHistory?.behavior}
                   onChange={handelChage}
@@ -1022,7 +1037,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="orientation"
                   value={employeeHistory?.orientation}
                   onChange={handelChage}
@@ -1061,7 +1075,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="speech"
                   value={employeeHistory?.speech}
                   onChange={handelChage}
@@ -1098,7 +1111,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="affect"
                   value={employeeHistory?.affect}
                   onChange={handelChage}
@@ -1134,7 +1146,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="mood"
                   value={employeeHistory?.mood}
                   onChange={handelChage}
@@ -1172,7 +1183,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="thoughtProcessContent"
                   value={employeeHistory?.thoughtProcessContent}
                   onChange={handelChage}
@@ -1209,7 +1219,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="judgement"
                   value={employeeHistory?.judgement}
                   onChange={handelChage}
@@ -1245,7 +1254,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="sleep"
                   value={employeeHistory?.sleep}
                   onChange={handelChage}
@@ -1284,7 +1292,6 @@ console.log("cbhjsdbc>>",employeeHistory);
                 <TextField
                   fullWidth
                   type="text"
-                  required
                   name="appetite"
                   value={employeeHistory?.appetite}
                   onChange={handelChage}
