@@ -226,16 +226,25 @@ export function formatDateAndDay(dateString) {
 }
 
 export function getTimeInterval(dateValue) {
-  const { date, time } = dateValue;
-  // Parse the date and time
-  const parsedDate = parse(`${date} ${time}`, "dd-MM-yyyy HH:mm", new Date());
+  console.log(dateValue);
+  
+  if(dateValue){
+    const { date, time } = dateValue;
+    // Parse the date and time
+    const parsedDate = parse(`${date} ${time}`, "dd-MM-yyyy HH:mm", new Date());
+  
+    // Format the date and time
+    const formattedDate = format(parsedDate, "dd-MM-yyyy, hh:mm a, EEEE", {
+      locale: enGB,
+    });
 
-  // Format the date and time
-  const formattedDate = format(parsedDate, "dd-MM-yyyy, hh:mm a, EEEE", {
-    locale: enGB,
-  });
+    return formattedDate;
+  }else{
+    return ""
+  }
 
-  return formattedDate;
+ 
+
 }
 
 export function getFormatDate(isoString) {

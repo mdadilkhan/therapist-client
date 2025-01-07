@@ -176,7 +176,8 @@ const Tabs = () => {
 
 const Card = ({ sessation }) => {
   const sessionId = sessation._id;
-
+  console.log(sessation,"cbdsjch");
+  
   const { id } = useSelector((state) => state.userDetails);
 
   const navigate = useNavigate();
