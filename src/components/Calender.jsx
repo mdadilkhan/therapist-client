@@ -911,7 +911,7 @@ const Calender = () => {
             >
               <Fade in={openModal}>
                 <Box sx={style}>
-                  <div className="w-[100%] sm:w-[532px] p-[16px]">
+                  <div className="w-[100%] p-[16px]">
                     <h5
                       style={{ marginBottom: "24px", textAlign: "center" }}
                       className="h5-bold"

@@ -8,9 +8,10 @@ const Sidebar = ({ role }) => {
     <>
       {role == "therapist" ? (
         <TherapistSidebar />
-      ) : (
+      ) : role=="user" ? (
         <ClientSidebar />
-      )}
+      ) : null
+    }
     </>
   );
 }

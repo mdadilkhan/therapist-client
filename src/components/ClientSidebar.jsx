@@ -1,6 +1,7 @@
 import React, { useState, useEffect, lazy } from "react";
 import { useDispatch } from "react-redux";
 import { userDetails } from "../store/slices/userSlices";
+import { setRole } from "../store/slices/smsSlices";
 import { Box, Button, Drawer } from "@mui/material";
 import Dashboard from "../assets/Dashboard.svg";
 import Assessment from "../assets/Assessment.svg";
@@ -142,7 +143,6 @@ const ClientSidebar = ({ children }) => {
     <>
       {viewportWidth >= 640 ? (
         <div
-          className="w-full"
           style={{ display: "flex", height: "100vh-64px" }}
         >
           <div
@@ -248,6 +248,7 @@ const ClientSidebar = ({ children }) => {
                 onClick={() => {
                   localStorage.clear();
                   dispatch(userDetails(null));
+                  dispatch(setRole(null));
                   navigate("/client");
                 }}
               >

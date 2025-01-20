@@ -2,7 +2,7 @@ import { useState, useEffect, createContext, lazy, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import { userDetails } from "../store/slices/userSlices";
 import { API_URL } from "../constant/ApiConstant";
-import { setEmailSignIn, setMobileSignIn } from "../store/slices/smsSlices";
+import { setEmailSignIn, setMobileSignIn, setRole } from "../store/slices/smsSlices";
 const Navbar = lazy(() => import("./Navbar"));
 import axios from "axios";
 import {
@@ -138,6 +138,7 @@ const ClientLogin = () => {
               ? setEmailSignIn(signin.email)
               : setMobileSignIn({ phoneNumber, countryCode })
           );
+          dispatch(setRole("user"))
           setCountryCode("");
           setPhoneNumber("");
           setSignin({});

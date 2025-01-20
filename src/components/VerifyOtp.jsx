@@ -379,8 +379,6 @@ const VerifyOtp = () => {
               className="mixed-style5"
               style={{ textAlign: "center", marginTop: "8px" }}
             >
-              If we find sageturtle@gmail.com in our system, we’ll send you an
-              email with a link to reset your password.
               <br />
               <br />
               If you don’t receive the email, check your spam folder, or{" "}

@@ -1,53 +1,26 @@
-import { useState, useEffect, createContext, lazy, Suspense } from "react";
+import { useState, useEffect} from "react";
 import { useDispatch } from "react-redux";
-import { userDetails } from "../store/slices/userSlices";
 import { API_URL } from "../constant/ApiConstant";
-import { setEmailSignIn, setMobileSignIn } from "../store/slices/smsSlices";
-const Navbar = lazy(() => import("./Navbar"));
+import { setEmailSignIn, setMobileSignIn, setRole } from "../store/slices/smsSlices";
 import axios from "axios";
 import {
-  Box,
-  Paper,
-  Typography,
   TextField,
-  Button,
-  InputAdornment,
-  IconButton,
-  CircularProgress,
   MenuItem,
-  InputLabel,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import Avatar from "@mui/material/Avatar";
-import LockIcon from "@mui/icons-material/Lock";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LoginImg from "../assets/Login.svg";
-import styled from "@emotion/styled";
-import { setUserEmail } from "../store/slices/userSlices";
 import mobilee from "../assets/mobile.svg";
 import emaill from "../assets/Email.svg";
 import toast from "react-hot-toast";
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: #06030d;
-`;
 
 const TherapistLogin = () => {
   const dispatch = useDispatch();
   const initialValue = {
     email: "",
   };
-  const [showPassword, setShowPassword] = useState(false);
   const [signin, setSignin] = useState(initialValue);
   const [errorEmail, setErrorEmail] = useState(false);
-  const [errorPassword, setErrorPassword] = useState(false);
-  const [errormessageEmail, setErrorMessageEmail] = useState("");
-  const [errormessagePassword, setErrorMessagePassword] = useState("");
-  const [loader, setLoader] = useState(false);
-  const [errorData, setErrorData] = useState("");
   const [email, setEmail] = useState(true);
   const [mobile, setMobile] = useState(false);
   const navigate = useNavigate();
@@ -73,20 +46,14 @@ const TherapistLogin = () => {
     });
   };
 
-  const handelmobile = (e) => {
+  const handelmobile = () => {
     setMobile(true);
     setEmail(false);
   };
 
-  const handelemail = (e) => {
+  const handelemail = () => {
     setEmail(true);
     setMobile(false);
-  };
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (e) => {
-    e.preventDefault();
   };
 
   useEffect(() => {
@@ -112,12 +79,10 @@ const TherapistLogin = () => {
 
     if (email && !validateEmail(signin.email)) {
       setErrorEmail(true);
-      setErrorMessageEmail("Invalid Email Address");
       return;
     }
 
     if (mobile && (!validatePhoneNumber(phoneNumber) || !countryCode)) {
-      setErrorData("Invalid Phone Number or Country Code");
       return;
     }
 
@@ -138,6 +103,7 @@ const TherapistLogin = () => {
               ? setEmailSignIn(signin.email)
               : setMobileSignIn({ phoneNumber, countryCode })
           );
+          dispatch(setRole("therapist"))
           setCountryCode("");
           setPhoneNumber("");
           setSignin({});
@@ -159,13 +125,10 @@ const TherapistLogin = () => {
               fontSize: '14px',     // Smaller text
             },
           });
-          setErrorData("Invalid Username or Password");
         }
       })
       .catch((err) => {
         if (err.response && err.response.status === 404) {
-          setErrorEmail(true);
-          setErrorMessageEmail("Email does not exist.");
           toast.error(`Please check your ${email ? "Email" : "Phone Number"} its not valid`, {
             position: 'top-right',  // Set the position to top-right
             duration: 3000,         // Display for 3 seconds (3000 ms)
@@ -175,8 +138,6 @@ const TherapistLogin = () => {
             },
           });
         } else if (err.response && err.response.status === 401) {
-          setErrorPassword(true);
-          setErrorMessagePassword("Incorrect Password");
           toast.error(`Please check your ${email ? "Email" : "Phone Number"} its not valid`, {
             position: 'top-right',  // Set the position to top-right
             duration: 3000,         // Display for 3 seconds (3000 ms)
@@ -198,36 +159,6 @@ const TherapistLogin = () => {
         }
       });
   };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   axios
-  //     .post(`${API_URL}/auth/therapistSignin`, {
-  //       email: "shruti.ramakrishnan@ensolab.in",
-  //       password: "123456",
-  //     })
-  //     .then((res) => {
-  //       // const setCookieHeader = res.headers['set-cookie'];
-  //       if (res.status === 200) {
-  //         localStorage.setItem("token", res.data.token);
-  //         dispatch(userDetails(res.data.data));
-  //         navigate("/therapist/dashboards");
-  //       } else {
-  //         setErrorData("Invalid Username or Password");
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       if (err.response && err.response.status === 404) {
-  //         setErrorEmail(true);
-  //         setErrorMessageEmail("Email does not exists.");
-  //       } else if (err.response && err.response.status === 401) {
-  //         setErrorPassword(true);
-  //         setErrorMessagePassword("Incorrect Password");
-  //       } else {
-  //         console.error("Unexpected error:", err);
-  //       }
-  //     });
-  // };
 
   return (
     <>

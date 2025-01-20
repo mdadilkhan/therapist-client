@@ -93,7 +93,7 @@ export default function AddPrescription({
         <div className="flex justify-between sm:flex-row flex-col gap-[24px]">
           <div className="flex sm:w-[48%] w-full flex-col">
             <label className="p2-sem" style={{ color: "#4A4159" }}>
-              Title
+              Title*
             </label>
             <TextField
               fullWidth
@@ -129,7 +129,7 @@ export default function AddPrescription({
           </div>
           <div className="flex sm:w-[48%] w-full flex-col">
             <label className="p2-sem" style={{ color: "#4A4159" }}>
-              Dosage
+              Dosage*
             </label>
             <TextField
               fullWidth
@@ -236,7 +236,7 @@ export default function AddPrescription({
           style={{ display: "flex", flexDirection: "column", width: "100%" }}
         >
           <label className="p2-sem" style={{ color: "#4A4159" }}>
-            Description
+            Description*
           </label>
           <textarea
             style={{
@@ -254,6 +254,7 @@ export default function AddPrescription({
             cols="500"
             name="description"
             value={prescriptionValue.description}
+            required
             onChange={handleChangePrescribtion}
           ></textarea>
         </div>

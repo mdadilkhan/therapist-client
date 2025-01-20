@@ -13,7 +13,7 @@ import Key from "../../assets/Key.svg";
 import Language from "../../assets/Language.svg";
 import Phone from "../../assets/Phone.svg";
 import DegreeCap from "../../assets/DegreeCap.svg";
-import EditProfileIcon from "../../assets/EditProfile.svg";
+import EditIcon from "../../assets/EditProfileIcon.svg";
 import { API_URL } from "../../constant/ApiConstant";
 
 import {
@@ -341,13 +341,13 @@ const ProfileDetails = () => {
                 alt=""
               />
               <img
-                className="absolute left-[0%] top-[0%] cursor-pointer w-[168px] opacity-0 hover:opacity-50"
-                onClick={() => {
-                  fileRef.current.click();
-                }}
-                src={EditProfileIcon}
-                alt=""
-              />
+                  className="absolute left-[25%] top-[70%] cursor-pointer"
+                  onClick={() => {
+                    fileRef.current.click();
+                  }}
+                  src={EditIcon}
+                  alt=""
+                />
             </div>
             <div className="flex w-full flex-col sm:flex-row justify-between w-full">
               <div>
@@ -551,7 +551,7 @@ const ProfileDetails = () => {
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div style={{ width: "32%" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Name
+                    Name*
                   </label>
                   <TextField
                     fullWidth
@@ -588,7 +588,7 @@ const ProfileDetails = () => {
                 </div>
                 <div style={{ width: "32%" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Phone
+                    Phone*
                   </label>
                   <TextField
                     fullWidth
@@ -628,7 +628,7 @@ const ProfileDetails = () => {
                 </div>
                 <div style={{ width: "32%" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Email
+                    Email*
                   </label>
                   <TextField
                     fullWidth
@@ -673,7 +673,7 @@ const ProfileDetails = () => {
                   }}
                 >
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Gender
+                    Gender*
                   </label>
                   <select
                     id="mySelect"
@@ -690,53 +690,10 @@ const ProfileDetails = () => {
                 </div>
                 <div style={{ width: "32%" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Date of Birth
+                    Date of Birth*
                   </label>
                   <DatePicker onChange={handleDOBChange} value={updateProfile.dob} />
                 </div>
-
-                {/* <div
-                  style={{
-                    width: "32%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Designation
-                  </label>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    required
-                    name="designation"
-                    value={updateProfile.designation}
-                    onChange={handelChage}
-                    InputProps={{
-                      sx: {
-                        fontSize: "18px",
-                        fontFamily: "Nunito",
-                        fontStyle: "normal",
-                        fontWeight: 400,
-                        lineHeight: "24px",
-                        letterSpacing: "0.08px",
-                        height: "48px",
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor: `#d5d2d9`,
-                        },
-                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                          borderColor: `#d5d2d9`,
-                        },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                          borderColor: `#d5d2d9`,
-                        },
-                        "& input::placeholder": {
-                          color: `#d5d2d9`,
-                        },
-                      },
-                    }}
-                  />
-                </div> */}
                 <div style={{ width: "32%" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
                     Languages
@@ -777,7 +734,7 @@ const ProfileDetails = () => {
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div style={{ width: "32%" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Specilization
+                    Specilization*
                   </label>
                   <TextField
                     fullWidth
@@ -819,7 +776,7 @@ const ProfileDetails = () => {
                   }}
                 >
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Designation
+                    Designation*
                   </label>
                   <TextField
                     fullWidth
@@ -855,7 +812,7 @@ const ProfileDetails = () => {
                 </div>
                 <div style={{ width: "32%" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Google meet Link
+                    Google meet Link*
                   </label>
                   <TextField
                     fullWidth
@@ -899,7 +856,7 @@ const ProfileDetails = () => {
                   }}
                 >
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Educational Qualification
+                    Educational Qualification*
                   </label>
                   <textarea
                     style={{ width: "100%", borderRadius: "8px" }}
@@ -909,6 +866,7 @@ const ProfileDetails = () => {
                     name="educationQualification"
                     value={updateProfile?.educationQualification}
                     onChange={handleChange}
+                    required
                   ></textarea>
                 </div>
                 <div
@@ -919,7 +877,7 @@ const ProfileDetails = () => {
                   }}
                 >
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Biogarphy
+                    Biogarphy*
                   </label>
                   <textarea
                     style={{ width: "100%", borderRadius: "8px" }}
@@ -927,6 +885,7 @@ const ProfileDetails = () => {
                     rows="4"
                     cols="500"
                     name="biography"
+                    required
                     value={updateProfile?.biography}
                     onChange={handelChage}
                   ></textarea>
@@ -947,7 +906,7 @@ const ProfileDetails = () => {
                     }}
                   >
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Experience
+                      Experience*
                     </label>
                     <textarea
                       style={{
@@ -958,6 +917,7 @@ const ProfileDetails = () => {
                       id="myTextArea"
                       rows="4"
                       cols="500"
+                      required
                       name="experience"
                       value={updateProfile?.experience}
                       onChange={handelChage}
@@ -972,7 +932,7 @@ const ProfileDetails = () => {
                     }}
                   >
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Organisation
+                      Organisation*
                     </label>
                     <textarea
                       style={{
@@ -997,7 +957,7 @@ const ProfileDetails = () => {
               >
                 <div style={{ width: "100%", height: "75px" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Address
+                    Address*
                   </label>
                   <TextField
                     fullWidth
@@ -1036,7 +996,7 @@ const ProfileDetails = () => {
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div style={{ width: "32%" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    City
+                    City*
                   </label>
                   <TextField
                     fullWidth
@@ -1072,7 +1032,7 @@ const ProfileDetails = () => {
                 </div>
                 <div style={{ width: "32%" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    State
+                    State*
                   </label>
                   <Select
                     fullWidth
@@ -1086,6 +1046,7 @@ const ProfileDetails = () => {
                         },
                       })
                     }
+                    required
                     displayEmpty
                     sx={{
                       fontSize: "18px",
@@ -1112,10 +1073,10 @@ const ProfileDetails = () => {
                     <MenuItem value="">
                       <em
                         style={{
-                          fontSize: "12px",
+                          fontSize: "18px",
                           fontFamily: "Nunito",
                           fontStyle: "normal",
-                          fontWeight: 500,
+                          fontWeight: 400,
                           lineHeight: "24px",
                           letterSpacing: "0.08px",
                         }}
@@ -1228,7 +1189,7 @@ const ProfileDetails = () => {
                 >
                   <div style={{ width: "32%" }}>
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Account Holder Name
+                      Account Holder Name*
                     </label>
                     <TextField
                       fullWidth
@@ -1265,7 +1226,7 @@ const ProfileDetails = () => {
                   </div>
                   <div style={{ width: "32%" }}>
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Account Number
+                      Account Number*
                     </label>
                     <TextField
                       fullWidth
@@ -1301,7 +1262,7 @@ const ProfileDetails = () => {
                   </div>
                   <div style={{ width: "32%" }}>
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Bank Name
+                      Bank Name*
                     </label>
                     <TextField
                       fullWidth
@@ -1345,7 +1306,7 @@ const ProfileDetails = () => {
                 >
                   <div style={{ width: "32%" }}>
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Branch Address
+                      Branch Address*
                     </label>
                     <TextField
                       fullWidth
@@ -1382,7 +1343,7 @@ const ProfileDetails = () => {
                   </div>
                   <div style={{ width: "32%" }}>
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      IFSC Code
+                      IFSC Code*
                     </label>
                     <TextField
                       fullWidth

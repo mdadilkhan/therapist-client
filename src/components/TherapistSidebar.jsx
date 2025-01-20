@@ -1,6 +1,7 @@
 import React, { useState, useEffect, lazy } from "react";
 import { useDispatch } from "react-redux";
 import { userDetails } from "../store/slices/userSlices";
+import { setRole } from "../store/slices/smsSlices";
 import { Box, Button, Drawer } from "@mui/material";
 import Dashboard from "../assets/Dashboard.svg";
 import Assessment from "../assets/Assessment.svg";
@@ -173,7 +174,7 @@ const TherapistSidebar = ({ children }) => {
       {viewportWidth >= 640 ? (
         <div
           style={{
-            width: "100%",
+            width: "235px",
             display: "flex",
             height: "100vh-64px",
             overflow: "auto",
@@ -327,6 +328,7 @@ const TherapistSidebar = ({ children }) => {
                 style={{ textTransform: "capitalize" }}
                 onClick={() => {
                   dispatch(userDetails(null));
+                  dispatch(setRole(null));
                   localStorage.clear();
                   navigate("/therapist");
                 }}

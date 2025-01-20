@@ -7,19 +7,9 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import { userDetails } from "../store/slices/userSlices";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Visibility from "@mui/icons-material/Visibility";
 import { API_URL } from "../constant/ApiConstant";
 import {
-  Box,
-  Paper,
-  Typography,
-  TextField,
   Button,
-  InputAdornment,
-  IconButton,
-  CircularProgress,
-  InputLabel,
 } from "@mui/material";
 import toast from "react-hot-toast";
 const StyledLink = styled(Link)`
@@ -29,7 +19,7 @@ const StyledLink = styled(Link)`
 const ValidateOtp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { phoneNumber, countryCode, email } = useSelector(
+  const { phoneNumber, countryCode, email,role } = useSelector(
     (state) => state.smsData
   );
 
@@ -68,8 +58,8 @@ const ValidateOtp = () => {
           ? `${API_URL}/auth/sendOtpWithEmail`
           : `${API_URL}/auth/sendOtpWithSms`,
         isEmail
-          ? { email: email }
-          : { phoneNumber: phoneNumber, countryCode: countryCode }
+          ? { email: email,role:role }
+          : { phoneNumber: phoneNumber, countryCode: countryCode , role:role}
       )
       .then((res) => {
         if (res.status === 200) {
@@ -115,7 +105,7 @@ const ValidateOtp = () => {
           });
           localStorage.setItem("token", res.data.data.token);
           dispatch(userDetails(res.data.data));
-          navigate("/therapist/dashboards");
+          {role == "therapist" ?  navigate("/therapist/dashboards") : navigate("/client/dashboards");}
         } else if (res.data.response === "error") {
           setError(true);
         }
@@ -232,15 +222,21 @@ const ValidateOtp = () => {
             </Button>
           </form>
 
-          <StyledLink to="/">
+          <StyledLink to="/contactsupport">
             <p
               className="mixed-style5"
-              style={{ textAlign: "center", marginTop: "8px" }}
+              style={{
+                color: "#000",
+                fontFamily: "Nunito",
+                fontSize: "12px",
+                fontStyle: "normal",
+                fontWeight: 600,
+                lineHeight: "20px",
+                letterSpacing: "0.28px",
+                textAlign: "center", 
+                marginTop: "8px"
+              }}
             >
-              If we find sageturtle@gmail.com in our system, we’ll send you an
-              email with a link to reset your password.
-              <br />
-              <br />
               If you don’t receive the email, check your spam folder, or{" "}
               <span
                 style={{

@@ -509,7 +509,7 @@ const AppointmentDetails = () => {
                   }}
                   onClick={handleOpenModal}
                 >
-                  <span className="btn1">Change Status</span>{" "}
+                  <span className="btn1">Complete Consultation</span>{" "}
                 </Button>
               ) : (
                 <Button

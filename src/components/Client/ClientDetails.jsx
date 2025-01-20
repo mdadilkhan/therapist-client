@@ -4,7 +4,7 @@ import axios from "axios";
 import LeftArrow from "../../assets/LeftArrow.svg";
 import ViewIcon from "../../assets/ViewIcon.svg";
 import AddIcon from "../../assets/AddIcon.svg";
-import EditIcon from "../../assets/EditIcon.svg";
+import EditIcon from "../../assets/EditProfileIcon.svg";
 import CollapseArrow from "../../assets/collapseArrow.svg";
 import DownloadIcon from "../../assets/DownloadIcon.svg";
 import styled from "@emotion/styled";
@@ -23,7 +23,6 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { API_URL } from "../../constant/ApiConstant";
 import SendButton from "../../assets/SendButton.svg";
-import EditProfileIcon from "../../assets/EditProfile.svg";
 import { useSelector } from "react-redux";
 import {
   Paper,
@@ -1807,11 +1806,11 @@ const ClientDetails = () => {
                 />
 
                 <img
-                  className="absolute left-[0%] top-[0%] cursor-pointer w-[168px] opacity-0 hover:opacity-50"
+                  className="absolute left-[75%] top-[70%] cursor-pointer"
                   onClick={() => {
                     fileRef.current.click();
                   }}
-                  src={EditProfileIcon}
+                  src={EditIcon}
                   alt=""
                 />
               </div>

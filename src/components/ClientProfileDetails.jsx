@@ -13,7 +13,7 @@ import Key from "../assets/Key.svg";
 import Language from "../assets/Language.svg";
 import Phone from "../assets/Phone.svg";
 import DegreeCap from "../assets/DegreeCap.svg";
-import EditProfileIcon from "../assets/EditProfile.svg";
+import EditIcon from "../../assets/EditProfileIcon.svg";
 import { API_URL } from "../constant/ApiConstant";
 import { useDispatch } from "react-redux";
 import { userDetails } from "../store/slices/userSlices";
@@ -250,13 +250,13 @@ const ClientProfileDetails = () => {
                 alt=""
               />
               <img
-                className="absolute left-[0%] top-[0%] cursor-pointer w-[168px] opacity-0 hover:opacity-50"
-                onClick={() => {
-                  fileRef.current.click();
-                }}
-                src={EditProfileIcon}
-                alt=""
-              />
+                  className="absolute left-[75%] top-[70%] cursor-pointer"
+                  onClick={() => {
+                    fileRef.current.click();
+                  }}
+                  src={EditIcon}
+                  alt=""
+                />
             </div>
             <div className="flex w-full justify-between sm:flex-row flex-col">
               <div>

@@ -277,8 +277,8 @@ const ContactSupport = () => {
                 className="p1-reg"
                 style={{ marginLeft: "1rem", color: "#4A4159" }}
               >
-                C-47, Shivalik, Malviya Nagar,
-                <br /> New Delhi, Delhi -110017
+                B-503, ATS Bouquet , Noida Sector - 132,
+                <br /> U.P - 201304
               </p>
             </Box>
 

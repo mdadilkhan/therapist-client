@@ -6,6 +6,7 @@ const SmsSlice = createSlice({
     phoneNumber: "",
     countryCode: "",
     email: "",
+    role: "", // Store the role globally
   },
   reducers: {
     setMobileSignIn(state, action) {
@@ -15,7 +16,11 @@ const SmsSlice = createSlice({
     setEmailSignIn(state, action) {
       state.email = action.payload;
     },
+    setRole(state, action) {
+      state.role = action.payload; 
+    },
   },
 });
-export const { setMobileSignIn, setEmailSignIn } = SmsSlice.actions;
+
+export const { setMobileSignIn, setEmailSignIn, setRole } = SmsSlice.actions;
 export default SmsSlice.reducer;

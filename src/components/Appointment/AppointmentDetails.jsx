@@ -533,14 +533,14 @@ const AppointmentDetails = () => {
     doc.text("Enso Innovation Lab Pvt. Ltd.", 135, 50);
   
     doc.text("Address:", 100, 55);
-    doc.text("E-807, Second Floor,Chitranjan Park", 135, 55);
-    doc.text("New Delhi - 110019", 135, 60);
+    doc.text("B-503, ATS Bouquet , Noida Sector - 132", 135, 55);
+    doc.text("U.P - 201304", 135, 60);
   
     // GST Number & Phone
     doc.text("GST No:", 20, 70);
     doc.text("GSTIN 07AAGCE434QI2B", 50, 70);
     doc.text("Phone:", 100, 70);
-    doc.text("+123-456-7890", 135, 70);
+    doc.text("+91 9873020194", 135, 70);
   
     // Billed To
     doc.setFontSize(15);
@@ -560,8 +560,8 @@ const AppointmentDetails = () => {
     // Particulars Section
     doc.setFontSize(12);
     doc.setFont("Nunito", "bold");
-    doc.setTextColor(255, 255, 255); // White text
-    doc.text("ITEM DESCREPTION", 25, 126);
+    doc.setTextColor(0, 0, 0); // White text
+    doc.text("Particular", 25, 126);
     doc.text("Price", 180, 126, { align: "right" });
   
     // Set text color back to black
@@ -570,7 +570,11 @@ const AppointmentDetails = () => {
     // Items with price
     doc.setFontSize(12);
     doc.setFont("Nunito", "normal");
-    doc.text(appointDetails?.booking_type, 25, 140);
+    doc.text(
+      `${appointDetails?.booking_type.replace(/\b\w/g, (char) => char.toUpperCase())} Counselling ${appointDetails?.type.replace(/\b\w/g, (char) => char.toUpperCase())}`,
+      25,
+      140
+    );    
     doc.text(`${appointDetails?.amount}`, 180, 140, null, null, "right");
     doc.line(20, 145, 190, 145);
   
@@ -832,7 +836,7 @@ const AppointmentDetails = () => {
                 onClick={handleOpenModal}
                 disabled={appointDetails?.booking_status != 1 ? true : false}
               >
-                <span className="btn1">Change Status</span>{" "}
+                <span className="btn1">Complete Consultation</span>{" "}
               </Button>
               <Modal
                 aria-labelledby="transition-modal-title"
@@ -1208,7 +1212,7 @@ const AppointmentDetails = () => {
                       : handleOpenToaster
                   }
                 >
-                  <span className="btn1">View Invoice</span>{" "}
+                  <span className="btn1">Download Invoice</span>{" "}
                 </Button>
               </div>
             </div>

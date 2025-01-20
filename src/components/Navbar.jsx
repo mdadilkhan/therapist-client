@@ -9,6 +9,7 @@ import ContactSupport from "../assets/ContactSupport.svg";
 import Logout from "../assets/Logout.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { userDetails } from "../store/slices/userSlices";
+import { setRole } from "../store/slices/smsSlices";
 
 const Navbar = () => {
   const userDetail = useSelector((state) => state.userDetails);
@@ -42,6 +43,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(userDetails(null));
+    dispatch(setRole(null));
     localStorage.clear();
     setAnchorEl(null);
     navigate("/therapist");

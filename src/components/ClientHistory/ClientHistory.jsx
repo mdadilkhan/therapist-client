@@ -294,7 +294,7 @@ console.log("cbhjsdbc>>",employeeHistory);
           />
           <h5 className="h5-bold">Client History </h5>
         </div>
-        {viewportWidth >= 640 ? (
+        {/* {viewportWidth >= 640 ? (
           <div style={{ display: "flex" }}>
             <Button
               variant="outlined"
@@ -314,7 +314,7 @@ console.log("cbhjsdbc>>",employeeHistory);
               <span className="btn1">Add Prescription</span>{" "}
             </Button>
           </div>
-        ) : null}
+        ) : null} */}
         <Dialog
           open={openPrescription}
           onClose={handleClosePrescription}
