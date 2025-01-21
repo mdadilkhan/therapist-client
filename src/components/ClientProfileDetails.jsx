@@ -13,7 +13,7 @@ import Key from "../assets/Key.svg";
 import Language from "../assets/Language.svg";
 import Phone from "../assets/Phone.svg";
 import DegreeCap from "../assets/DegreeCap.svg";
-import EditIcon from "../../assets/EditProfileIcon.svg";
+import EditIcon from "../assets/EditProfileIcon.svg";
 import { API_URL } from "../constant/ApiConstant";
 import { useDispatch } from "react-redux";
 import { userDetails } from "../store/slices/userSlices";
