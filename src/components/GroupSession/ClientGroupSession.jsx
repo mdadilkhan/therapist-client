@@ -176,7 +176,6 @@ const Tabs = () => {
 
 const Card = ({ sessation }) => {
   const sessionId = sessation._id;
-  console.log(sessation,"cbdsjch");
   
   const { id } = useSelector((state) => state.userDetails);
 
@@ -188,8 +187,6 @@ const Card = ({ sessation }) => {
     drcr: "debited",
   };
 
-  console.log(data);
-
   return (
     <div className="bg-white p-4 rounded-2xl shadow-lg flex flex-col w-[546px] h-[280px] ">
       <div
@@ -200,7 +197,7 @@ const Card = ({ sessation }) => {
       >
         <div className="">
           <img
-            src={Frame}
+            src={sessation?.therapistImage}
             alt="sessation thumbnail"
             className="w-[180px] h-[200px]"
           />
@@ -266,7 +263,6 @@ const Card = ({ sessation }) => {
             const currentGuest = sessation?.guestList?.find(
               (guest) => guest._id === id
             );
-            console.log("current guest", currentGuest);
             // If payment is true, show "Join Now" button, else show payment component
             if (currentGuest?.payment) {
               return (

@@ -324,7 +324,6 @@ const ClientDetails = () => {
           });
           listOfIds.forEach((userId, index) => {
             setTimeout(() => {
-              console.log(userId, "hello for given referral");
               socket.emit("therapist", {
                 title:" Referal Recieved",
                 message: `${employeeData.name} has been referred to you by ${details.name}`,
@@ -654,7 +653,6 @@ const ClientDetails = () => {
               },
             }
           );
-          console.log(res.data.data, "i am here for session note");
           // setClientHistoryDetails(res.data.data);
         }
       })

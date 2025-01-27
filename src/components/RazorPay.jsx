@@ -17,7 +17,6 @@ function formatDate(dateString) {
 }
 
 const RazorPay = ({ appointmentData, agree }) => {
-  console.log(appointmentData, "hello Razorpay");
   const userDetails = useSelector((state) => state.userDetails);
   const [paymentStatus, setPaymentStatus] = useState("undefined");
   const location = useLocation();

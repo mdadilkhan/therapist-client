@@ -11,11 +11,9 @@ const RightSidebar = ({ isOpen, toggleSidebar }) => {
   const [notifications, setNotifications] = useState([]);
   const [notificationDeleted, setNotificationDeleted] = useState(false); // Track notification deletion
   const details = useSelector((state) => state.userDetails);
-  console.log(details);
   const socket = useSocket();
 
   const handleNotifications = useCallback((data) => {
-    console.log("Received notification data:", data);
     setNotifications((prevNotifications) => {
       const newNotifications = data?.filter(
         (newNotif) =>

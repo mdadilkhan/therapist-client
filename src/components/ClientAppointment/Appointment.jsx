@@ -210,6 +210,7 @@ const Appointment = () => {
               onChange={handleDateChange}
               value={dateValue}
               format="dd/MM/yyyy"
+              minDate={new Date()}
             />
           </div>
           <div>

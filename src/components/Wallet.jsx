@@ -62,6 +62,10 @@ const sageColumn = [
     align: "right",
   },
   {
+    id: "Payment Type",
+    align: "right",
+  },
+  {
     id: "Debit/Credit",
     align: "right",
   },
@@ -99,7 +103,6 @@ const Wallet = () => {
       console.error("Amount must be greater than zero.");
       return;
     }
-    console.log("Amount submitted:", amount);
   };
 
   // Handle table pagination
@@ -381,7 +384,20 @@ const Wallet = () => {
                             {getformatedDate(row?.date)}
                           </TableCell>
                           <TableCell align="left" className="body3-reg">
-                            {row?.time ? convertTo12HourFormat(row?.time) : convertTo12HourFormat("00:00:00")}
+                            {row?.time
+                              ? convertTo12HourFormat(row?.time)
+                              : convertTo12HourFormat("00:00:00")}
+                          </TableCell>
+                          <TableCell align="left" className="body3-reg">
+                            {row?.type
+                              ? row.type === "pre"
+                                ? "PreConsultation Booking"
+                                : row.type === "post"
+                                ? "Session Booking"
+                                : row.type === "wallet"
+                                ? "Wallet Recharge"
+                                : "Unknown"
+                              : "No Type"}
                           </TableCell>
                           <TableCell align="left" className="body3-reg">
                             {row?.drcr === "Credit" ? (

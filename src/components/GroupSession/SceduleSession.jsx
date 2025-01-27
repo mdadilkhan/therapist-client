@@ -31,10 +31,6 @@ const ScheduleSession = () => {
     googleMeet: "",
   });
  
-
-
-  console.log(sessationSlot);
-
   // const handleRemoveSlot = (indexToRemove) => {
   //   setSessationSlot((prevSlots) =>
   //     prevSlots.filter((_, index) => index !== indexToRemove)

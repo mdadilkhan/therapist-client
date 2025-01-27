@@ -26,8 +26,6 @@ const Header = () => {
 
 const Card = ({therapist})=>{
 
-   console.log(therapist);
-   
   const navigate=useNavigate()
   return(
     <div

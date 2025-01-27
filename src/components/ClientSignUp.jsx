@@ -85,7 +85,7 @@ const ClientSignUp = () => {
           }}
         >
           <h5 className="h5-bold text-black mb-4">Client's Sign up</h5>
-          <h6 className="p1-reg mb-10">Welcome to Therapist Portal</h6>
+          <h6 className="p1-reg mb-10">Welcome to Client Portal</h6>
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col">
               <h2 className="p2-sem mt-2 text-[#4A4159]">Name</h2>

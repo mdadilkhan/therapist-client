@@ -195,7 +195,7 @@ const TherapistAppointmentType = () => {
         <div className="w-[60%]">
           <div className="w-[75%] h-[228px] rounded-[15px] border border-[#D5D2D9] border-solid ml-[32px] my-8 flex gap-5 px-4 py-6">
             <div>
-              <img className="w-[100%] h-[210px] mb-5" src={DummyImg} alt="" />
+              <img className="w-[100%] h-[210px] mb-5" src={profileDetials?.profile_image} alt="" />
             </div>
             <div className="flex flex-col gap-3 justify-center">
               <h2 className="h6-bold">{profileDetials?.name}</h2>
@@ -225,12 +225,7 @@ const TherapistAppointmentType = () => {
                 <img src={Translate} alt="" />
                 <h4 className="body4-reg text-[#635B73]">
                   <span className="ovr1-bold">Language :</span>
-                  {Array.isArray(profileDetials?.profile_details?.languages) ? (
-                    profileDetials.profile_details.languages.map(
-                      (language, index) => (
-                        <span key={index}>{language + " "}</span>
-                      )
-                    )
+                  {profileDetials?.profile_details?.languages ? (profileDetials?.profile_details?.languages
                   ) : (
                     <span>No languages available</span>
                   )}

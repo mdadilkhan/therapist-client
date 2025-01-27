@@ -201,8 +201,6 @@ function SelfTherapy() {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   const handleSubmit = () => {
-    console.log(dateValue, duration, selectedSlots);
-  
     const data = {
       bookingDate: formatDate(dateValue),
       bookingSlots: selectedSlots,

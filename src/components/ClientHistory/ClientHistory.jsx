@@ -226,14 +226,10 @@ const uploadImageToS3 = async (url) => {
 const getImageUrl = async () => {
   try {
     const { url, imageName } = await getSignedUrl();
-    console.log("url", url);
-    console.log("imageName", imageName);
-
     await uploadImageToS3(url);
     // setSelectedFileName("");
  
     const imageUrl = `https://corportal.s3.ap-south-1.amazonaws.com/upload/profilePic/${imageName}`;
-    console.log("orignal image>>", imageUrl);
     setClientHistory((prevState) => ({
       ...prevState,
       imageUrl: imageUrl,

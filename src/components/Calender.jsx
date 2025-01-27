@@ -109,7 +109,6 @@ const Calender = () => {
 
   const [searchParams] = useSearchParams();
   const refralClientId = searchParams.get("client");
-  console.log(refralClientId);
 
   const therapistId = details?.id;
   const socket = useSocket();
@@ -247,7 +246,6 @@ const Calender = () => {
     const clickedSlot = slotList[index];
 
     if (clickedSlot.m_booked_status !== 0) {
-      console.log("Clicked slot is not available");
       return;
     }
 
@@ -256,7 +254,6 @@ const Calender = () => {
       const adjacentSlot = slotList[adjacentIndex];
 
       if (!adjacentSlot || adjacentSlot.m_booked_status !== 0) {
-        console.log("Adjacent slot is not available for 60-minute booking");
         return;
       }
 
@@ -280,7 +277,6 @@ const Calender = () => {
       const adjacentSlot = slotList[adjacentIndex];
 
       if (!adjacentSlot || adjacentSlot.m_booked_status !== 0) {
-        console.log("Adjacent slot is not available for 60-minute booking");
         return;
       }
 
@@ -611,6 +607,7 @@ const Calender = () => {
           <DatePicker
             onChange={handleDateChange}
             value={dateValue}
+            minDate={new Date()}
           />
           <h1 className="text-[#9A93A5] text-[16px] font-medium mt-4">
             {getDatetoDayName(dateValue)}

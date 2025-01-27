@@ -233,7 +233,6 @@ const AddClientInSessation = () => {
     value: client._id,
     label: client.name,
   }));
-console.log(selectedClients);
 
   return (
     <>

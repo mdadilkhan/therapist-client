@@ -77,8 +77,6 @@ const SessionDetials = () => {
 
   // Handle selection changes
   const handleSelectChange = (selectedOption) => {
-    console.log(selectedOption);
-
     // Construct the new client object with _id, status, paymentLink, and payment fields
     const newClient = {
       _id: selectedOption.value, // Client ID from selected option
@@ -92,9 +90,6 @@ const SessionDetials = () => {
 
     // Optionally set the selected client option for UI purposes
     setSelectedClientOption(selectedOption);
-
-    console.log("Selected Client:", selectedOption);
-    console.log("Updated Client Details:", clientDetails);
   };
 
   const handleSubmit = (e) => {
@@ -216,7 +211,6 @@ const SessionDetials = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-          console.log("guestlist>>", res.data);
           setGuests(res.data);
         }
       })
@@ -231,7 +225,6 @@ const SessionDetials = () => {
       _id: guestId,
       status: status,
     };
-    console.log("data>>", data);
 
     axios
       .put(`${API_URL}/groupSessation/updateGuestStatus`, data)

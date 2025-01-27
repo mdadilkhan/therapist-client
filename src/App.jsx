@@ -122,7 +122,6 @@ const ClientGroupSessationDetials = lazy(() =>
 const PrivateRoute = ({ allowedRoles }) => {
   const { role } = useSelector((state) => state.userDetails);
   const location = useLocation();
-console.log("mknaz",role);
 
   if (!allowedRoles.includes(role)) {
     const redirectPath = "/";
@@ -134,7 +133,6 @@ console.log("mknaz",role);
 
 const Layout = ({ children }) => {
   const { role } = useSelector((state) => state.userDetails);
-console.log("kjhgfd",role);
 
   const location = useLocation();
   const noSidebarPaths = [
@@ -145,6 +143,7 @@ console.log("kjhgfd",role);
     "/signup/therapist",
     "/signup",
     "/validateotp",
+    "/contact-us",
   ];
 
   return (
@@ -227,6 +226,7 @@ console.log(token);
               <Route path="/verifyotp" element={<VerifyOtp />} />
               <Route path="/validateotp" element={<ValidateOtp />} />
               <Route path="/contactsupport" element={<ContactSupport />} />
+              <Route path="/contact-us" element={<ContactSupport />} />
               <Route path="/forgotpassword" element={<ForgotPassword />} />
               <Route path="/signup" element={<ClientSignUp />} />
               <Route path="/signup/therapist" element={<TherapistSignUp />} />

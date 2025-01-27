@@ -93,7 +93,7 @@ const VerifyOtp = () => {
       .post(`${API_URL}/generateOTP`, { email: email })
       .then((res) => {
         if (res.data.success == true) {
-          console.log("res>>", res);
+          console.log("OTP sent");
         } else if (res.data.response === "error") {
           alert("error");
           setError(true);

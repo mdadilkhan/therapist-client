@@ -158,6 +158,7 @@ const ClientProfileDetails = () => {
       city: profileDetails?.profile_details?.city || "",
       state: profileDetails?.profile_details?.state || "",
       dob: profileDetails?.profile_details?.dob || "",
+      pinCode:profileDetails?.profile_details?.pinCode || "",
     });
   };
   const cancelEditMode = () => {
@@ -250,7 +251,7 @@ const ClientProfileDetails = () => {
                 alt=""
               />
               <img
-                  className="absolute left-[75%] top-[70%] cursor-pointer"
+                  className="absolute left-[25%] top-[70%] cursor-pointer"
                   onClick={() => {
                     fileRef.current.click();
                   }}

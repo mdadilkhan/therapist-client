@@ -37,9 +37,6 @@ const ValidateOtp = () => {
   const isEmail = eml === "true";
   const isMobile = mob === "true";
 
-  // Log to confirm query params
-  console.log("mobile and email status", isEmail, isMobile);
-
   useEffect(() => {
     let timer;
     if (counter > 0) {
@@ -222,7 +219,7 @@ const ValidateOtp = () => {
             </Button>
           </form>
 
-          <StyledLink to="/contactsupport">
+          <StyledLink to="/contact-us">
             <p
               className="mixed-style5"
               style={{

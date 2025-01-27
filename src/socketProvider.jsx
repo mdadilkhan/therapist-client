@@ -15,7 +15,6 @@ export const SocketProvider = (props) => {
       setSocket(newSocket);
     }
   }, [token, socket]);
-  console.log(socket, "in Socket provide")
   return (
     <SocketContext.Provider value={socket}>
       {props.children}

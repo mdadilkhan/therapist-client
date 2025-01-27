@@ -15,7 +15,7 @@ import Phone from "../../assets/Phone.svg";
 import DegreeCap from "../../assets/DegreeCap.svg";
 import EditIcon from "../../assets/EditProfileIcon.svg";
 import { API_URL } from "../../constant/ApiConstant";
-
+import { userDetails } from "../../store/slices/userSlices";
 import {
   Button,
   colors,
@@ -30,6 +30,7 @@ import {
 import { getformatedDate } from "../../constant/constatnt";
 import toast from "react-hot-toast";
 import DatePicker from "react-date-picker";
+import { useDispatch } from "react-redux";
 
 const editButtonStyle = {
   display: "flex",
@@ -49,7 +50,7 @@ const editButtonStyle = {
 const ProfileDetails = () => {
   const fileRef = useRef(null);
   const [image, setImage] = useState(null);
-
+  const dispatch = useDispatch();
   const [indianStates, setIndianStates] = useState([]);
 
   const ListOfLocation = () => {
@@ -154,7 +155,6 @@ const ProfileDetails = () => {
       .then((res) => {
         if (res.status == 200) {
           const experts = res.data.data.map((item) => item.name);
-          console.log(experts, "OOOOOOOOOOOO");
           setExpertList(experts);
         }
       })
@@ -246,6 +246,7 @@ const ProfileDetails = () => {
       .then((res) => {
         if (res.status === 200) {
           setProfileDetails(res.data.data);
+          dispatch(userDetails(res.data.data));
         }
       })
       .catch((err) => {

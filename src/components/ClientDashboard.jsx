@@ -382,58 +382,52 @@ const ClientDashboard = () => {
     <>
       <h1 className="h5-bold mx-[32px] mt-5">Dashboard</h1>
       <div className="flex flex-col sm:flex-row gap-[15px]">
-        <div className="flex w-[564px] p-4 items-start gap-[14px] sm:w-[45%] h-[335px] sm:h-[174px] rounded-[15px] bg-[#ECFFBF] shadow-custom ml-[32px] my-0 sm:my-8  sm:flex-row flex-col  px-4 py-6 relative">
-          <div className="flex items-center gap-12">
+        <div className="flex w-[564px] p-4 items-start gap-[14px] sm:w-[45%] h-[335px] sm:h-[174px] rounded-[15px] bg-[#ECFFBF] shadow-custom ml-[32px] my-0 sm:my-8  sm:flex-row flex-col  px-4 py-6">
+          <div className="flex items-center gap-12 h-full">
             <img
               src={getMatched}
               alt=""
               className="w-[181px] flex-shrink-0 self-stretch rounded-[8px]"
             />
           </div>
-          <div className="flex flex-col items-start gap-2">
-            <div>
-              <h1 className="h6-bold hidden sm:block">Get Matched</h1>
-            </div>
-            <div>
+          <div className="flex flex-col items-start justify-between gap-2 h-full">
+            <div className="flex flex-col gap-2">
+            <h1 className="h6-bold hidden sm:block">Get Matched</h1>
               <h1 className="ovr1-reg">
                 Preliminary consultation, help us find the perfect therapist for
                 you
               </h1>
             </div>
-          </div>
-
-          <button
-            className="w-[123px] h-[48px] bg-[#614298] rounded-[8px] border-none text-[#fff] p1-reg absolute bottom-7 left-[37%] cursor-pointer flex px-5 py-4 justify-center items-center gap-2"
+            <button
+            className="w-[123px] h-[48px] bg-[#614298] rounded-[8px] border-none text-[#fff] p1-reg cursor-pointer flex px-5 py-4 justify-center items-center gap-2"
             onClick={() => navigate("/client/appointments")}
           >
             Book Now
           </button>
+          </div>
         </div>
-        <div className="w-[564px] sm:w-[45%] h-[335px] sm:h-[174px] rounded-[15px] bg-[#FCFAFF] shadow-custom ml-[32px] my-0 sm:my-8 flex sm:flex-row flex-col gap-5 px-4 py-6 relative">
-          <div className="w-[181px] flex-shrink-0 self-stretch rounded-[8px]">
+        <div className="flex w-[564px] p-4 items-start gap-[14px] sm:w-[45%] h-[335px] sm:h-[174px] rounded-[15px] bg-[#F4EDFF] shadow-custom ml-[32px] my-0 sm:my-8  sm:flex-row flex-col  px-4 py-6">
+          <div className="flex items-center gap-12 h-full">
             <img
               src={Rect}
               alt=""
               className="w-[181px] flex-shrink-0 self-stretch rounded-[8px]"
             />
           </div>
-          <div className="flex flex-col items-start gap-2">
-            <div>
-              <h1 className="h6-bold hidden sm:block">Find Therapist </h1>
-            </div>
-            <div>
+          <div className="flex flex-col items-start justify-between gap-2 h-full">
+            <div className="flex flex-col gap-2">
+            <h1 className="h6-bold hidden sm:block">Find Therapist </h1>
               <h1 className="ovr1-reg">
                 Select from wide range of professional
               </h1>
             </div>
-          </div>
-
-          <button
-            className="w-[123px] h-[48px] bg-[#614298] rounded-[8px] border-none text-[#fff] p1-reg absolute bottom-7 left-[37%] cursor-pointer"
+            <button
+            className="w-[123px] h-[48px] bg-[#614298] rounded-[8px] border-none text-[#fff] p1-reg cursor-pointer"
             onClick={() => navigate("/client/therapist-list")}
           >
             Book Now
           </button>
+          </div>
         </div>
       </div>
       <div style={{ marginTop: "24px" }}>

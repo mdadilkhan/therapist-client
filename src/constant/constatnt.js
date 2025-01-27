@@ -226,8 +226,7 @@ export function formatDateAndDay(dateString) {
 }
 
 export function getTimeInterval(dateValue) {
-  console.log(dateValue);
-  
+
   if(dateValue){
     const { date, time } = dateValue;
     // Parse the date and time
@@ -273,8 +272,6 @@ export function getDaysDifference(dateString) {
 }
 
 export function getJoinMeet(row) {
-  console.log("asdjgajdgfh", row);
-  
   const currentDate = new Date().toDateString();
   const bookingDate = new Date(row.booking_date).toDateString();
   const scheduledTime = new Date(`${currentDate} ${row?.booking_slots[0].m_schd_from}`).getTime();

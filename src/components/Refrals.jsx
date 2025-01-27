@@ -327,8 +327,6 @@ const Refrals = () => {
         .get(`${API_URL}/getClientHistory/${clientId}`)
         .then((res) => {
           if (res.status === 200) {
-            console.log(res.data.data);
-
             // Merge notes into the clientHistory object
             const updatedClientHistory = {
               ...res.data.data, // Spread existing client history data
@@ -378,7 +376,6 @@ const Refrals = () => {
   const handleOpenModalve = (note) => {
     setNote(note);
     setOpenModalve(true);
-    console.log(openModalve, "KKLLKLKLKL");
   };
 
   const handleCloseModalv = () => {
@@ -455,14 +452,11 @@ const Refrals = () => {
   };
 
   const handleOpenModal3 = (referralId, clientId, clientName) => {
-    console.log(referralId, clientId, clientName);
-
     setSelectedReferralId({
       referralId: referralId,
       clientId: clientId,
       name: clientName,
     });
-    console.log(selectedReferralId);
     setOpenModal3(true);
   };
 
@@ -512,7 +506,7 @@ const Refrals = () => {
       .get(`${API_URL}/getReceivedPreconsultationReferralList`)
       .then((res) => {
         if (res.status === 200) {
-          setRecieveRefral(res.data.data);
+          // setRecieveRefral(res.data.data);
           // setRecieveRefralsess(res.data.data);
         }
       })
@@ -539,8 +533,6 @@ const Refrals = () => {
       .get(`${API_URL}/getReceivedSessionReferralList`)
       .then((res) => {
         if (res.status === 200) {
-          console.log(res.data.data);
-
           setRecieveRefralsess(res.data.data);
         }
       })

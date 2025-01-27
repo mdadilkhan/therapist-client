@@ -57,6 +57,7 @@ const Navbar = () => {
       {location.pathname !== "/therapist" &&
         location.pathname !== "/signup" &&
         location.pathname !== "/client" &&
+        location.pathname !== "/contact-us" &&
         location.pathname !== "/forgotpassword" &&
         location.pathname !== "/validateotp" && (
           <>
@@ -84,7 +85,7 @@ const Navbar = () => {
                 }}
                 className="profilePopover"
               >
-                <div className="w-[194px] h-[173px] mx-4 my-5 flex flex-col justify-between ">
+                <div className="w-[194px] h-[130px] mx-4 my-5 flex flex-col justify-between ">
                   <div
                     className="flex p-4 gap-6 border-4 items-center cursor-pointer"
                     onClick={() => {
@@ -112,7 +113,7 @@ const Navbar = () => {
                   <div className="flex pl-4">
                     <img src={ContactSupport} alt="" />
                     <p
-                      className="h-[56px] flex items-center text-[#06030D] text-base px-6 cursor-pointer"
+                      className="h-[30px] flex items-center text-[#06030D] text-base px-6 cursor-pointer"
                       onClick={() => {
                         navigate("/contactsupport");
                         setAnchorEl(null); // Close the popover
@@ -125,7 +126,7 @@ const Navbar = () => {
                   <div className="flex pl-4">
                     <img src={Logout} alt="" />
                     <p
-                      className="h-[56px] flex items-center text-[#06030D] text-base px-6 cursor-pointer"
+                      className="h-[30px] flex items-center text-[#06030D] text-base px-6 cursor-pointer"
                       onClick={handleLogout}
                     >
                       Logout
