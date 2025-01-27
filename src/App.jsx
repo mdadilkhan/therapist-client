@@ -1,6 +1,8 @@
 import { lazy, Suspense, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
+
+import { jwtDecode } from "jwt-decode";
 import {
   BrowserRouter,
   Navigate,
@@ -8,6 +10,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -154,9 +157,47 @@ console.log("kjhgfd",role);
   );
 };
 
+
+
 function App() {
   const { token } = useSelector((state) => state.userDetails);
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  const dispatch = useDispatch();
+
+console.log(token);
+
+
+  useEffect(() => {
+    let logoutTimer;
+
+    if (token) {
+      const decodedToken = jwtDecode(token); // Decode the token
+      const currentTime = Date.now() / 1000; // Current time in seconds
+      const timeLeft = decodedToken.exp - currentTime; // Remaining time in seconds
+
+      if (timeLeft <= 0) {
+        handleLogout(); // If token is already expired
+      } else {
+        logoutTimer = setTimeout(() => {
+          handleLogout();
+        }, timeLeft * 1000); // Set timer to log out when token expires
+      }
+
+      console.log("Token expiry in:", timeLeft, "seconds");
+    }
+
+    // Cleanup the timer on unmount or when token changes
+    return () => clearTimeout(logoutTimer);
+  }, [token]);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    dispatch({ type: "USER_LOGOUT" }); // Adjust based on your Redux actions
+    window.location.href = "/client";
+  };
+
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
 
   return (
     <HelmetProvider>

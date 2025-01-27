@@ -246,9 +246,9 @@ const ClientSidebar = ({ children }) => {
                 className="body3-bold deactive"
                 style={{ textTransform: "capitalize" }}
                 onClick={() => {
-                  localStorage.clear();
                   dispatch(userDetails(null));
                   dispatch(setRole(null));
+                  localStorage.clear();
                   navigate("/client");
                 }}
               >
