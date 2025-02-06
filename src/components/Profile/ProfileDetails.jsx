@@ -225,8 +225,7 @@ const ProfileDetails = () => {
       organiztion: profileDetails.organization,
       concerns: profileDetails.concerns,
       expertise: profileDetails.expertise,
-      accountHolderName:
-        profileDetails.bank_details?.account_holder_name,
+      accountHolderName: profileDetails.bank_details?.account_holder_name,
       accountNumber: profileDetails.bank_details?.account_number,
       bankName: profileDetails.bank_details?.bank_name,
       branchAddress: profileDetails.bank_details?.branch_address,
@@ -342,13 +341,13 @@ const ProfileDetails = () => {
                 alt=""
               />
               <img
-                  className="absolute left-[25%] top-[70%] cursor-pointer"
-                  onClick={() => {
-                    fileRef.current.click();
-                  }}
-                  src={EditIcon}
-                  alt=""
-                />
+                className="absolute left-[25%] top-[70%] cursor-pointer"
+                onClick={() => {
+                  fileRef.current.click();
+                }}
+                src={EditIcon}
+                alt=""
+              />
             </div>
             <div className="flex w-full flex-col sm:flex-row justify-between w-full">
               <div>
@@ -438,9 +437,7 @@ const ProfileDetails = () => {
                   }}
                 >
                   <div>
-                    <p className="body4-reg">
-                      {profileDetails?.phone_number}
-                    </p>
+                    <p className="body4-reg">{profileDetails?.phone_number}</p>
                   </div>
                   <div>
                     <p className="body4-reg">{profileDetails?.email}</p>
@@ -489,16 +486,16 @@ const ProfileDetails = () => {
               gap: "16px",
             }}
           >
-            <div className="flex justify-between gap-3 flex-row flex-wrap rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[10px] w-[50%]">
+            <div className="w-[48%] flex flex-col gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[16px] font-bold">
               <div style={{ display: "flex flex-row", gap: 2 }}>
                 <p className="body1-bold">Expertise</p>
               </div>
               <div className="body4-reg flex flex-row  gap-4 flex-shrink flex-wrap">
                 {profileDetails?.expertise?.length > 0 ? (
                   profileDetails?.expertise.map((expertise, index) => (
-                    <div key={index} className="p-1  rounded-md">
+                    <p key={index} className="p-1  rounded-md">
                       {expertise}
-                    </div>
+                    </p>
                   ))
                 ) : (
                   <p>No expertise available</p>
@@ -515,12 +512,35 @@ const ProfileDetails = () => {
               </p>
             </div>
           </div>
-          <div className="ml-10 w-[47.5%] flex flex-col gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[16px] font-bold">
-            <h1>Biography</h1>
-            <p className="body4-reg">
-              {profileDetails?.profile_details?.biography}
-            </p>
+          <div className="flex flex-wrap justify-evenly px-4 gap-0 ">
+            <div className=" w-[48%] flex flex-col gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[16px] font-bold">
+              <h1>Biography</h1>
+              <p className="body4-reg">
+                {profileDetails?.profile_details?.biography}
+              </p>
+            </div>
+            <div className="w-[48%] flex flex-col gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[16px] font-bold">
+              <h1>Concern</h1>
+              <div className="flex flex-wrap gap-4">
+                {" "}
+                {/* Parent container for wrapping */}
+                {profileDetails?.concerns?.map((item, ind) => (
+                  <p key={ind} className="body4-reg">
+                    {item},
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
+          <div className="px-10 mt-8">
+          <div className=" w-[48%] flex flex-col gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[16px] font-bold">
+              <h1>Specilization</h1>
+              <p className="body4-reg">
+                {profileDetails?.profile_details?.specialization}
+              </p>
+            </div>
+          </div>
+         
         </>
       ) : (
         ""
@@ -693,7 +713,10 @@ const ProfileDetails = () => {
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
                     Date of Birth*
                   </label>
-                  <DatePicker onChange={handleDOBChange} value={updateProfile.dob} />
+                  <DatePicker
+                    onChange={handleDOBChange}
+                    value={updateProfile.dob}
+                  />
                 </div>
                 <div style={{ width: "32%" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>

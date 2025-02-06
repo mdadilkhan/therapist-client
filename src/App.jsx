@@ -65,13 +65,13 @@ const AddClientInSessation = lazy(() =>
 );
 
 const TherapistLiveChat = lazy(() =>
-  import("./components/LiveChat/TherapistLiveChat")
+  import("./components/TherapistLiveChat/TherapistLiveChat.jsx")
 );
 const AppointmentBooked = lazy(() =>
   import("./components/ClientAppointment/AppointmentBooked")
 );
 const ClientLiveChat = lazy(() =>
-  import("./components/LiveChat/ClientLiveChat")
+  import("./components/ClientLiveChat/ClientLiveChat.jsx")
 );
 const ClientProfileDetails = lazy(() =>
   import("./components/ClientProfileDetails")

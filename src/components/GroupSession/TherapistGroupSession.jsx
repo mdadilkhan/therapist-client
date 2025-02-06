@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../constant/ApiConstant";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { getTimeInterval } from "../../constant/constatnt";
 // const { sessationId } = useParams();
 const Header = () => {
@@ -37,6 +38,11 @@ const Tabs = () => {
   const [groupSessation, setGroupSessation] = useState([]);
   const [workshopSessation, setWorkshopSessation] = useState([]);
   const [peertopeerSessation, setPeerToPeerSessation] = useState([]);
+ 
+
+
+  
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -184,6 +190,7 @@ const Tabs = () => {
 const Card = ({ sessation }) => {
   const sessionId = sessation._id;
   const navigate = useNavigate();
+  const userDetail = useSelector((state) => state.userDetails);
   return (
     <div
       className="bg-white p-4 rounded-2xl shadow-lg flex flex-col w-[546px] h-[280px] "
@@ -195,7 +202,7 @@ const Card = ({ sessation }) => {
       >
         <div className="">
           <img
-            src={Frame}
+            src={userDetail?.profile_image}
             alt="sessation thumbnail"
             className="w-[180px] h-[200px]"
           />
