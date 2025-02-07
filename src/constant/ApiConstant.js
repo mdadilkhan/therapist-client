@@ -1,5 +1,6 @@
 // export const API_URL = "http://localhost:5001/api";
-export const API_URL = "https://therapist.sageturtle.in/api";
+// export const API_URL = "https://therapist.sageturtle.in/api";
+export const API_URL = "https://therapist-server.onrender.com/api";
 
 export const API_URI = "https://practice.sageturtle.in/corporate/";
 
