@@ -12,8 +12,9 @@ const preAppointmentSlice = createSlice({
     resetPreAppointmentDetails() {
       return {};
     },
+    resetState: () => initialState,
   },
 });
 
 export default preAppointmentSlice.reducer;
-export const { preAppointmentDetails, resetPreAppointmentDetails } = preAppointmentSlice.actions;
+export const { preAppointmentDetails, resetPreAppointmentDetails,resetState } = preAppointmentSlice.actions;

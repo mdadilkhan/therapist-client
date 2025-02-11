@@ -1,7 +1,5 @@
 import React, { useState, useEffect, lazy } from "react";
 import { useDispatch } from "react-redux";
-import { userDetails } from "../store/slices/userSlices";
-import { setRole } from "../store/slices/smsSlices";
 import { Box, Button, Drawer } from "@mui/material";
 import Dashboard from "../assets/Dashboard.svg";
 import Assessment from "../assets/Assessment.svg";
@@ -13,6 +11,9 @@ import ContactSupport from "../assets/ContactSupport.svg";
 import Logout from "../assets/Logout.svg";
 import Clients from "../assets/Students.svg";
 import { useNavigate } from "react-router-dom";
+import { userDetails,resetStateDetail } from "../store/slices/userSlices";
+import { setRole,resetStaterole } from "../store/slices/smsSlices";
+import {persistor} from "../store/store"
 const Navbar = lazy(() => import("./Navbar"));
 
 import { NavLink, useLocation } from "react-router-dom";
@@ -246,8 +247,9 @@ const ClientSidebar = ({ children }) => {
                 className="body3-bold deactive"
                 style={{ textTransform: "capitalize" }}
                 onClick={() => {
-                  dispatch(userDetails(null));
-                  dispatch(setRole(null));
+                  dispatch(resetStaterole());
+                  dispatch(resetStateDetail());
+                     persistor.purge();
                   localStorage.clear();
                   navigate("/client");
                 }}

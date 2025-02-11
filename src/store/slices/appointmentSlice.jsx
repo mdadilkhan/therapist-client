@@ -12,8 +12,9 @@ const appointmentSlice = createSlice({
     resetAppointmentDetails() {
       return {};
     },
+    resetState: () => initialState,
   },
 });
 
 export default appointmentSlice.reducer;
-export const { appointmentDetails, resetAppointmentDetails } = appointmentSlice.actions;
+export const { appointmentDetails, resetAppointmentDetails,resetState} = appointmentSlice.actions;

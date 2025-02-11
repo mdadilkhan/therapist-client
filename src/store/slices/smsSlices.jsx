@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState= {
+  phoneNumber: "",
+  countryCode: "",
+  email: "",
+  role: "", // Store the role globally
+}
 const SmsSlice = createSlice({
   name: "SMS",
   initialState: {
@@ -19,8 +25,9 @@ const SmsSlice = createSlice({
     setRole(state, action) {
       state.role = action.payload; 
     },
+    resetStaterole: () => initialState,
   },
 });
 
-export const { setMobileSignIn, setEmailSignIn, setRole } = SmsSlice.actions;
+export const { setMobileSignIn, setEmailSignIn, setRole,resetStaterole } = SmsSlice.actions;
 export default SmsSlice.reducer;
