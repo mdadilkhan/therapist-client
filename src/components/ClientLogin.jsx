@@ -53,7 +53,7 @@ const ClientLogin = () => {
   const navigate = useNavigate();
 
   const [countryCode, setCountryCode] = useState("+91");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(null);
 
   const handleCountryCodeChange = (event) => {
     setCountryCode(event.target.value);
@@ -124,12 +124,10 @@ const ClientLogin = () => {
     // Proceed with the API call if validation passes
     axios
       .post(
-        email
-          ? `${API_URL}/auth/sendOtpWithEmail`
-          : `${API_URL}/auth/sendOtpWithSms`,
+`${API_URL}/auth/userAuthForMobile`,
         email
           ? { email: signin.email , role:"user"}
-          : { phoneNumber: phoneNumber, countryCode: countryCode , role:"user"}
+          : { phone_number: phoneNumber, countryCode: countryCode , role:"user"}
       )
       .then((res) => {
         if (res.status === 200) {
@@ -304,6 +302,7 @@ const ClientLogin = () => {
                   </Grid>
                   <Grid item xs={9}>
                     <TextField
+                      type="number"
                       fullWidth
                       placeholder="Enter phone number"
                       value={phoneNumber}
@@ -431,13 +430,6 @@ const ClientLogin = () => {
             onClick={() => navigate("/therapist")}
           >
             Go to Therapist Login?
-          </p>
-          <p
-            className="p3-bold mt-6 w-fit cursor-pointer"
-            style={{ color: `#614298` }}
-            onClick={() => navigate("/signup")}
-          >
-            Don't have an account Register here ?
           </p>
         </div>
       </div>

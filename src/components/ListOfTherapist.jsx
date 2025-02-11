@@ -34,7 +34,9 @@ const ListOfTherapist = () => {
 
   const ListOfTherapist = () => {
     axios
-      .get(`${API_URL}/listOfTherapist`)
+      .post(`${API_URL}/getAllTherapistByConcern`, {
+        concernIds: [],
+      })
       .then((res) => {
         if (res.status == 200) {
           setTherapistList(res.data.data);
@@ -44,37 +46,6 @@ const ListOfTherapist = () => {
         console.error("Error:", err);
       });
   };
-
-  const ListOfConcern = () => {
-    axios
-      .get(`${API_URL}/getConcern`)
-      .then((res) => {
-        if (res.status == 200) {
-          // Assuming the API response data is an array of objects with a 'name' property
-          const concernNames = res.data.data.map((item) => item.name);
-          setConcern(concernNames);
-        }
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-      });
-  };
-
-  const ListOfSpeciality = () => {
-    axios
-      .get(`${API_URL}/getSpeciality`)
-      .then((res) => {
-        if (res.status == 200) {
-          // Assuming the API response data is an array of objects with a 'name' property
-          const specialityNames = res.data.data.map((item) => item.name);
-          setSpeciality(specialityNames);
-        }
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-      });
-  };
-
   const ListOfLocation = () => {
     axios
       .get(`${API_URL}/getStateList`)
@@ -88,11 +59,37 @@ const ListOfTherapist = () => {
         console.error("Error:", err);
       });
   };
+  const concernList = () => {
+    axios
+      .get(`${API_URL}/getAllConcerns`)
+      .then((res) => {
+        if (res.status == 200) {
+          const concerns = res.data.data;
+          setConcern(concerns);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const specailizationList = () => {
+    axios
+      .get(`${API_URL}/getAllSpecialization`)
+      .then((res) => {
+        if (res.status == 200) {
+          const specilization = res.data.data;
+          setSpeciality(specilization);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     ListOfTherapist();
-    ListOfConcern();
-    ListOfSpeciality();
+    concernList();
+    specailizationList();
     ListOfLocation();
   }, []);
 
@@ -101,16 +98,38 @@ const ListOfTherapist = () => {
   };
 
   const handleLocationChange = (e) => {
-    setSelectedLocation(e.target.value);
+    const selectedId = e.target.value;
+    const selectedObj = location.find((loc) => loc._id === selectedId);
+    setSelectedLocation(selectedObj);
   };
 
+  // Handle Speciality Change
   const handleSpecialityChange = (e) => {
-    setSelectedSpeciality(e.target.value);
+    const selectedId = e.target.value;
+    const selectedObj = speciality.find((spec) => spec._id === selectedId);
+    setSelectedSpeciality(selectedObj);
   };
 
+  // Handle Concern Change
   const handleConcernChange = (e) => {
-    setSelectedConcern(e.target.value);
+    const selectedId = e.target.value;
+    const selectedObj = concern.find((concern) => concern._id === selectedId);
+    setSelectedConcern(selectedObj);
   };
+
+  // Filter Therapists Based on Selected Filters
+  const filteredTherapists = therapistList.filter((therapist) => {
+    return (
+      (!selectedGender ||
+        therapist?.profile_details?.gender.toLowerCase() === selectedGender.toLowerCase()) &&
+      (!selectedLocation ||
+        therapist?.location?._id === selectedLocation?._id) &&
+      (!selectedSpeciality ||
+        therapist?.profile_details?.specialization?._id === selectedSpeciality?._id) &&
+      (!selectedConcern ||
+        therapist?.concerns?.some((concern) => concern._id === selectedConcern?._id))
+    );
+  });
 
   const handleDeleteChip = (item) => {
     if (item === selectedGender) {
@@ -125,23 +144,6 @@ const ListOfTherapist = () => {
   };
 
   // Filter therapists based on selected criteria
-  const filteredTherapists = therapistList.filter((therapist) => {
-    return (
-      (!selectedGender ||
-        therapist?.profile_details?.gender.toLowerCase() ===
-          selectedGender.toLowerCase()) &&
-      (!selectedLocation ||
-        therapist?.location?.toLowerCase() ===
-          selectedLocation.toLowerCase()) &&
-      (!selectedSpeciality ||
-        therapist?.profile_details?.specialization.toLowerCase() ===
-          selectedSpeciality.toLowerCase()) &&
-      (!selectedConcern ||
-        therapist?.concerns?.some(
-          (concern) => concern.toLowerCase() === selectedConcern.toLowerCase()
-        ))
-    );
-  });
 
   return (
     <div
@@ -228,7 +230,7 @@ const ListOfTherapist = () => {
             {/* Populate location options */}
             {speciality.map((Speciality, index) => (
               <option key={index} value={Speciality}>
-                {Speciality}
+                {Speciality.name}
               </option>
             ))}
           </select>
@@ -244,7 +246,7 @@ const ListOfTherapist = () => {
             <option value="">Concern</option>
             {concern.map((Concern, index) => (
               <option key={index} value={Concern}>
-                {Concern}
+                {Concern.concern}
               </option>
             ))}
           </select>
@@ -278,7 +280,14 @@ const ListOfTherapist = () => {
             <div className="flex gap-[25px]">
               {/* Therapist image */}
               <div>
-                <img src={therapist?.profile_image} alt="" className='w-[210px] h-[250px] rounded-[8px]'/>
+                <img
+                  src={
+                    therapist?.profile_image ||
+                    "https://corportal.s3.ap-south-1.amazonaws.com/upload/profilePic/8fa8309ef1ff45adf70311e077f11f81"
+                  }
+                  alt=""
+                  className="w-[210px] h-[250px] rounded-[8px]"
+                />
               </div>
               {/* Therapist information */}
               <div className="flex flex-col gap-3 justify-center">
@@ -297,7 +306,7 @@ const ListOfTherapist = () => {
                 <div className="flex items-center gap-3 mb-2 h-[30px]">
                   <img src={GraduationCap} alt="" />
                   <h4 className="ovr1-reg text-[#635B73]">
-                    {therapist?.educational_qualification?.degrees[0]}
+                    {therapist?.educational_qualification}
                   </h4>
                 </div>
                 <div className="flex items-center gap-3 mb-2 h-[20px]">
@@ -310,21 +319,21 @@ const ListOfTherapist = () => {
                 <div className="flex items-center gap-3 mb-2 h-[20px]">
                   <img src={Translate} alt="" />
                   <h4 className="ovr1-reg text-[#635B73]">
-                    <span className="ovr1-bold">Languages :</span>{" "}
-                    {/* {therapist?.profile_details?.languages.map(
+                    <span className="ovr1-bold">Languages : </span>
+                    {"  "}
+                    {therapist?.profile_details?.languages?.map(
                       (language, index) => (
-                        <span key={index}>{language + " "}</span>
+                        <span key={index}>{language + ","}</span>
                       )
-                    )} */}
-                    {therapist?.profile_details?.languages}
+                    )}
                   </h4>
                 </div>
                 <div className="flex items-start gap-3 mb-2 h-[60px]">
                   <img src={Briefcase} alt="" />
                   <h4 className="ovr1-reg text-[#635B73]">
-                    <span className="ovr1-bold">Expertise :</span>{" "}
-                    {therapist?.expertise?.map((language, index) => (
-                      <span key={index}>{language + " "}</span>
+                    <span className="ovr1-bold">Expertise:</span>{" "}
+                    {therapist?.expertise?.map((expert, index) => (
+                      <span key={index}>{expert?.name + ","}</span>
                     ))}
                   </h4>
                 </div>
@@ -337,12 +346,18 @@ const ListOfTherapist = () => {
                 <span>₹{therapist?.sessionPricing?.in_person?.["30"]}</span>
               </h2>
               <button
-                className="w-[123px] h-[48px] bg-[#614298] rounded-[8px] border-none text-[#fff] p1-reg cursor-pointer"
+                className={`w-[123px] h-[48px] rounded-[8px] border-none text-[#fff] p1-reg cursor-pointer ${
+                  therapist?.booking_slots?.length
+                    ? "bg-[#614298]"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
                 onClick={() =>
+                  therapist?.booking_slots?.length &&
                   navigate(
                     `/client/appointments/therapist/?therapistId=${therapist?._id}`
                   )
                 }
+                disabled={!therapist?.booking_slots?.length}
               >
                 Book Now
               </button>

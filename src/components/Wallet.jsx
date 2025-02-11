@@ -23,6 +23,7 @@ import Debit from "../assets/Debit.svg";
 import vertical3dots from "../assets/vertical3dots.svg";
 import { API_URL } from "../constant/ApiConstant";
 import { convertTo12HourFormat, getformatedDate } from "../constant/constatnt";
+import { useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -72,11 +73,11 @@ const sageColumn = [
 ];
 
 const Wallet = () => {
+  const userDetails = useSelector((state) => state.userDetails);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [appointmentList, setAppointmentList] = useState([]);
   const [paymentHistory, setPaymentHistory] = useState([]);
-
   const [activeIndex, setActiveIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0);
@@ -118,7 +119,10 @@ const Wallet = () => {
   // Fetch wallet details
   const getWalletDetails = async () => {
     try {
-      const res = await axios.get(`${API_URL}/getWalletDetails`);
+      const res = await axios.post(`${API_URL}/getWalletDetails`,{
+        userId:userDetails._id
+
+      });
       if (res.status === 200 && res.data.wallet_amount !== undefined) {
         setCurrentAmount(res.data.wallet_amount);
         setPaymentHistory(res.data.paymentDetails);
@@ -162,7 +166,8 @@ const Wallet = () => {
       });
 
       const options = {
-        key: "rzp_test_IqmS1BltCU4SFU",
+        key: "rzp_live_IIwhdZvx1c4BGz",
+        //  key:"rzp_test_IqmS1BltCU4SFU",
         amount: data.amount,
         currency: "INR",
         name: "Sage Turtle",

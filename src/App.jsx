@@ -63,6 +63,10 @@ const SceduleSession = lazy(() =>
 const AddClientInSessation = lazy(() =>
   import("./components/GroupSession/AddClientInSessation.jsx")
 );
+// const ClientWelcome=lazy(()=>{
+//   import("./components/Clientwelcome.jsx")
+// })
+import ClientWelcome from "./components/Clientwelcome.jsx"
 
 const TherapistLiveChat = lazy(() =>
   import("./components/TherapistLiveChat/TherapistLiveChat.jsx")
@@ -230,9 +234,10 @@ console.log(token);
               <Route path="/forgotpassword" element={<ForgotPassword />} />
               <Route path="/signup" element={<ClientSignUp />} />
               <Route path="/signup/therapist" element={<TherapistSignUp />} />
-
+              <Route element={<PrivateRoute allowedRoles={["user"]} />}>
               {/* Protected Routes for therapist*/}
               <Route element={<PrivateRoute allowedRoles={["therapist"]} />}>
+
                 <Route
                   path="/therapist/dashboards"
                   element={<TherapistDashboard />}
@@ -336,7 +341,7 @@ console.log(token);
               </Route>
 
               {/* Protected Routes for user*/}
-              <Route element={<PrivateRoute allowedRoles={["user"]} />}>
+             
                 <Route path="/client/wallet" element={<Wallet />} />
                 <Route
                   path="/client/therapist-list"

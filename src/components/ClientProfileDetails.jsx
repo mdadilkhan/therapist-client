@@ -21,6 +21,8 @@ import { userDetails } from "../store/slices/userSlices";
 import { Button, TextField } from "@mui/material";
 import { getformatedDate } from "../constant/constatnt";
 import DatePicker from "react-date-picker";
+import "react-date-picker/dist/DatePicker.css";
+import "react-calendar/dist/Calendar.css";
 
 const editButtonStyle = {
   display: "flex",
@@ -117,7 +119,10 @@ const ClientProfileDetails = () => {
       const { url, imageName } = await getSignedUrl();
       await uploadImageToS3(url);
       const imageUrl = `https://corportal.s3.ap-south-1.amazonaws.com/upload/profilePic/${imageName}`;
-      await updateProfilePicture(imageUrl);
+      setUpdateProfile({
+        ...updateProfile,
+        image: imageUrl,
+      });
       getProfileDetails();
     } catch (error) {
       console.error("Error in image upload process", error);
@@ -148,6 +153,7 @@ const ClientProfileDetails = () => {
     setEditProfile(true);
     setShow(false);
     setUpdateProfile({
+      userId: profileDetails?._id,
       name: profileDetails?.name || "",
       email: profileDetails?.email || "",
       phoneNumber: profileDetails?.phone_number || "",
@@ -158,16 +164,13 @@ const ClientProfileDetails = () => {
       city: profileDetails?.profile_details?.city || "",
       state: profileDetails?.profile_details?.state || "",
       dob: profileDetails?.profile_details?.dob || "",
-      pinCode:profileDetails?.profile_details?.pinCode || "",
+      pinCode: profileDetails?.profile_details?.pinCode || "",
     });
   };
   const cancelEditMode = () => {
     setEditProfile(false);
     setShow(true);
   };
-
-  const navigate = useNavigate();
-
   const handleDOBChange = (date) => {
     setUpdateProfile({
       ...updateProfile,
@@ -251,13 +254,13 @@ const ClientProfileDetails = () => {
                 alt=""
               />
               <img
-                  className="absolute left-[25%] top-[70%] cursor-pointer"
-                  onClick={() => {
-                    fileRef.current.click();
-                  }}
-                  src={EditIcon}
-                  alt=""
-                />
+                className="absolute left-[25%] top-[70%] cursor-pointer"
+                onClick={() => {
+                  fileRef.current.click();
+                }}
+                src={EditIcon}
+                alt=""
+              />
             </div>
             <div className="flex w-full justify-between sm:flex-row flex-col">
               <div>
@@ -560,9 +563,9 @@ const ClientProfileDetails = () => {
                     type="text"
                     required
                     name="phoneNumber"
-                    value={updateProfile.phoneNumber}
+                    value={updateProfile?.phoneNumber || ""}
+                    disabled={!!updateProfile?.phoneNumber}
                     onChange={handelChage}
-                    disabled
                     InputProps={{
                       sx: {
                         fontSize: "18px",
@@ -597,7 +600,8 @@ const ClientProfileDetails = () => {
                     type="email"
                     required
                     name="email"
-                    value={updateProfile.email}
+                    value={updateProfile.email || ""}
+                    disabled={!!updateProfile?.email}
                     onChange={handelChage}
                     InputProps={{
                       sx: {
@@ -635,9 +639,12 @@ const ClientProfileDetails = () => {
                   }}
                 >
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Date of Birth
+                    Date of Births
                   </label>
-                  <DatePicker onChange={handleDOBChange} value={updateProfile.dob} />
+                  <DatePicker
+                    onChange={handleDOBChange}
+                    value={updateProfile.dob}
+                  />
                 </div>
                 <div
                   style={{
