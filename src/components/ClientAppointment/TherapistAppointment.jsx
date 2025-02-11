@@ -240,8 +240,8 @@ const TherapistAppointment = () => {
       >
         <h5 className="h5-bold ml-[32px]">Appointments</h5>
         <div className="w-[85%] sm:w-[45%] h-[335px] sm:h-[228px] rounded-[15px] bg-[#F4EDFF] shadow-custom ml-[32px] my-0 sm:my-8 flex sm:flex-row flex-col gap-5 px-4 py-6">
-          <div className="w-[50rem] h-[20rem]">
-            <img src={profileDetials?.profile_image} alt="" className="w-full h-full object-cover rounded-[0.8rem]" />
+          <div className="w-[50rem] h-full">
+            <img src={profileDetials?.profile_image||"https://corportal.s3.ap-south-1.amazonaws.com/upload/profilePic/8fa8309ef1ff45adf70311e077f11f81"} alt="" className="w-full h-full object-cover rounded-[0.8rem]" />
           </div>
           <div className="flex flex-col gap-3 justify-center">
             <h2
@@ -272,9 +272,11 @@ const TherapistAppointment = () => {
               <img src={Translate} alt="" />
               <h4 className="body4-reg text-[#635B73]">
                 <span className="ovr1-bold">Language :</span>
-                {profileDetials?.profile_details?.languages ? (profileDetials?.profile_details?.languages) : (
-                  <span>No languages available</span>
-                )}
+                {profileDetials?.profile_details?.languages?.map(
+                      (language, index) => (
+                        <span key={index}>{language + ","}</span>
+                      )
+                    ) }
               </h4>
             </div>
           </div>

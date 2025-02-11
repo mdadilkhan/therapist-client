@@ -4,8 +4,8 @@ import axios from "axios";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import ViewReportIcon from "../assets/ViewReportICon.svg";
-import logo from '../assets/logo.png'
-import cross from '../assets/cross.svg'
+import logo from "../assets/logo.png";
+import cross from "../assets/cross.svg";
 import { useSelector } from "react-redux";
 import {
   Box,
@@ -170,54 +170,6 @@ const columns = [
   },
 ];
 
-// const dummydata = [
-//   {
-//     id: "1",
-//     therapist_id: "THR1234567890",
-//     _id: "APT1234567890",
-//     employee_name: "John Doe",
-//     booking_date: "2023-08-18T10:00:00Z",
-//     booking_slots: [
-//       {
-//         m_schd_from: "10:00 AM",
-//       },
-//     ],
-//     booking_type: "online",
-//     booking_duration: 60,
-//     booking_status: 4,
-//   },
-//   {
-//     id: "2",
-//     therapist_id: "THR0987654321",
-//     _id: "APT0987654321",
-//     employee_name: "Jane Smith",
-//     booking_date: "2023-08-19T11:00:00Z",
-//     booking_slots: [
-//       {
-//         m_schd_from: "11:00 AM",
-//       },
-//     ],
-//     booking_type: "in-person",
-//     booking_duration: 45,
-//     booking_status: 2,
-//   },
-//   {
-//     id: "3",
-//     therapist_id: "THR5678901234",
-//     _id: "APT5678901234",
-//     employee_name: "Emily Brown",
-//     booking_date: "2023-08-20T09:30:00Z",
-//     booking_slots: [
-//       {
-//         m_schd_from: "09:30 AM",
-//       },
-//     ],
-//     booking_type: "online",
-//     booking_duration: 30,
-//     booking_status: 3,
-//   },
-// ];
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -233,6 +185,21 @@ const style = {
     marginTop: "5px",
   },
 };
+const reasons = [
+  "Schedule Change",
+  "Unexpected Work",
+  "Want to find better therapist",
+  "Don't have a concern anymore",
+  "Booked the appointment accidentally",
+];
+
+const cancellationPolicy = [
+  "If you cancel your appointment less than 24 hours before the session, 75% of the session fee will be deducted.",
+  "Cancellations made 48 hours before the session will result in a 50% deduction of the session fee.",
+  "If you cancel more than 48 hours in advance, you will receive a full refund.",
+  "In case of a no-show without prior cancellation, the full session fee will be charged.",
+  "Rescheduling is allowed up to 24 hours before the session without any additional charges.",
+];
 
 const ClientDashboard = () => {
   const [page, setPage] = useState(0);
@@ -247,10 +214,17 @@ const ClientDashboard = () => {
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const [anchorThree, setAnchorThree] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const [reasonModal, setReasonModal] = useState(false);
   const openThree = Boolean(anchorThree);
   const ids = openThree ? "qwerty" : undefined;
   const [isChatOpen, setIsChatOpen] = useState(false);
   const userDetails = useSelector((state) => state.userDetails);
+  const [selectedReason, setSelectedReason] = useState("");
+  const [reasoninput, setReasonInput] = useState("");
+  const [cancellId, setCancellId] = useState(null);
+  const handleChangeInput = (e) => {
+    setReasonInput(e.target.value);
+  };
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
@@ -264,6 +238,14 @@ const ClientDashboard = () => {
   };
   const handleOpenModal = () => {
     setOpenModal(true);
+  };
+  const handleOpenReasonModal = (data) => {
+    setCancellId(data);
+    setReasonModal(true);
+  };
+  const handleCloseReasonModal = () => {
+    setCancellId(null);
+    setReasonModal(false);
   };
 
   useEffect(() => {
@@ -279,18 +261,22 @@ const ClientDashboard = () => {
 
   const navigate = useNavigate();
 
-  const handleCancelAppointment = (appId) => {
-    axios
-      .post(`${API_URL}/cancelAppointment`, { app_id: appId })
-      .then((res) => {
-        if (res.status === 200) {
-          getAllIAppointment();
-          appointmentList();
-        }
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-      });
+  const handleCancelAppointment = () => {
+    console.log(reasoninput, selectedReason, cancellId, "sadhkfjksadjfk");
+
+    // axios
+    //   .post(`${API_URL}/cancelAppointment`, { app_id: cancellId })
+    //   .then((res) => {
+    //     if (res.status === 200) {
+
+    //       getAllIAppointment();
+    //         handleCloseReasonModal();
+    //       appointmentList();
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.error("Error:", err);
+    //   });
   };
 
   const handleDescriptionOpen = (index) => {
@@ -342,9 +328,9 @@ const ClientDashboard = () => {
 
   const getAllIAppointment = () => {
     axios
-      .post(`${API_URL}/getAllAppointmentsByType`,{
-        type:value=="1"?"preconsultation":"session",
-        userId:userDetails._id
+      .post(`${API_URL}/getAllAppointmentsByType`, {
+        type: value == "2" ? "session" : "preconsultation",
+        userId: userDetails._id,
       })
       .then((res) => {
         if (res.status == 200) {
@@ -357,10 +343,10 @@ const ClientDashboard = () => {
   };
 
   useEffect(() => {
+    setAppointmentList([]);
     getAllIAppointment();
     getPrescriptionList();
   }, [value]);
-
   const handleClose = () => {
     setAnchorThree(null);
   };
@@ -382,18 +368,18 @@ const ClientDashboard = () => {
           </div>
           <div className="flex flex-col items-start justify-between gap-2 h-full">
             <div className="flex flex-col gap-2">
-            <h1 className="h6-bold hidden sm:block">Get Matched</h1>
+              <h1 className="h6-bold hidden sm:block">Get Matched</h1>
               <h1 className="ovr1-reg">
                 Preliminary consultation, help us find the perfect therapist for
                 you
               </h1>
             </div>
             <button
-            className="w-[123px] h-[48px] bg-[#614298] rounded-[8px] border-none text-[#fff] p1-reg cursor-pointer flex px-5 py-4 justify-center items-center gap-2"
-            onClick={() => navigate("/client/appointments")}
-          >
-            Book Now
-          </button>
+              className="w-[123px] h-[48px] bg-[#614298] rounded-[8px] border-none text-[#fff] p1-reg cursor-pointer flex px-5 py-4 justify-center items-center gap-2"
+              onClick={() => navigate("/client/appointments")}
+            >
+              Book Now
+            </button>
           </div>
         </div>
         <div className="flex w-[564px] p-4 items-start gap-[14px] sm:w-[45%] h-[335px] sm:h-[174px] rounded-[15px] bg-[#F4EDFF] shadow-custom ml-[32px] my-0 sm:my-8  sm:flex-row flex-col  px-4 py-6">
@@ -406,17 +392,17 @@ const ClientDashboard = () => {
           </div>
           <div className="flex flex-col items-start justify-between gap-2 h-full">
             <div className="flex flex-col gap-2">
-            <h1 className="h6-bold hidden sm:block">Find Therapist </h1>
+              <h1 className="h6-bold hidden sm:block">Find Therapist </h1>
               <h1 className="ovr1-reg">
                 Select from wide range of professional
               </h1>
             </div>
             <button
-            className="w-[123px] h-[48px] bg-[#614298] rounded-[8px] border-none text-[#fff] p1-reg cursor-pointer"
-            onClick={() => navigate("/client/therapist-list")}
-          >
-            Book Now
-          </button>
+              className="w-[123px] h-[48px] bg-[#614298] rounded-[8px] border-none text-[#fff] p1-reg cursor-pointer"
+              onClick={() => navigate("/client/therapist-list")}
+            >
+              Book Now
+            </button>
           </div>
         </div>
       </div>
@@ -540,7 +526,11 @@ const ClientDashboard = () => {
                                 role="checkbox"
                                 tabIndex={-1}
                                 key={row?.id}
-                                sx={{ padding: "16px", cursor: "pointer" }}
+                                sx={{
+                                  padding: "16px",
+                                  cursor: "pointer",
+                                  backgroundColor: row?.booking_status !== 5 ? "white" : "#F2F2F2", // Light yellow if status is NOT 5
+                                }}
                               >
                                 <TableCell align="left" className="body3-reg">
                                   <div style={{ textDecoration: "none" }}>
@@ -628,7 +618,7 @@ const ClientDashboard = () => {
                                     src={ThreeDot}
                                     onClick={(event) => {
                                       event.stopPropagation();
-                                      if(row.booking_status != 5){
+                                      if (row.booking_status != 5) {
                                         handleThreeDotClicked(event);
                                       }
                                     }}
@@ -647,7 +637,7 @@ const ClientDashboard = () => {
                                     horizontal: "center",
                                   }}
                                 >
-                                  <div className="w-[190px] h-[100px] mx-4 my-5 flex flex-col justify-between ">
+                                  <div className="w-[190px] h-auto mx-4 my-4 flex flex-col justify-between ">
                                     {/* <div
                                       className="flex justify-start pl-4"
                                       onClick={(event) => {
@@ -706,38 +696,49 @@ const ClientDashboard = () => {
                                       }}
                                     >
                                       <div className="flex flex-col gap-4 justify-center items-center">
-                                        <img src={CancelPopup} />
+                                        <h1 className="body2-sem">
+                                          {" "}
+                                          Cancellation Policy..{" "}
+                                        </h1>
+                                        <h1 className="body3-sem">
+                                          {" "}
+                                          Please note our Cncellation Policy{" "}
+                                        </h1>
+                                        <ul className="list-decimal  text-[1.8rem] list-inside text-gray-600">
+                                          {cancellationPolicy.map(
+                                            (item, index) => (
+                                              <li key={index} className="mb-2">
+                                                {item}
+                                              </li>
+                                            )
+                                          )}
+                                        </ul>
                                         <h1 className="body3-sem">
                                           {" "}
                                           Are you sure you want to cancel the
                                           appointment ?{" "}
                                         </h1>
-                                        <p className="ovr1-reg text-[#9A93A5] mb-6">
-                                          Once the appointment status is
-                                          finalized, you will not be able to
-                                          make any changes!
-                                        </p>
                                         <div className="w-full flex justify-end gap-4">
                                           <button
-                                            className="changeStatusButton cursor-pointer w-[50%]"
+                                            className="changeStatusButton cursor-pointer rounded-full w-[50%]"
                                             onClick={(event) => {
                                               event.stopPropagation();
-                                              handleCancelAppointment(row?._id);
+                                              handleOpenReasonModal(row?._id);
                                               handleCloseModal();
                                               handleClose();
                                             }}
                                           >
-                                            OK
+                                            Yes
                                           </button>
                                           <button
-                                            className="changeReferCancelButton cursor-pointer w-[50%]"
+                                            className="changeReferCancelButton cursor-pointer rounded-full  w-[50%]"
                                             onClick={(event) => {
                                               event.stopPropagation();
                                               handleCloseModal();
                                               handleClose();
                                             }}
                                           >
-                                            Cancel
+                                            No
                                           </button>
                                         </div>
                                       </div>
@@ -996,7 +997,11 @@ const ClientDashboard = () => {
                                 role="checkbox"
                                 tabIndex={-1}
                                 key={row?.id}
-                                sx={{ padding: "16px", cursor: "pointer" }}
+                                sx={{
+                                  padding: "16px",
+                                  cursor: "pointer",
+                                  backgroundColor: row?.booking_status !== 5 ? "white" : "#F2F2F2", // Light yellow if status is NOT 5
+                                }}
                               >
                                 <TableCell align="left" className="body3-reg">
                                   <div style={{ textDecoration: "none" }}>
@@ -1080,7 +1085,7 @@ const ClientDashboard = () => {
                                     src={ThreeDot}
                                     onClick={(event) => {
                                       event.stopPropagation();
-                                      if(row.booking_status){
+                                      if (row.booking_status != 5) {
                                         handleThreeDotClicked(event);
                                       }
                                     }}
@@ -1090,9 +1095,11 @@ const ClientDashboard = () => {
                                   id={ids}
                                   open={openThree}
                                   anchorEl={anchorThree}
-                                  onClose={(event) => {
+                                  onClick={(event) => {
                                     event.stopPropagation();
-                                    handleClose();
+                                    if (row.booking_status != 5) {
+                                      handleThreeDotClicked(event);
+                                    }
                                   }}
                                   anchorOrigin={{
                                     vertical: "bottom",
@@ -1129,6 +1136,7 @@ const ClientDashboard = () => {
                                     </div>
                                   </div>
                                 </Popover>
+                                {/* Cancel Modal for session */}
                                 <Modal
                                   aria-labelledby="transition-modal-title"
                                   aria-describedby="transition-modal-description"
@@ -1150,7 +1158,7 @@ const ClientDashboard = () => {
                                   }}
                                 >
                                   <Fade in={openModal}>
-                                    <Box
+                                  <Box
                                       sx={style}
                                       className="text-center"
                                       onClick={(event) => {
@@ -1158,37 +1166,49 @@ const ClientDashboard = () => {
                                       }}
                                     >
                                       <div className="flex flex-col gap-4 justify-center items-center">
-                                        <img src={CancelPopup} />
-                                        <h1 className="body3-sem">
-                                          Are you sure you want to cancel the
-                                          appointment?
+                                        <h1 className="body2-sem">
+                                          {" "}
+                                          Cancellation Policy..{" "}
                                         </h1>
-                                        <p className="ovr1-reg text-[#9A93A5] mb-6">
-                                          Once the appointment status is
-                                          finalized, you will not be able to
-                                          make any changes!
-                                        </p>
+                                        <h1 className="body3-sem">
+                                          {" "}
+                                          Please note our Cncellation Policy{" "}
+                                        </h1>
+                                        <ul className="list-decimal  text-[1.8rem] list-inside text-gray-600">
+                                          {cancellationPolicy.map(
+                                            (item, index) => (
+                                              <li key={index} className="mb-2">
+                                                {item}
+                                              </li>
+                                            )
+                                          )}
+                                        </ul>
+                                        <h1 className="body3-sem">
+                                          {" "}
+                                          Are you sure you want to cancel the
+                                          appointment ?{" "}
+                                        </h1>
                                         <div className="w-full flex justify-end gap-4">
                                           <button
-                                            className="changeStatusButton cursor-pointer w-[50%]"
+                                            className="changeStatusButton cursor-pointer rounded-full w-[50%]"
                                             onClick={(event) => {
                                               event.stopPropagation();
-                                              handleCancelAppointment(row?._id);
+                                              handleOpenReasonModal(row?._id);
                                               handleCloseModal();
                                               handleClose();
                                             }}
                                           >
-                                            OK
+                                            Yes
                                           </button>
                                           <button
-                                            className="changeReferCancelButton cursor-pointer w-[50%]"
+                                            className="changeReferCancelButton cursor-pointer rounded-full  w-[50%]"
                                             onClick={(event) => {
                                               event.stopPropagation();
                                               handleCloseModal();
                                               handleClose();
                                             }}
                                           >
-                                            Cancel
+                                            No
                                           </button>
                                         </div>
                                       </div>
@@ -1804,6 +1824,94 @@ const ClientDashboard = () => {
           src={isChatOpen ? cross : logo}
           alt="Chat"
         />
+      </div>
+      {/* Reason Modal */}
+      <div>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={reasonModal}
+          onClose={(event) => {
+            event.stopPropagation();
+            handleCloseReasonModal();
+          }}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 500,
+              style: { backgroundColor: "rgba(0, 0, 0, 0.3)" },
+            },
+          }}
+        >
+          <Fade in={reasonModal}>
+            <Box
+              sx={style}
+              className="text-center"
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            >
+              <div className="w-full  bg-white  text-[2rem] rounded-lg ">
+                {/* Title - Left Aligned */}
+                <h2 className="text-lg font-semibold text-gray-800 mb-4 text-left">
+                  Reason Of Cancellation
+                </h2>
+
+                {/* Reason List - Bigger Radio Button + Full Box Selection */}
+                <div className="space-y-4 flex flex-col">
+                  {reasons.map((reason, index) => (
+                    <label
+                      key={index}
+                      className="flex items-center gap-3 p-2 cursor-pointer transition-all"
+                      onClick={() => setSelectedReason(reason)}
+                    >
+                      {/* Always show a circular checkbox */}
+                      <div
+                        className={`w-[2.5rem] h-[2.5rem] flex items-center justify-center border-4 rounded-full transition-all
+                ${
+                  selectedReason === reason
+                    ? "border-[#614298] bg-[#614298]" // Purple when selected
+                    : "border-gray-400 bg-gray-300" // Gray when unselected
+                }`}
+                      >
+                        <div className="w-0 h-0 bg-white rounded-full"></div>
+                      </div>
+
+                      {/* Reason Text */}
+                      <span className="text-lg text-gray-800">{reason}</span>
+                    </label>
+                  ))}
+                </div>
+
+                {/* Additional Input Field */}
+                <textarea
+                  placeholder="Add more details (optional)..."
+                  value={reasoninput}
+                  onChange={(e) => setReasonInput(e.target.value)}
+                  className="w-full h-[20rem] text-[2rem] rounded-lg mt-[6rem] p-2 border border-gray-400 text-lg 
+          focus:outline-none focus:ring-2 focus:ring-[#614298]"
+                ></textarea>
+
+                {/* Submit Button */}
+                <button
+                  onClick={() => {
+                    handleCancelAppointment();
+                  }}
+                  disabled={!selectedReason}
+                  className={`w-full mt-4 h-[5rem] cursor-pointer text-[2.4rem] py-3 rounded-full font-normal text-white text-lg transition-all 
+          ${
+            selectedReason
+              ? "bg-[#614298] hover:bg-[#4f2c85]"
+              : "bg-gray-400 cursor-not-allowed"
+          }`}
+                >
+                  Submit
+                </button>
+              </div>
+            </Box>
+          </Fade>
+        </Modal>
       </div>
     </>
   );
