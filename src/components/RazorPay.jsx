@@ -26,6 +26,7 @@ const RazorPay = ({ appointmentData, agree }) => {
     const data =
       appointmentData?.type == "pre"
         ? {
+          userId:userDetails?._id,
             bookingDate: appointmentData.t_appointment_date,
             bookingSlots: [
               {
@@ -36,9 +37,11 @@ const RazorPay = ({ appointmentData, agree }) => {
             paymentMode: appointmentData.payVia,
             orderId: paymentId,
             paymentId: orderId,
-            amount: appointmentData?.totalPay,
+            // amount: appointmentData?.totalPay,
+            amount:1
           }
         : {
+          userId:userDetails?._id,
             therapistId: appointmentData?.m_counselor_id,
             bookingDate: formatDate(appointmentData?.t_appointment_date),
             bookingType: appointmentData?.bookingType,
@@ -47,7 +50,8 @@ const RazorPay = ({ appointmentData, agree }) => {
             paymentMode: appointmentData?.paymentMode,
             orderId: paymentId,
             paymentId: orderId,
-            amount: appointmentData?.totalPay,
+            // amount: appointmentData?.totalPay,
+            amount:0.1
           };
 
     axios
@@ -96,10 +100,12 @@ const RazorPay = ({ appointmentData, agree }) => {
   const checkoutHandler = async () => {
     try {
       const { data } = await axios.post(`${API_URL}/payment/createOrder`, {
-        amount: appointmentData.totalPay,
+        // amount: appointmentData.totalPay,
+        amount:1
       });
       const options = {
-        key: "rzp_test_IqmS1BltCU4SFU",
+          key: "rzp_live_IIwhdZvx1c4BGz",
+      //  key:"rzp_test_IqmS1BltCU4SFU",
         amount: data.amount,
         currency: "INR",
         name: "Sage Turtle",

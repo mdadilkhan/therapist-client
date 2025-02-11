@@ -40,7 +40,8 @@ const GroupTherapyPayment = ({ bookingDetails }) => {
       });
 
       const options = {
-        key: "rzp_test_IqmS1BltCU4SFU",
+        key: "rzp_live_IIwhdZvx1c4BGz",
+        //  key:"rzp_test_IqmS1BltCU4SFU",
         amount: data.amount,
         currency: "INR",
         name: "Sage Turtle",

@@ -25,24 +25,20 @@ const ClientSignUp = () => {
   };
   const [signUp, setSignUp] = useState(initialValue);
   const navigate = useNavigate();
-
   const handleChange = (e) => {
     e.preventDefault();
     setSignUp({ ...signUp, [e.target.name]: e.target.value });
   };
-
   const notify = (message) => toast(message);
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
     axios
       .post(`${API_URL}/auth/userSignup`, signUp)
       .then((res) => {
         if (res.status === 200) {
           localStorage.setItem("token", res.data.token);
           dispatch(userDetails(res.data.data));
-          navigate("/client");
+           navigate(`/validateotp?email=${true}&mobile=${false}`);
         } else {
           console.log("Invalid data");
         }

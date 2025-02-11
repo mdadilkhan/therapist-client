@@ -6,6 +6,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import ViewReportIcon from "../assets/ViewReportICon.svg";
 import logo from '../assets/logo.png'
 import cross from '../assets/cross.svg'
+import { useSelector } from "react-redux";
 import {
   Box,
   Grid,
@@ -44,7 +45,6 @@ import {
 } from "../constant/constatnt";
 import Rect from "../assets/Rectangle.svg";
 import getMatched from "../assets/GetMatched.svg";
-
 const getStatusColor = (status) => {
   switch (status) {
     case "Refer to Sage":
@@ -238,8 +238,8 @@ const ClientDashboard = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [value, setValue] = useState("1");
+
   const [appointmentList, setAppointmentList] = useState([]);
-  const [inHouseAppointmentList, setInHouseAppointmentList] = useState([]);
   const [prescriptionList, setPrescriptionList] = useState([]);
   const [openDescriptions, setOpenDescriptions] = useState(
     Array(prescriptionList.length).fill(false)
@@ -250,6 +250,7 @@ const ClientDashboard = () => {
   const openThree = Boolean(anchorThree);
   const ids = openThree ? "qwerty" : undefined;
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const userDetails = useSelector((state) => state.userDetails);
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
@@ -283,8 +284,8 @@ const ClientDashboard = () => {
       .post(`${API_URL}/cancelAppointment`, { app_id: appId })
       .then((res) => {
         if (res.status === 200) {
-          getAllInhouseAppointment();
-          AppointmentList();
+          getAllIAppointment();
+          appointmentList();
         }
       })
       .catch((err) => {
@@ -320,19 +321,6 @@ const ClientDashboard = () => {
     setPage(0);
   };
 
-  const AppointmentList = () => {
-    axios
-      .get(`${API_URL}/getAllAppointmentsByType/${"session"}`)
-      .then((res) => {
-        if (res.status === 200) {
-          setAppointmentList(res.data.data);
-        }
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-      });
-  };
-
   const getPrescriptionList = () => {
     axios
       .get(`${API_URL}/getAllPrescriptionsByUser`)
@@ -352,12 +340,15 @@ const ClientDashboard = () => {
     setActiveIndex(index === activeIndex ? -1 : index);
   };
 
-  const getAllInhouseAppointment = () => {
+  const getAllIAppointment = () => {
     axios
-      .get(`${API_URL}/getAllAppointmentsByType/${"preconsultation"}`)
+      .post(`${API_URL}/getAllAppointmentsByType`,{
+        type:value=="1"?"preconsultation":"session",
+        userId:userDetails._id
+      })
       .then((res) => {
         if (res.status == 200) {
-          setInHouseAppointmentList(res.data.data);
+          setAppointmentList(res.data.data);
         }
       })
       .catch((err) => {
@@ -366,10 +357,9 @@ const ClientDashboard = () => {
   };
 
   useEffect(() => {
-    AppointmentList();
-    getAllInhouseAppointment();
+    getAllIAppointment();
     getPrescriptionList();
-  }, []);
+  }, [value]);
 
   const handleClose = () => {
     setAnchorThree(null);
@@ -535,9 +525,9 @@ const ClientDashboard = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {Array.isArray(inHouseAppointmentList) &&
-                        inHouseAppointmentList.length > 0 &&
-                        inHouseAppointmentList
+                      {Array.isArray(appointmentList) &&
+                        appointmentList.length > 0 &&
+                        appointmentList
                           .slice(
                             page * rowsPerPage,
                             page * rowsPerPage + rowsPerPage
@@ -764,7 +754,7 @@ const ClientDashboard = () => {
                   className="body3-sem"
                   rowsPerPageOptions={[10, 25, 100, 125]}
                   component="div"
-                  count={inHouseAppointmentList.length}
+                  count={appointmentList.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
@@ -815,9 +805,9 @@ const ClientDashboard = () => {
               </Paper>
             ) : (
               <div>
-                {Array.isArray(inHouseAppointmentList) &&
-                  inHouseAppointmentList.length > 0 &&
-                  inHouseAppointmentList
+                {Array.isArray(appointmentList) &&
+                  appointmentList.length > 0 &&
+                  appointmentList
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((item, index) => (
                       <div key={index}>
@@ -963,7 +953,7 @@ const ClientDashboard = () => {
                   className="body3-sem"
                   rowsPerPageOptions={[10, 25, 100, 125]}
                   component="div"
-                  count={inHouseAppointmentList.length}
+                  count={appointmentList.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}

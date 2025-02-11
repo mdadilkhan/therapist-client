@@ -18,8 +18,8 @@ import Fade from "@mui/material/Fade";
 import AddBreifIcon from "../../assets/AddBriefIcon.svg";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import DatePicker from "react-date-picker";
-import "react-date-picker/dist/DatePicker.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "react-calendar/dist/Calendar.css";
 import { API_URL } from "../../constant/ApiConstant";
 import SendButton from "../../assets/SendButton.svg";
@@ -325,7 +325,7 @@ const ClientDetails = () => {
           listOfIds.forEach((userId, index) => {
             setTimeout(() => {
               socket.emit("therapist", {
-                title:" Referal Recieved",
+                title: " Referal Recieved",
                 message: `${employeeData.name} has been referred to you by ${details.name}`,
                 role: "therapist",
                 userId: userId,
@@ -1605,7 +1605,12 @@ const ClientDetails = () => {
                 <label className="p2-sem" style={{ color: "#4A4159" }}>
                   Date of Birth
                 </label>
-                <DatePicker onChange={handleDateChange} value={dateValue} />
+                <DatePicker
+                  onChange={handleDateChange}
+                  value={dateValue}
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText="Select a date"
+                />
               </div>
               <div style={{ width: "48%" }}>
                 <label className="p2-sem" style={{ color: "#4A4159" }}>
@@ -1660,7 +1665,8 @@ const ClientDetails = () => {
                   type="text"
                   required
                   name="emp_mob_no"
-                  value={updateClientProfile.emp_mob_no}
+                  value={updateClientProfile?.emp_mob_no || ""}
+                  disabled={!updateClientProfile?.emp_mob_no}
                   onChange={handleMobileNumberChange}
                   InputProps={{
                     sx: {
@@ -1697,8 +1703,8 @@ const ClientDetails = () => {
                   type="email"
                   required
                   name="emp_gmail"
-                  disabled={id != null ? true : false}
-                  value={updateClientProfile.emp_gmail}
+                  disabled={true}
+                  value={updateClientProfile?.emp_gmail || ""}
                   onChange={handelChage}
                   InputProps={{
                     sx: {
@@ -2294,12 +2300,11 @@ const ClientDetails = () => {
                   </div>
                   {clientHistoryDetails?.importantNotes && (
                     <div>
-                    <p className="body2-sem">Important Notes</p>
-                    <p className="body3-reg">
-                      {clientHistoryDetails?.importantNotes ||
-                        "N/A"}
-                    </p>
-                  </div>
+                      <p className="body2-sem">Important Notes</p>
+                      <p className="body3-reg">
+                        {clientHistoryDetails?.importantNotes || "N/A"}
+                      </p>
+                    </div>
                   )}
                   {clientHistoryDetails?.imageUrl && (
                     <Button
@@ -2320,7 +2325,7 @@ const ClientDetails = () => {
                         },
                       }}
                       onClick={() =>
-                        (window.open(clientHistoryDetails.imageUrl, "_blank"))
+                        window.open(clientHistoryDetails.imageUrl, "_blank")
                       }
                     >
                       <span className="btn1">View</span>

@@ -4,14 +4,16 @@ import axios from "axios";
 import OtpInput from "react-otp-input";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import styled from "@emotion/styled";
 import { userDetails } from "../store/slices/userSlices";
+import styled from "@emotion/styled";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { API_URL } from "../constant/ApiConstant";
 import {
   Button,
 } from "@mui/material";
 import toast from "react-hot-toast";
+
+        import Welcome from "./Welcome"
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: #06030d;
@@ -22,12 +24,18 @@ const ValidateOtp = () => {
   const { phoneNumber, countryCode, email,role } = useSelector(
     (state) => state.smsData
   );
-
+// const userDetails = useSelector((state) => state.userDetails);
   const [code, setCode] = useState("");
+  const[details,setDetails]=useState({});
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(true); // Button disabled state
   const [counter, setCounter] = useState(10);
   const handleChange = (code) => setCode(code);
+
+  const[open,setOpen]=useState(false);
+  const handleClose=()=>{
+    setOpen(false);
+  }
 
   const [params] = useSearchParams();
   const eml = params.get("email");
@@ -69,56 +77,51 @@ const ValidateOtp = () => {
         console.error("Error:", err);
       });
   };
-
-  const handleVerifyOtp = (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault();
-
-    const data = {
-      otp: +code,
-      email: email,
-    };
-
-    const data1 = {
-      otp: +code,
-      phoneNumber: phoneNumber,
-      countryCode: countryCode,
-    };
-
-    // Check if isEmail is true
-    const payload = isEmail ? data : data1;
-
-    axios
-      .post(`${API_URL}/auth/validateOTP`, payload)
-      .then((res) => {
-        if (res.status == 200) {
-          setCode("");
-          toast.success(`OTP verify successfully`, {
-            position: 'top-right',  // Set the position to top-right
-            duration: 3000,         // Display for 3 seconds (3000 ms)
-            style: {
-              fontSize: '14px',
-              fontWeight:"bold"
-            },
-          });
-          localStorage.setItem("token", res.data.data.token);
-          dispatch(userDetails(res.data.data));
-          {role == "therapist" ?  navigate("/therapist/dashboards") : navigate("/client/dashboards");}
-        } else if (res.data.response === "error") {
-          setError(true);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error(`OTP is incorrect`, {
-          position: 'top-right',  // Set the position to top-right
-          duration: 3000,         // Display for 3 seconds (3000 ms)
-          style: {
-            fontSize: '14px',
-            fontWeight:"bold"
-          },
+  
+    const payload = isEmail
+      ? { otp: +code, email: email }
+      : { otp: +code, phoneNumber: phoneNumber, countryCode: countryCode };
+  
+    try {
+      const res = await axios.post(`${API_URL}/auth/validateOTP`, payload);
+  
+      if (res.status === 200) {
+        setCode("");
+        toast.success(`OTP verified successfully`, {
+          position: "top-right",
+          duration: 3000,
+          style: { fontSize: "14px", fontWeight: "bold" },
         });
+  
+        localStorage.setItem("token", res.data.data.token);
+        dispatch(userDetails(res.data.data));
+        setDetails(res?.data?.data);
+        const userRole=res?.data?.data?.role;
+        if (userRole === "user" && !res?.data?.data?.userType) {
+          setOpen(true);
+        } else if (userRole === "user") {
+          navigate("/client/dashboards");
+        } else if (userRole === "therapist") {
+          navigate("/therapist/dashboards");
+        }
+      } else if (res.data.response === "error") {
+        setError(true);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(`OTP is incorrect`, {
+        position: "top-right",
+        duration: 3000,
+        style: { fontSize: "14px", fontWeight: "bold" },
       });
+    }
   };
+  useEffect(() => {
+    console.log(open, "modal condition updated"); // Ensure this logs when state changes
+  }, [open]);
+  
   return (
     <>
       <div className="flex w-full h-full justify-center align-center flex-row">
@@ -251,6 +254,7 @@ const ValidateOtp = () => {
             </p>
           </StyledLink>
         </div>
+        <Welcome open={open} handleClose={handleClose} id={details?._id} />
       </div>
     </>
   );
