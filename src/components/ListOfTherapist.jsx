@@ -100,14 +100,20 @@ const ListOfTherapist = () => {
   const handleLocationChange = (e) => {
     const selectedId = e.target.value;
     const selectedObj = location.find((loc) => loc._id === selectedId);
+    console.log(selectedObj,"selected object");
+    
     setSelectedLocation(selectedObj);
   };
 
   // Handle Speciality Change
   const handleSpecialityChange = (e) => {
+    
     const selectedId = e.target.value;
     const selectedObj = speciality.find((spec) => spec._id === selectedId);
+    console.log(selectedObj,"selected object");
     setSelectedSpeciality(selectedObj);
+
+    console.log(selectedSpeciality,"hfdasjkfhjkasd");
   };
 
   // Handle Concern Change
@@ -142,6 +148,10 @@ const ListOfTherapist = () => {
       setSelectedConcern("");
     }
   };
+  useEffect(()=>{
+             console.log(selectedSpeciality,"effect");
+            
+  },[selectedSpeciality])
 
   // Filter therapists based on selected criteria
 
@@ -223,7 +233,7 @@ const ListOfTherapist = () => {
           <select
             id="specialitySelect"
             className="custom-select"
-            value={selectedSpeciality}
+            value={selectedSpeciality?.name||""}
             onChange={handleSpecialityChange}
           >
             <option value="">Speciality</option>
