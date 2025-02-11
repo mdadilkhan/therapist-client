@@ -1,5 +1,5 @@
-// export const API_URL = "http://localhost:5001/api";
-export const API_URL = "https://therapist-server.onrender.com/api";
+export const API_URL = "http://localhost:5001/api";
+// export const API_URL = "https://therapist-server.onrender.com/api";
 export const API_URI = "https://practice.sageturtle.in/corporate/";
 export const getLoggedInUserDetails = () => {
   const storedData = localStorage.getItem("persist:root");
