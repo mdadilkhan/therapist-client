@@ -262,21 +262,22 @@ const ClientDashboard = () => {
   const navigate = useNavigate();
 
   const handleCancelAppointment = () => {
-    console.log(reasoninput, selectedReason, cancellId, "sadhkfjksadjfk");
-
-    // axios
-    //   .post(`${API_URL}/cancelAppointment`, { app_id: cancellId })
-    //   .then((res) => {
-    //     if (res.status === 200) {
-
-    //       getAllIAppointment();
-    //         handleCloseReasonModal();
-    //       appointmentList();
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.error("Error:", err);
-    //   });
+    axios
+      .post(`${API_URL}/cancelAppointment`, {
+        app_id: cancellId,
+        reason: selectedReason,
+        reason_dec: reasoninput,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          getAllIAppointment();
+          handleCloseReasonModal();
+          appointmentList();
+        }
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+      });
   };
 
   const handleDescriptionOpen = (index) => {
@@ -529,7 +530,10 @@ const ClientDashboard = () => {
                                 sx={{
                                   padding: "16px",
                                   cursor: "pointer",
-                                  backgroundColor: row?.booking_status !== 5 ? "white" : "#F2F2F2", // Light yellow if status is NOT 5
+                                  backgroundColor:
+                                    row?.booking_status !== 5
+                                      ? "white"
+                                      : "#F2F2F2", // Light yellow if status is NOT 5
                                 }}
                               >
                                 <TableCell align="left" className="body3-reg">
@@ -1000,7 +1004,10 @@ const ClientDashboard = () => {
                                 sx={{
                                   padding: "16px",
                                   cursor: "pointer",
-                                  backgroundColor: row?.booking_status !== 5 ? "white" : "#F2F2F2", // Light yellow if status is NOT 5
+                                  backgroundColor:
+                                    row?.booking_status !== 5
+                                      ? "white"
+                                      : "#F2F2F2", // Light yellow if status is NOT 5
                                 }}
                               >
                                 <TableCell align="left" className="body3-reg">
@@ -1158,7 +1165,7 @@ const ClientDashboard = () => {
                                   }}
                                 >
                                   <Fade in={openModal}>
-                                  <Box
+                                    <Box
                                       sx={style}
                                       className="text-center"
                                       onClick={(event) => {

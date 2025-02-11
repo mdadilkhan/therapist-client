@@ -128,25 +128,44 @@ const PrivateRoute = ({ allowedRoles }) => {
   const location = useLocation();
 
   if (!allowedRoles.includes(role)) {
-    const redirectPath = "/";
+    const redirectPath = "/client";
     return <Navigate to={redirectPath} state={{ from: location }} replace />;
   }
 
   return <Outlet />;
 };
 
+const PublicRoute = () => {
+  const { role } = useSelector((state) => state.userDetails);
+  const location = useLocation();
+
+  if (role) {
+    // Redirect to the appropriate dashboard based on the role
+    return <Navigate to={role === "therapist" ? "/therapist/dashboards" : "/client/dashboards"} replace />;
+  }
+
+  return <Outlet />; // Render public route if no user is authenticated
+};
 const Layout = ({ children }) => {
   const { role } = useSelector((state) => state.userDetails);
 
   const location = useLocation();
   const noSidebarPaths = [
     "/client",
+    "/client/",
+    "/therapist/",
     "/therapist",
     "/verifyotp",
+    "/verifyotp/",
     "/forgotpassword",
+    "/forgotpassword/",
     "/signup/therapist",
+    "/signup/therapist/",
     "/signup",
+    "/signup/",
     "/validateotp",
+    "/validateotp/",
+    "/contact-us/",
     "/contact-us",
   ];
 
@@ -187,8 +206,6 @@ console.log(token);
 
       console.log("Token expiry in:", timeLeft, "seconds");
     }
-
-    // Cleanup the timer on unmount or when token changes
     return () => clearTimeout(logoutTimer);
   }, [token]);
 
@@ -225,6 +242,7 @@ console.log(token);
           <Navbar />
           <Layout>
             <Routes>
+            <Route element={<PublicRoute />}>
               <Route path="/client" element={<ClientLogin />} />
               <Route path="/therapist" element={<TherapistLogin />} />
               <Route path="/verifyotp" element={<VerifyOtp />} />
@@ -234,7 +252,8 @@ console.log(token);
               <Route path="/forgotpassword" element={<ForgotPassword />} />
               <Route path="/signup" element={<ClientSignUp />} />
               <Route path="/signup/therapist" element={<TherapistSignUp />} />
-              <Route element={<PrivateRoute allowedRoles={["user"]} />}>
+              </Route>
+              
               {/* Protected Routes for therapist*/}
               <Route element={<PrivateRoute allowedRoles={["therapist"]} />}>
 
@@ -338,7 +357,9 @@ console.log(token);
                   path="/therapist/clientsessationnotes/:id"
                   element={<ClientSessationNotes />}
                 />
+                 <Route path="*" element={<Navigate to="/therapist/dashboards"/>} />
               </Route>
+              <Route element={<PrivateRoute allowedRoles={["user"]} />}>
 
               {/* Protected Routes for user*/}
              
@@ -402,8 +423,9 @@ console.log(token);
                   path="/client/client-group-sessation-details/:sessationId"
                   element={<ClientGroupSessationDetials />}
                 />
+                <Route path="*" element={<Navigate to="/client/dashboards"/>} />
               </Route>
-              <Route path="*" element={<Navigate to="/client" />} />
+              <Route path="*" element={<Navigate to="/client"/>} />
             </Routes>
           </Layout>
         </Suspense>
