@@ -14,7 +14,8 @@ export default  {
       },
       spacing: {},
       fontFamily: {
-        quicksand: ['Quicksand', 'sans-serif','Nunito'],
+        quicksand: ['Quicksand', 'sans-serif'],
+        nunito: ['Nunito'],
       },
       borderRadius: {
         "13xl": "32px",
