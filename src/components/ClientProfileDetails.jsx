@@ -15,7 +15,7 @@ import Phone from "../assets/Phone.svg";
 import DegreeCap from "../assets/DegreeCap.svg";
 import EditIcon from "../assets/EditProfileIcon.svg";
 import { API_URL } from "../constant/ApiConstant";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userDetails } from "../store/slices/userSlices";
 
 import { Button, TextField } from "@mui/material";
@@ -48,6 +48,7 @@ const ClientProfileDetails = () => {
   const [updateProfile, setUpdateProfile] = useState({});
   const [stateList, setStateList] = useState([]);
   const [image, setImage] = useState(null);
+  const userDetails = useSelector((state) => state.userDetails);
   const ListOfLocation = () => {
     axios
       .get(`${API_URL}/getStateList`)
@@ -100,8 +101,10 @@ const ClientProfileDetails = () => {
   };
   const updateProfilePicture = async (imageUrl) => {
     try {
-      const res = await axios.post(`${API_URL}/uploadProfilePicture`, {
+      const res = await axios.post(`${API_URL}/uploadClientProfilePicture`, {
         imageUrl: imageUrl,
+        userId:userDetails._id
+
       });
       if (res.status === 200) {
         console.log("Profile picture updated successfully", res);
@@ -123,6 +126,7 @@ const ClientProfileDetails = () => {
         ...updateProfile,
         image: imageUrl,
       });
+      updateProfilePicture(imageUrl);
       getProfileDetails();
     } catch (error) {
       console.error("Error in image upload process", error);
@@ -180,7 +184,7 @@ const ClientProfileDetails = () => {
 
   const getProfileDetails = () => {
     axios
-      .get(`${API_URL}/getProfileDetail`)
+      .get(`${API_URL}/getUserDetails/${userDetails._id}`)
       .then((res) => {
         const userProfile = res.data.data;
         if (res.status === 200) {

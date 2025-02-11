@@ -358,17 +358,17 @@ const ListOfTherapist = () => {
               </h2>
               <button
                 className={`w-[123px] h-[48px] rounded-[8px] border-none text-[#fff] p1-reg cursor-pointer ${
-                  therapist?.booking_slots?.length
+                  therapist?.slots?.length
                     ? "bg-[#614298]"
                     : "bg-gray-400 cursor-not-allowed"
                 }`}
                 onClick={() =>
-                  therapist?.booking_slots?.length &&
+                  therapist?.slots?.length &&
                   navigate(
                     `/client/appointments/therapist/?therapistId=${therapist?._id}`
                   )
                 }
-                disabled={!therapist?.booking_slots?.length}
+                disabled={!therapist?.slots?.length}
               >
                 Book Now
               </button>
