@@ -159,7 +159,7 @@ const Welcome = ({ open, handleClose, id }) => {
           overflowY: "auto",
         }}
       >
-        <div className="p-[3rem] items-center justify-center mx-auto relative">
+        <div className={`${step==3 ? "p-0":"p-3"} items-center justify-center mx-auto relative`}>
           <div className="flex items-center justify-between cursor-pointer">
             {step > 1 && (
               <button
