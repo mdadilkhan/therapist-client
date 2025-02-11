@@ -26,7 +26,7 @@ const ListOfTherapist = () => {
   useEffect(() => {
     setSelectedItemsArray([
       selectedGender,
-      selectedLocation?.state_name,
+      selectedLocation,
       selectedSpeciality?.name,
       selectedConcern?.concern,
     ]);
@@ -143,12 +143,12 @@ const ListOfTherapist = () => {
   const handleDeleteChip = (item) => {
     if (item === selectedGender) {
       setSelectedGender("");
-    } else if (item === selectedLocation?.state_name) {
-      setSelectedLocation({});
+    } else if (item === selectedLocation) {
+      setSelectedLocation();
     } else if (item === selectedSpeciality?.name) {
-      setSelectedSpeciality({});
+      setSelectedSpeciality();
     } else if (item === selectedConcern?.concern) {
-      setSelectedConcern({});
+      setSelectedConcern();
     }
   };
   useEffect(() => {
@@ -265,7 +265,7 @@ const ListOfTherapist = () => {
       </div>
 
       {/* Selected chips */}
-      {/* <div>
+      <div>
         <Stack direction="row" spacing={1} className="ml-[100px]">
           {selectedItemsArray
             .filter((item) => item)
@@ -278,7 +278,7 @@ const ListOfTherapist = () => {
               />
             ))}
         </Stack>
-      </div> */}
+      </div>
 
       {/* Therapist list */}
       <div className="flex flex-wrap">
