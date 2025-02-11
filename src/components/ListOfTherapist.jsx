@@ -15,8 +15,8 @@ const ListOfTherapist = () => {
   const navigate = useNavigate();
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedSpeciality, setSelectedSpeciality] = useState("");
-  const [selectedConcern, setSelectedConcern] = useState("");
+  const [selectedSpeciality, setSelectedSpeciality] = useState();
+  const [selectedConcern, setSelectedConcern] = useState();
   const [location, setLocation] = useState([]);
   const [speciality, setSpeciality] = useState([]);
   const [concern, setConcern] = useState([]);
@@ -26,9 +26,9 @@ const ListOfTherapist = () => {
   useEffect(() => {
     setSelectedItemsArray([
       selectedGender,
-      selectedLocation,
-      selectedSpeciality,
-      selectedConcern,
+      selectedLocation?.state_name,
+      selectedSpeciality?.name,
+      selectedConcern?.concern,
     ]);
   }, [selectedGender, selectedLocation, selectedSpeciality, selectedConcern]);
 
@@ -98,22 +98,20 @@ const ListOfTherapist = () => {
   };
 
   const handleLocationChange = (e) => {
-    const selectedId = e.target.value;
-    const selectedObj = location.find((loc) => loc._id === selectedId);
-    console.log(selectedObj,"selected object");
-    
-    setSelectedLocation(selectedObj);
+    const selectedstate = e.target.value;
+    console.log(selectedstate, "selected object");
+
+    setSelectedLocation(selectedstate);
   };
 
   // Handle Speciality Change
   const handleSpecialityChange = (e) => {
-    
     const selectedId = e.target.value;
-    const selectedObj = speciality.find((spec) => spec._id === selectedId);
-    console.log(selectedObj,"selected object");
-    setSelectedSpeciality(selectedObj);
+    console.log(selectedId, "hellow ordld");
 
-    console.log(selectedSpeciality,"hfdasjkfhjkasd");
+    const selectedObj = speciality.find((spec) => spec._id === selectedId);
+    setSelectedSpeciality(selectedObj || null);
+    console.log(selectedObj, "objec of speicliztion");
   };
 
   // Handle Concern Change
@@ -127,31 +125,35 @@ const ListOfTherapist = () => {
   const filteredTherapists = therapistList.filter((therapist) => {
     return (
       (!selectedGender ||
-        therapist?.profile_details?.gender.toLowerCase() === selectedGender.toLowerCase()) &&
+        therapist?.profile_details?.gender.toLowerCase() ===
+          selectedGender.toLowerCase()) &&
       (!selectedLocation ||
-        therapist?.location?._id === selectedLocation?._id) &&
+        therapist?.profile_details?.state === selectedLocation) &&
       (!selectedSpeciality ||
-        therapist?.profile_details?.specialization?._id === selectedSpeciality?._id) &&
+        therapist?.specialization?.some(
+          (spec) => spec._id === selectedSpeciality?._id
+        )) &&
       (!selectedConcern ||
-        therapist?.concerns?.some((concern) => concern._id === selectedConcern?._id))
+        therapist?.concerns?.some(
+          (concern) => concern._id === selectedConcern?._id
+        ))
     );
   });
 
   const handleDeleteChip = (item) => {
     if (item === selectedGender) {
       setSelectedGender("");
-    } else if (item === selectedLocation) {
-      setSelectedLocation("");
-    } else if (item === selectedSpeciality) {
-      setSelectedSpeciality("");
-    } else if (item === selectedConcern) {
-      setSelectedConcern("");
+    } else if (item === selectedLocation?.state_name) {
+      setSelectedLocation({});
+    } else if (item === selectedSpeciality?.name) {
+      setSelectedSpeciality({});
+    } else if (item === selectedConcern?.concern) {
+      setSelectedConcern({});
     }
   };
-  useEffect(()=>{
-             console.log(selectedSpeciality,"effect");
-            
-  },[selectedSpeciality])
+  useEffect(() => {
+    console.log(selectedSpeciality, "effect");
+  }, [selectedSpeciality]);
 
   // Filter therapists based on selected criteria
 
@@ -233,14 +235,13 @@ const ListOfTherapist = () => {
           <select
             id="specialitySelect"
             className="custom-select"
-            value={selectedSpeciality?.name||""}
+            value={selectedSpeciality?._id || ""}
             onChange={handleSpecialityChange}
           >
             <option value="">Speciality</option>
-            {/* Populate location options */}
-            {speciality.map((Speciality, index) => (
-              <option key={index} value={Speciality}>
-                {Speciality.name}
+            {speciality.map((spec) => (
+              <option key={spec._id} value={spec._id}>
+                {spec.name}
               </option>
             ))}
           </select>
@@ -250,12 +251,12 @@ const ListOfTherapist = () => {
           <select
             id="concernSelect"
             className="custom-select"
-            value={selectedConcern}
+            value={selectedConcern?._id || ""}
             onChange={handleConcernChange}
           >
             <option value="">Concern</option>
-            {concern.map((Concern, index) => (
-              <option key={index} value={Concern}>
+            {concern.map((Concern ) => (
+               <option key={Concern._id} value={Concern._id}>
                 {Concern.concern}
               </option>
             ))}
@@ -264,7 +265,7 @@ const ListOfTherapist = () => {
       </div>
 
       {/* Selected chips */}
-      <div>
+      {/* <div>
         <Stack direction="row" spacing={1} className="ml-[100px]">
           {selectedItemsArray
             .filter((item) => item)
@@ -277,7 +278,7 @@ const ListOfTherapist = () => {
               />
             ))}
         </Stack>
-      </div>
+      </div> */}
 
       {/* Therapist list */}
       <div className="flex flex-wrap">
