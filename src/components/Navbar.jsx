@@ -8,14 +8,15 @@ import { Popover } from "@mui/material";
 import ContactSupport from "../assets/ContactSupport.svg";
 import Logout from "../assets/Logout.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { userDetails } from "../store/slices/userSlices";
-import { setRole } from "../store/slices/smsSlices";
+import { userDetails,resetStateDetail } from "../store/slices/userSlices";
+import { setRole,resetStaterole } from "../store/slices/smsSlices";
+import {persistor} from "../store/store"
 
 const Navbar = () => {
   const userDetail = useSelector((state) => state.userDetails);
+  const dispatch=useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const dispatch = useDispatch();
   const handleProfileClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -42,11 +43,13 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    dispatch(userDetails(null));
-    dispatch(setRole(null));
+    console.log("hello click on logut");
+    dispatch(resetStaterole());
+    dispatch(resetStateDetail());
+    persistor.purge();
     localStorage.clear();
     setAnchorEl(null);
-    navigate("/therapist");
+    navigate("/client");
   };
   return (
     <div
@@ -54,9 +57,10 @@ const Navbar = () => {
       style={{ display: "flex", justifyContent: "space-between" }}
     >
       <img src={Logo} alt="" />
-      {location.pathname !== "/therapist" &&
+      {location.pathname !== "/therapist" &&location.pathname !== "/therapist/" &&
         location.pathname !== "/signup" &&
         location.pathname !== "/client" &&
+        location.pathname !== "/client/" &&
         location.pathname !== "/contact-us" &&
         location.pathname !== "/forgotpassword" &&
         location.pathname !== "/validateotp" && (

@@ -1,7 +1,5 @@
 import React, { useState, useEffect, lazy } from "react";
 import { useDispatch } from "react-redux";
-import { userDetails } from "../store/slices/userSlices";
-import { setRole } from "../store/slices/smsSlices";
 import { Box, Button, Drawer } from "@mui/material";
 import Dashboard from "../assets/Dashboard.svg";
 import Assessment from "../assets/Assessment.svg";
@@ -16,6 +14,9 @@ import Logout from "../assets/Logout.svg";
 import { useNavigate } from "react-router-dom";
 import UpArrow from "../assets/UpArrow.svg"; // Import up arrow
 import DownArrow from "../assets/DownArrow.svg";
+import { userDetails,resetStateDetail } from "../store/slices/userSlices";
+import { setRole,resetStaterole } from "../store/slices/smsSlices";
+import {persistor} from "../store/store"
 
 import { NavLink, useLocation } from "react-router-dom";
 import Tab from "@mui/material/Tab";
@@ -327,10 +328,11 @@ const TherapistSidebar = ({ children }) => {
                 className="body3-bold deactive"
                 style={{ textTransform: "capitalize" }}
                 onClick={() => {
-                  dispatch(userDetails(null));
-                  dispatch(setRole(null));
+                  dispatch(resetStaterole());
+                  dispatch(resetStateDetail());
+                  persistor.purge();
                   localStorage.clear();
-                  navigate("/therapist");
+                  setAnchorEl(null);
                 }}
               >
                 Logout

@@ -138,6 +138,8 @@ const PrivateRoute = ({ allowedRoles }) => {
 const PublicRoute = () => {
   const { role } = useSelector((state) => state.userDetails);
   const location = useLocation();
+  console.log(role,"exist roles");
+  
 
   if (role) {
     // Redirect to the appropriate dashboard based on the role
