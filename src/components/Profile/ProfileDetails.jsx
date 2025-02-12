@@ -146,22 +146,23 @@ const ProfileDetails = () => {
   const [profileDetails, setProfileDetails] = useState({});
   const [expertss, setExpertList] = useState([]);
   const [concernss, setconcertList] = useState([]);
+  const [specialization,setSpecialization]=useState([])
   const [updateProfile, setUpdateProfile] = useState({
     // concerns: [],
     expertise: [],
     educationQualification: [],
   });
+  
   const [isBankDetails,setIsBankDetals]=useState(true)
   console.log("updateProfile>>", profileDetails.concerns);
 
   const navigate = useNavigate();
   const expertList = () => {
     axios
-      .get(`${API_URL}/getAllSpecialization`)
+      .get(`${API_URL}/getAllExpertise`)
       .then((res) => {
-        if (res.status == 200) {
-          const experts = res.data.data.map((item) => item.name);
-          setExpertList(experts);
+        if (res.status == 200) {          
+          setExpertList(res.data.data);
         }
       })
       .catch((error) => {
@@ -286,11 +287,20 @@ const ProfileDetails = () => {
         console.error("Error:", err);
       });
   };
+  const getSpecialization=()=>{
+    axios.get(`${API_URL}/getAllSpecialization`).then((res)=>{
+      setSpecialization(res.data.data)
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
   useEffect(() => {
     getProfileDetails();
     concernList();
     expertList();
+    getSpecialization()
   }, []);
+
 
   
 
@@ -776,7 +786,7 @@ const ProfileDetails = () => {
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
                     Specilization*
                   </label>
-                  <TextField
+                  {/* <TextField
                     fullWidth
                     type="text"
                     required
@@ -806,7 +816,74 @@ const ProfileDetails = () => {
                         },
                       },
                     }}
-                  />
+                  /> */}
+                  <Select
+                    fullWidth
+                    name="state"
+                    value={updateProfile?.state || ""} // Default to an empty string if no value is selected
+                    onChange={(e) =>
+                      handelChage({
+                        target: {
+                          name: "state",
+                          value: e.target.value,
+                        },
+                      })
+                    }
+                    required
+                    displayEmpty
+                    sx={{
+                      fontSize: "18px",
+                      fontFamily: "Nunito",
+                      fontStyle: "normal",
+                      fontWeight: 400,
+                      lineHeight: "24px",
+                      letterSpacing: "0.08px",
+                      height: "48px",
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: `#d5d2d9`,
+                      },
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: `#d5d2d9`,
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: `#d5d2d9`,
+                      },
+                      "& input::placeholder": {
+                        color: `#d5d2d9`,
+                      },
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em
+                        style={{
+                          fontSize: "18px",
+                          fontFamily: "Nunito",
+                          fontStyle: "normal",
+                          fontWeight: 400,
+                          lineHeight: "24px",
+                          letterSpacing: "0.08px",
+                        }}
+                      >
+                        Select a State
+                      </em>
+                    </MenuItem>
+                    {specialization?.map((item) => (
+                      <MenuItem
+                        sx={{
+                          fontSize: "18px",
+                          fontFamily: "Nunito",
+                          fontStyle: "normal",
+                          fontWeight: 400,
+                          lineHeight: "24px",
+                          letterSpacing: "0.08px",
+                        }}
+                        key={item?._id}
+                        value={item?._id}
+                      >
+                        {item?.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </div>
                 <div
                   style={{
@@ -904,7 +981,7 @@ const ProfileDetails = () => {
                     rows="4"
                     cols="500"
                     name="educationQualification"
-                    value={updateProfile?.educationQualification}
+                    value={profileDetails?.educational_qualification}
                     onChange={handleChange}
                     required
                   ></textarea>
@@ -1206,7 +1283,8 @@ const ProfileDetails = () => {
                         control={
                           <Checkbox
                             value={expert}
-                            checked={updateProfile?.expertise?.includes(expert)}
+                            checked={profileDetails.expertise?.some(c => c._id === expert._id)}
+                            // checked={profileDetails?.expertise?.includes(expert)}
                             onChange={handleCheckboxChange1}
                             disabled
                             sx={{
@@ -1220,7 +1298,7 @@ const ProfileDetails = () => {
                         }
                         label={
                           <span className="p1-reg" style={{ color: "#7D748C" }}>
-                            {expert}
+                            {expert.name}
                           </span>
                         }
                       />
