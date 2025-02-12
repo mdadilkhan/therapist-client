@@ -786,37 +786,6 @@ const ProfileDetails = () => {
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
                     Specilization*
                   </label>
-                  {/* <TextField
-                    fullWidth
-                    type="text"
-                    required
-                    name="specialization"
-                    value={updateProfile?.specialization}
-                    onChange={handelChage}
-                    InputProps={{
-                      sx: {
-                        fontSize: "18px",
-                        fontFamily: "Nunito",
-                        fontStyle: "normal",
-                        fontWeight: 400,
-                        lineHeight: "24px",
-                        letterSpacing: "0.08px",
-                        height: "48px",
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor: `#d5d2d9`,
-                        },
-                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                          borderColor: `#d5d2d9`,
-                        },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                          borderColor: `#d5d2d9`,
-                        },
-                        "& input::placeholder": {
-                          color: `#d5d2d9`,
-                        },
-                      },
-                    }}
-                  /> */}
                   <Select
                     fullWidth
                     name="state"
@@ -864,7 +833,7 @@ const ProfileDetails = () => {
                           letterSpacing: "0.08px",
                         }}
                       >
-                        Select a State
+                        Select a Specilization
                       </em>
                     </MenuItem>
                     {specialization?.map((item) => (
