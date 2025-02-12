@@ -11,6 +11,7 @@ import axios from "axios";
 import { getDayIndex, getDayName } from "../../constant/constatnt";
 import { API_URL } from "../../constant/ApiConstant";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -38,7 +39,7 @@ const ProfileTimeline = () => {
   const [timeSlots, setTimeSlots] = useState({});
   const [isApiCall, setIsApiCall] = useState(false);
   const [values, setValues] = useState("session");
-
+  const therapistId=useSelector((state)=>state.userDetails._id)
   const handleCloseModal = () => {
     setFromTime("");
     setToTime("");
@@ -161,13 +162,14 @@ const ProfileTimeline = () => {
       start_time: fromTimeWithSeconds,
       end_time: toTimeWithSeconds,
       day: selectedDay,
+      therapistId
     };
 
     axios
       .post(
         values == "session"
           ? `${API_URL}/generateTherapistSlots`
-          : `${API_URL}/generateTherapistPreconsultationSlots`,
+          : `${API_URL}/getTherapistPreconsultationSlots`,
         body
       )
       .then((res) => {
@@ -194,8 +196,8 @@ const ProfileTimeline = () => {
     axios
       .get(
         values == "session"
-          ? `${API_URL}/getTherapistSessionSlots`
-          : `${API_URL}/getPreconsultationSlotsByTherapist`
+          ? `${API_URL}/getTherapistSessionSlots/${therapistId}`
+          : `${API_URL}/getPreconsultationSlotsByTherapist/${therapistId}`
       )
       .then((res) => {
         const slots =
