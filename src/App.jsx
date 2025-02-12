@@ -137,8 +137,11 @@ const PrivateRoute = ({ allowedRoles }) => {
 
 const PublicRoute = () => {
   const { role } = useSelector((state) => state.userDetails);
+  //  const { phoneNumber, countryCode, email, role } = useSelector(
+  //     (state) => state.smsData
+  //   );
   const location = useLocation();
-  console.log(role,"exist roles");
+  console.log(role," public route exist roles");
   
 
   if (role) {

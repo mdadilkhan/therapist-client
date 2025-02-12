@@ -45,6 +45,7 @@ import {
 } from "../constant/constatnt";
 import Rect from "../assets/Rectangle.svg";
 import getMatched from "../assets/GetMatched.svg";
+import Welcome from "./Welcome";
 const getStatusColor = (status) => {
   switch (status) {
     case "Refer to Sage":
@@ -222,6 +223,16 @@ const ClientDashboard = () => {
   const [selectedReason, setSelectedReason] = useState("");
   const [reasoninput, setReasonInput] = useState("");
   const [cancellId, setCancellId] = useState(null);
+  const [openWelcome, setOpen] = useState(!userDetails?.userType ? true : false);
+  console.log(
+    userDetails ,
+    "userdetais in client Dashboard"
+  );
+  
+  
+  const handleCloseWelcome = () => {
+    setOpen(false);
+  };
   const handleChangeInput = (e) => {
     setReasonInput(e.target.value);
   };
@@ -1919,6 +1930,13 @@ const ClientDashboard = () => {
             </Box>
           </Fade>
         </Modal>
+      </div>
+      <div>
+        <Welcome
+          open={openWelcome}
+          handleClose={handleCloseWelcome}
+          id={userDetails?._id}
+        />
       </div>
     </>
   );

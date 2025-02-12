@@ -8,12 +8,11 @@ import { userDetails } from "../store/slices/userSlices";
 import styled from "@emotion/styled";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { API_URL } from "../constant/ApiConstant";
-import {
-  Button,
-} from "@mui/material";
+import { Button } from "@mui/material";
 import toast from "react-hot-toast";
 
-        import Welcome from "./Welcome"
+import Welcome from "./Welcome";
+import { setRole } from "../store/slices/smsSlices";
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: #06030d;
@@ -21,21 +20,21 @@ const StyledLink = styled(Link)`
 const ValidateOtp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { phoneNumber, countryCode, email,role } = useSelector(
+  const { phoneNumber, countryCode, email, role } = useSelector(
     (state) => state.smsData
   );
-// const userDetails = useSelector((state) => state.userDetails);
+  // const userDetails = useSelector((state) => state.userDetails);
   const [code, setCode] = useState("");
-  const[details,setDetails]=useState({});
+  const [details, setDetails] = useState({});
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(true); // Button disabled state
   const [counter, setCounter] = useState(10);
   const handleChange = (code) => setCode(code);
 
-  const[open,setOpen]=useState(false);
-  const handleClose=()=>{
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
     setOpen(false);
-  }
+  };
 
   const [params] = useSearchParams();
   const eml = params.get("email");
@@ -63,8 +62,8 @@ const ValidateOtp = () => {
           ? `${API_URL}/auth/sendOtpWithEmail`
           : `${API_URL}/auth/sendOtpWithSms`,
         isEmail
-          ? { email: email,role:role }
-          : { phoneNumber: phoneNumber, countryCode: countryCode , role:role}
+          ? { email: email, role: role }
+          : { phoneNumber: phoneNumber, countryCode: countryCode, role: role }
       )
       .then((res) => {
         if (res.status === 200) {
@@ -79,14 +78,14 @@ const ValidateOtp = () => {
   };
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-  
+
     const payload = isEmail
       ? { otp: +code, email: email }
       : { otp: +code, phoneNumber: phoneNumber, countryCode: countryCode };
-  
+
     try {
       const res = await axios.post(`${API_URL}/auth/validateOTP`, payload);
-  
+
       if (res.status === 200) {
         setCode("");
         toast.success(`OTP verified successfully`, {
@@ -94,17 +93,20 @@ const ValidateOtp = () => {
           duration: 3000,
           style: { fontSize: "14px", fontWeight: "bold" },
         });
-  
         localStorage.setItem("token", res.data.data.token);
-        dispatch(userDetails(res.data.data));
-        setDetails(res?.data?.data);
-        const userRole=res?.data?.data?.role;
-        if (userRole === "user" && !res?.data?.data?.userType) {
-          setOpen(true);
-        } else if (userRole === "user") {
+        dispatch(userDetails(res?.data?.data));
+        dispatch(setRole(res?.data?.data?.role));
+        const userRole = res?.data?.data?.role;
+        const userType = res?.data?.data?.userType;
+        console.log(userType, "type exist or not");
+        if (userRole === "user") {
+          console.log("user role in else if");
           navigate("/client/dashboards");
         } else if (userRole === "therapist") {
           navigate("/therapist/dashboards");
+        } else {
+          console.log("esle");
+          navigate("/client");
         }
       } else if (res.data.response === "error") {
         setError(true);
@@ -121,7 +123,7 @@ const ValidateOtp = () => {
   useEffect(() => {
     console.log(open, "modal condition updated"); // Ensure this logs when state changes
   }, [open]);
-  
+
   return (
     <>
       <div className="flex w-full h-full justify-center align-center flex-row">
@@ -233,8 +235,8 @@ const ValidateOtp = () => {
                 fontWeight: 600,
                 lineHeight: "20px",
                 letterSpacing: "0.28px",
-                textAlign: "center", 
-                marginTop: "8px"
+                textAlign: "center",
+                marginTop: "8px",
               }}
             >
               If you don’t receive the email, check your spam folder, or{" "}
