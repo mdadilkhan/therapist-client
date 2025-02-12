@@ -7,6 +7,8 @@ import { API_URL } from "../constant/ApiConstant";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Tag } from "antd";
+import { useDispatch } from "react-redux";
+import { userDetails } from "../store/slices/userSlices";
 
 const Welcome = ({ open, handleClose, id }) => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const Welcome = ({ open, handleClose, id }) => {
   const [activeConcern, setActiveConcern] = useState(null);
   const [selectedConcerns, setSelectedConcerns] = useState([]); // Store selected concern IDs
   const [selectedSubConcerns, setSelectedSubConcerns] = useState({});
+  const dispatch=useDispatch();
   const updateProfile = async () => {
     try {
       const response = await axios.post(`${API_URL}/updateUserProfileDetail`, {
@@ -30,13 +33,12 @@ const Welcome = ({ open, handleClose, id }) => {
         userType: type._id,
         name: name,
       });
-      toast.success("Concern added successfully");
+      dispatch(userDetails(response?.data?.data))
+      toast.success("Details  added successfully");
       console.log(response.data.data, "Profile update successful");
-
-      navigate("/client/dashboards");
       handleClose();
-    } catch (error) {
       navigate("/client/dashboards");
+    } catch (error) {
       console.error("Profile update failed:", error);
       toast.error("Failed to add concern. Please try again.");
     }
@@ -136,12 +138,11 @@ const Welcome = ({ open, handleClose, id }) => {
 
     if (step >= 3) {
       updateProfile();
-      setStep(1);
     }
   };
 
   return (
-    <Modal open={open} onClose={handleClose} sx={{padding: "0"}}>
+    <Modal open={open}  sx={{padding: "0"}}>
       <Box
         sx={{
           position: "absolute",
