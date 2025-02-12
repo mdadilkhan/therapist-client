@@ -169,7 +169,7 @@ const ProfileTimeline = () => {
       .post(
         values == "session"
           ? `${API_URL}/generateTherapistSlots`
-          : `${API_URL}/getTherapistPreconsultationSlots`,
+          : `${API_URL}/generateTherapistPreconsultationSlots`,
         body
       )
       .then((res) => {
