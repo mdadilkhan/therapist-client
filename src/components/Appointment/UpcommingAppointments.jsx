@@ -27,7 +27,11 @@ import {
   Fade,
   Backdrop,
 } from "@mui/material";
-import { getBookingType, getformatedDate, getJoinMeet } from "../../constant/constatnt";
+import {
+  getBookingType,
+  getformatedDate,
+  getJoinMeet,
+} from "../../constant/constatnt";
 import { API_URL } from "../../constant/ApiConstant";
 import { useSelector } from "react-redux";
 
@@ -116,12 +120,12 @@ const style = {
 };
 
 const UpcommingAppointment = () => {
-  const userDetail = useSelector((state) => state.userDetails);
+  const userDetails = useSelector((state) => state.userDetails);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [value, setValue] = useState("1");
-  const [oldAppointment, setOldAppointment] = useState([]);
-  const [newAppointment, setNewAppointment] = useState([]);
+  // const [appointmentList, setOldAppointment] = useState([]);
+  const [appointmentList, SetAppointmentList] = useState([]);
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const [anchorThree, setAnchorThree] = useState(null);
   const [openModal, setOpenModal] = useState(false);
@@ -177,38 +181,24 @@ const UpcommingAppointment = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   const newAppointmentList = () => {
     axios
-      .get(`${API_URL}/getUpcomingAppointments/preconsultation`)
+      .post(`${API_URL}/getUpcomingAppointments`, {
+        type: value == "2" ? "session" : "preconsultation",
+        therapistID: userDetails._id,
+      })
       .then((res) => {
         if (res.status == 200) {
-          setNewAppointment(res.data.data);
+          SetAppointmentList(res.data.data);
         }
       })
       .catch((err) => {
         console.error("Error:", err);
       });
   };
-  const oldAppointmentList = () => {
-    axios
-      .get(`${API_URL}/getUpcomingAppointments/session`)
-      .then((res) => {
-        if (res.status == 200) {
-          setOldAppointment(res.data.data);
-        }
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-      });
-  };
-
   useEffect(() => {
-    if (value == "1") {
-      newAppointmentList();
-    } else if (value == "2") {
-      oldAppointmentList();
-    }
+    SetAppointmentList([])
+    newAppointmentList();
   }, [value]);
 
   const oldAppointmentStatus = {
@@ -240,7 +230,7 @@ const UpcommingAppointment = () => {
 
         <div style={{ marginTop: "24px" }}>
           <TabContext value={value}>
-            <Box sx={{ borderBottom: 1, width: "300px" }}>
+            <Box sx={{ borderBottom: 1, width: "280px" }}>
               <TabList
                 onChange={handleChange}
                 aria-label="lab API tabs example"
@@ -312,8 +302,8 @@ const UpcommingAppointment = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {Array.isArray(newAppointment) &&
-                          newAppointment
+                        {Array.isArray(appointmentList) &&
+                          appointmentList
                             .slice(
                               page * rowsPerPage,
                               page * rowsPerPage + rowsPerPage
@@ -339,7 +329,7 @@ const UpcommingAppointment = () => {
                                   </TableCell>
 
                                   <TableCell align="left" className="body3-reg">
-                                    <div>{row?.clientName}</div>
+                                    <div>{row?.userDetails?.name}</div>
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">
                                     <div>
@@ -540,7 +530,7 @@ const UpcommingAppointment = () => {
                     className="body3-sem"
                     rowsPerPageOptions={[10, 25, 100, 125]}
                     component="div"
-                    count={newAppointment.length}
+                    count={appointmentList.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
@@ -591,8 +581,8 @@ const UpcommingAppointment = () => {
                 </Paper>
               ) : (
                 <div>
-                  {Array.isArray(newAppointment) &&
-                    newAppointment
+                  {Array.isArray(appointmentList) &&
+                    appointmentList
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
@@ -628,7 +618,7 @@ const UpcommingAppointment = () => {
                               <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                                 <div className="body3-sem w-[50%]">Name</div>
                                 <div className="body3-reg pr-2 w-[50%]">
-                                  {item?.clientName}
+                                  {item?.userDetails?.name}
                                 </div>
                               </div>
                               <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
@@ -751,7 +741,7 @@ const UpcommingAppointment = () => {
                     className="body3-sem"
                     rowsPerPageOptions={[10, 25, 100, 125]}
                     component="div"
-                    count={newAppointment.length}
+                    count={appointmentList.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
@@ -779,8 +769,8 @@ const UpcommingAppointment = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {Array.isArray(oldAppointment) &&
-                          oldAppointment
+                        {Array.isArray(appointmentList) &&
+                          appointmentList
                             .slice(
                               page * rowsPerPage,
                               page * rowsPerPage + rowsPerPage
@@ -806,7 +796,7 @@ const UpcommingAppointment = () => {
                                   </TableCell>
 
                                   <TableCell align="left" className="body3-reg">
-                                    <div>{row?.clientName}</div>
+                                    <div>{row?.userDetails?.name}</div>
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">
                                     <div>
@@ -1022,7 +1012,7 @@ const UpcommingAppointment = () => {
                     className="body3-sem"
                     rowsPerPageOptions={[10, 25, 100, 125]}
                     component="div"
-                    count={oldAppointment.length}
+                    count={appointmentList.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
@@ -1073,8 +1063,8 @@ const UpcommingAppointment = () => {
                 </Paper>
               ) : (
                 <div>
-                  {Array.isArray(oldAppointment) &&
-                    oldAppointment
+                  {Array.isArray(appointmentList) &&
+                    appointmentList
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
@@ -1108,7 +1098,7 @@ const UpcommingAppointment = () => {
                               <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                                 <div className="body3-sem w-[50%]">Name</div>
                                 <div className="body3-reg pr-2 w-[50%]">
-                                  {item?.clientName}
+                                  {item?.userDetails?.name}
                                 </div>
                               </div>
                               <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
@@ -1224,7 +1214,7 @@ const UpcommingAppointment = () => {
                     className="body3-sem"
                     rowsPerPageOptions={[10, 25, 100, 125]}
                     component="div"
-                    count={oldAppointment.length}
+                    count={appointmentList.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}

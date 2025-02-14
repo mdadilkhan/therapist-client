@@ -332,11 +332,11 @@ const ListOfTherapist = () => {
                   <h4 className="ovr1-reg text-[#635B73]">
                     <span className="ovr1-bold">Languages : </span>
                     {"  "}
-                    {therapist?.profile_details?.languages?.map(
+                    {/* {therapist?.profile_details?.languages?.map(
                       (language, index) => (
                         <span key={index}>{language + ","}</span>
                       )
-                    )}
+                    )} */}
                   </h4>
                 </div>
                 <div className="flex items-start gap-3 mb-2 h-[60px]">

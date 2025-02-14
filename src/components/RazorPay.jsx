@@ -51,7 +51,7 @@ const RazorPay = ({ appointmentData, agree }) => {
             orderId: paymentId,
             paymentId: orderId,
             // amount: appointmentData?.totalPay,
-            amount:0.1
+            amount:1
           };
 
     axios

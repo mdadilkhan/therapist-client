@@ -179,7 +179,10 @@ const PastAppointment = () => {
 
   const oldAppointmentList = () => {
     axios
-      .get(`${API_URL}/getPastAppointments/session`)
+    .post(`${API_URL}/getPastAppointments`, {
+      type: value == "2" ? "session" : "preconsultation",
+      therapistID: userDetail._id,
+    })
       .then((res) => {
         if (res.status == 200) {
           setNewAppointment(res.data.data);
@@ -193,7 +196,10 @@ const PastAppointment = () => {
 
   const newAppointmentList = () => {
     axios
-      .get(`${API_URL}/getPastAppointments/preconsultation`)
+      .post(`${API_URL}/getPastAppointments`, {
+        type: value == "2" ? "session" : "preconsultation",
+        therapistID: userDetail._id,
+      })
       .then((res) => {
         if (res.status == 200) {
           setNewAppointment(res.data.data);

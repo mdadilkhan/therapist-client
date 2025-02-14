@@ -124,10 +124,10 @@ const columnsCore = [
   },
 ];
 
-const rowsScore = [
+const AssesmentData = [
   {
     "Assessment ID": "Teacher",
-    Name: "Neha Needs Attention",
+    Name: "Neha Needs a therapist",
     Date: "15/02/2024",
     score: "05/10",
   },
@@ -289,13 +289,14 @@ const ClientDetails = () => {
               fontSize: "14px", // Smaller text
             },
           });
-          socket.emit("therapist", {
-            title: " Referal Recieved",
-            message: `${employeeData.name} is refert to u i thas been refer by ${details.name}`,
-            role: "therapist",
-            userId: sendSessiondata.therapistId,
-          });
+          // socket.emit("therapist", {
+          //   title: " Referal Recieved",
+          //   message: `${employeeData.name} is refert to u i thas been refer by ${details.name}`,
+          //   role: "therapist",
+          //   userId: sendSessiondata.therapistId,
+          // });
           handleCloseModaln();
+          closeModalPre();
         }
       })
       .catch((err) => {
@@ -2633,8 +2634,8 @@ const ClientDetails = () => {
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            {Array.isArray(rowsScore) &&
-                              rowsScore
+                            {Array.isArray(AssesmentData) &&
+                              AssesmentData
                                 .slice(
                                   page * rowsPerPage,
                                   page * rowsPerPage + rowsPerPage
@@ -2705,7 +2706,7 @@ const ClientDetails = () => {
                         className="body3-sem"
                         rowsPerPageOptions={[10, 25, 100, 125]}
                         component="div"
-                        count={rowsScore.length}
+                        count={AssesmentData.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -2756,8 +2757,8 @@ const ClientDetails = () => {
                     </Paper>
                   ) : (
                     <div>
-                      {Array.isArray(rowsScore) &&
-                        rowsScore
+                      {Array.isArray(AssesmentData) &&
+                        AssesmentData
                           .slice(
                             page * rowsPerPage,
                             page * rowsPerPage + rowsPerPage
@@ -2809,7 +2810,7 @@ const ClientDetails = () => {
                         className="body3-sem"
                         rowsPerPageOptions={[10, 25, 100, 125]}
                         component="div"
-                        count={rowsScore.length}
+                        count={AssesmentData.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

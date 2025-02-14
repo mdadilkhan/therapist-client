@@ -1,27 +1,22 @@
-import { useState, useEffect, lazy, Suspense, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-const Navbar = lazy(() => import("../Navbar"));
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EditIconList from "../../assets/EditIconList.svg";
 import Briefcase from "../../assets/Briefcase.svg";
-import Buildings from "../../assets/Buildings.svg";
 import Calendar1 from "../../assets/Calendar1.svg";
 import Designation from "../../assets/Designation.svg";
 import Email from "../../assets/Email.svg";
 import FingerprintSimple from "../../assets/FingerprintSimple.svg";
-import Key from "../../assets/Key.svg";
 import Language from "../../assets/Language.svg";
 import Phone from "../../assets/Phone.svg";
 import DegreeCap from "../../assets/DegreeCap.svg";
 import EditIcon from "../../assets/EditProfileIcon.svg";
+import camera from "../../assets/camera.svg";
 import { API_URL } from "../../constant/ApiConstant";
 import { userDetails } from "../../store/slices/userSlices";
 import {
   Button,
-  colors,
   TextField,
-  Radio,
-  RadioGroup,
   FormControlLabel,
   MenuItem,
   Checkbox,
@@ -29,8 +24,8 @@ import {
 } from "@mui/material";
 import { getformatedDate } from "../../constant/constatnt";
 import toast from "react-hot-toast";
-import DatePicker from "react-date-picker";
-import "react-date-picker/dist/DatePicker.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "react-calendar/dist/Calendar.css";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -50,13 +45,31 @@ const editButtonStyle = {
 };
 
 const ProfileDetails = () => {
+  const dispatch = useDispatch();
+  const userDetails = useSelector((state) => state.userDetails);
+  const therapistId = userDetails._id;
   const fileRef = useRef(null);
   const [image, setImage] = useState(null);
-  const dispatch = useDispatch();
   const [indianStates, setIndianStates] = useState([]);
-  const therapistId=useSelector((state)=>state.userDetails._id)
-  console.log("id>>",therapistId);
-  
+
+  const [totalEarnings, setTotalEarnings] = useState(0);
+  const [chartData, setChartData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editProfile, setEditProfile] = useState(false);
+  const [show, setShow] = useState(true);
+  const [profileDetails, setProfileDetails] = useState({});
+  const [therapistdata, setTherapistdata] = useState(null);
+  const [expertss, setExpertList] = useState([]);
+  const [concernss, setconcertList] = useState([]);
+  const [specialization, setspecList] = useState([]);
+  const [sessionTaken, setSessionTaken] = useState(0);
+  const [updateProfile, setUpdateProfile] = useState({
+    concerns: [],
+    expertise: [],
+    specialization: [],
+    languages: [],
+  });
+
   const ListOfLocation = () => {
     axios
       .get(`${API_URL}/getStateList`)
@@ -71,6 +84,52 @@ const ProfileDetails = () => {
       });
   };
 
+  const getEarningDetails = () => {
+    axios
+      .post(`${API_URL}/getEarningsByTherapist`, { therapistId: therapistId })
+      .then((res) => {
+        if (res.status === 200) {
+          const sessionEarnings = res?.data?.data?.sessionEarnings;
+          const preconsultationEarnings =
+            res?.data?.data?.preconsultationEarnings;
+          const liveChatEarnings = res?.data?.data?.liveChatEarnings;
+          const groupSessionEarnings = res?.data?.data?.groupSessionEarnings;
+          const allZero =
+            sessionEarnings === 0 &&
+            preconsultationEarnings === 0 &&
+            liveChatEarnings === 0 &&
+            groupSessionEarnings === 0;
+
+          if (allZero) {
+            setChartData([{ name: "No Data", value: 1, color: "#D1D5DB" }]);
+          } else {
+            setChartData([
+              {
+                name: "Session Earnings",
+                value: sessionEarnings,
+                color: "#6929C4",
+              },
+              {
+                name: "Pre-consultation",
+                value: preconsultationEarnings,
+                color: "#9F1853",
+              },
+              { name: "Live Chat", value: liveChatEarnings, color: "#1192E8" },
+              {
+                name: "Group Session",
+                value: groupSessionEarnings,
+                color: "#005D5D",
+              },
+            ]);
+          }
+          setTotalEarnings(res?.data?.data?.totalEarnings);
+        }
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+      });
+  };
+
   const getSignedUrl = async () => {
     try {
       const res = await axios.get(`${API_URL}/uploadImage`);
@@ -78,6 +137,20 @@ const ProfileDetails = () => {
         return res.data.data;
       } else {
         throw new Error("Failed to get signed URL");
+      }
+    } catch (error) {
+      console.error("Error getting signed URL", error);
+      throw error;
+    }
+  };
+
+  const Deletetherapist = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/removeTherapist/${therapistId}`);
+      if (res.status === 200) {
+        console.log("therapist is deleted suscc");
+        setIsModalOpen(false);
+        navigate(-1);
       }
     } catch (error) {
       console.error("Error getting signed URL", error);
@@ -107,6 +180,7 @@ const ProfileDetails = () => {
     try {
       const res = await axios.post(`${API_URL}/uploadProfilePicture`, {
         imageUrl: imageUrl,
+        therapistId: therapistId,
       });
       if (res.status === 200) {
         console.log("Profile picture updated successfully", res);
@@ -134,6 +208,7 @@ const ProfileDetails = () => {
 
   useEffect(() => {
     ListOfLocation();
+    getEarningDetails();
   }, []);
   useEffect(() => {
     if (image) {
@@ -141,28 +216,26 @@ const ProfileDetails = () => {
     }
   }, [image]);
 
-  const [editProfile, setEditProfile] = useState(false);
-  const [show, setShow] = useState(true);
-  const [profileDetails, setProfileDetails] = useState({});
-  const [expertss, setExpertList] = useState([]);
-  const [concernss, setconcertList] = useState([]);
-  const [specialization,setSpecialization]=useState([])
-  const [updateProfile, setUpdateProfile] = useState({
-    // concerns: [],
-    expertise: [],
-    educationQualification: [],
-  });
-  
-  const [isBankDetails,setIsBankDetals]=useState(true)
-  console.log("updateProfile>>", profileDetails.concerns);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    Deletetherapist();
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const navigate = useNavigate();
   const expertList = () => {
     axios
       .get(`${API_URL}/getAllExpertise`)
       .then((res) => {
-        if (res.status == 200) {          
-          setExpertList(res.data.data);
+        if (res.status == 200) {
+          const experts = res.data.data;
+          setExpertList(experts);
         }
       })
       .catch((error) => {
@@ -171,10 +244,10 @@ const ProfileDetails = () => {
   };
   const concernList = () => {
     axios
-      .get(`${API_URL}/getAllConcerns`,{})
+      .get(`${API_URL}/getAllConcerns`)
       .then((res) => {
         if (res.status == 200) {
-          const concerns = res.data.data.map((item) => item);
+          const concerns = res.data.data;
           setconcertList(concerns);
         }
       })
@@ -182,25 +255,59 @@ const ProfileDetails = () => {
         console.log(error);
       });
   };
-
+  const specailizationList = () => {
+    axios
+      .get(`${API_URL}/getAllSpecialization`)
+      .then((res) => {
+        if (res.status == 200) {
+          const concerns = res.data.data;
+          setspecList(concerns);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const handleCheckboxChange = (event) => {
-    const value = event.target.value;
+    const concernId = event.target.value;
+
     setUpdateProfile((prevProfile) => {
-      const newConcerns = prevProfile?.concerns?.includes(value)
-        ? prevProfile.concerns?.filter((item) => item !== value)
-        : [...(prevProfile?.concerns || []), value];
+      const isAlreadySelected = prevProfile?.concerns?.includes(concernId);
+
+      const newConcerns = isAlreadySelected
+        ? prevProfile.concerns.filter((id) => id !== concernId)
+        : [...(prevProfile?.concerns || []), concernId];
+
       return {
         ...prevProfile,
         concerns: newConcerns,
       };
     });
   };
-  const handleCheckboxChange1 = (event) => {
-    const value = event.target.value;
+  const handleCheckboxChange2 = (event) => {
+    const specId = event.target.value;
+
     setUpdateProfile((prevProfile) => {
-      const newExpertise = prevProfile?.expertise?.includes(value)
-        ? prevProfile.expertise.filter((item) => item !== value)
-        : [...(prevProfile?.expertise || []), value]; // Provide fallback empty array
+      const isAlreadySelected = prevProfile?.specialization?.includes(specId);
+
+      const newSpecilization = isAlreadySelected
+        ? prevProfile.specialization.filter((id) => id !== specId)
+        : [...(prevProfile?.specialization || []), specId];
+      return {
+        ...prevProfile,
+        specialization: newSpecilization,
+      };
+    });
+  };
+  const handleCheckboxChange1 = (event) => {
+    const expertiseId = event.target.value;
+
+    setUpdateProfile((prevProfile) => {
+      const isAlreadySelected = prevProfile?.expertise?.includes(expertiseId);
+
+      const newExpertise = isAlreadySelected
+        ? prevProfile.expertise.filter((id) => id !== expertiseId)
+        : [...(prevProfile?.expertise || []), expertiseId];
 
       return {
         ...prevProfile,
@@ -212,15 +319,16 @@ const ProfileDetails = () => {
   const handleEditProfile = () => {
     setEditProfile(true);
     setShow(false);
-
     const data = {
+      therapistId: therapistId,
       name: profileDetails?.name,
       phoneNumber: profileDetails?.phone_number,
       email: profileDetails?.email,
       gender: profileDetails?.profile_details?.gender,
       dob: profileDetails?.profile_details?.dob,
       languages: profileDetails?.profile_details?.languages,
-      specialization: profileDetails?.profile_details?.specialization,
+      specialization:
+        profileDetails?.specialization?.map((spec) => spec._id) || [],
       designation: profileDetails?.profile_details?.designation,
       googleMeetLink: profileDetails?.profile_details?.google_meet_link,
       biography: profileDetails?.profile_details?.biography,
@@ -228,10 +336,10 @@ const ProfileDetails = () => {
       address: profileDetails?.profile_details?.address,
       city: profileDetails?.profile_details?.city,
       state: profileDetails?.profile_details?.state,
-      educationQualification: profileDetails?.educational_qualification?.degrees,
+      educationQualification: profileDetails?.educational_qualification,
       organiztion: profileDetails?.organization,
-      concerns: profileDetails?.concerns,
-      expertise: profileDetails?.expertise,
+      concerns: profileDetails?.concerns?.map((concern) => concern._id) || [],
+      expertise: profileDetails?.expertise?.map((expert) => expert._id) || [],
       accountHolderName: profileDetails?.bank_details?.account_holder_name,
       accountNumber: profileDetails?.bank_details?.account_number,
       bankName: profileDetails?.bank_details?.bank_name,
@@ -241,6 +349,9 @@ const ProfileDetails = () => {
 
     setUpdateProfile(data);
   };
+  useEffect(() => {
+    console.log(updateProfile, "uihreuhtfiehrihgie");
+  }, [updateProfile]);
   const cancelEditMode = () => {
     setEditProfile(false);
     setShow(true);
@@ -251,9 +362,9 @@ const ProfileDetails = () => {
       .get(`${API_URL}/therapistDetail/${therapistId}`)
       .then((res) => {
         if (res.status === 200) {
-          setProfileDetails(res.data.data);
-
-          setIsBankDetals(res.data.data?.bank_details?.account_number?.toString().trim().length > 0)
+          setProfileDetails(res?.data?.data);
+          setTherapistdata(res?.data?.data);
+          setSessionTaken(res?.data?.data?.sessionTaken);
           dispatch(userDetails(res.data.data));
         }
       })
@@ -287,22 +398,12 @@ const ProfileDetails = () => {
         console.error("Error:", err);
       });
   };
-  const getSpecialization=()=>{
-    axios.get(`${API_URL}/getAllSpecialization`).then((res)=>{
-      setSpecialization(res.data.data)
-    }).catch((err)=>{
-      console.log(err);
-    })
-  }
   useEffect(() => {
     getProfileDetails();
     concernList();
     expertList();
-    getSpecialization()
+    specailizationList();
   }, []);
-
-
-  
 
   const handelChage = (e) => {
     const { name, value } = e.target;
@@ -319,24 +420,25 @@ const ProfileDetails = () => {
     });
   };
 
-  const handleChange = (event) => {
+  const handleLanguageChange = (event) => {
     const { value } = event.target;
-    const qualificationsArray = value.trim().split(/\s+/).filter(Boolean);
+    const languagesArray = value.trim().split(/\s+/).filter(Boolean);
 
     setUpdateProfile((prevProfile) => ({
       ...prevProfile,
-      educationQualification: qualificationsArray,
+      languages: languagesArray,
     }));
   };
+
   return (
     <>
-      <div style={{ padding: "16px 32px" }}>
+      <div className="w-[100%] flex justify-between px-[2.5rem] mt-[2.5rem]">
         <h5 className="h5-bold">Profile Details</h5>
       </div>
 
-      <div className="w-full flex justify-evenly gap-[16px] p-[24px] sm:flex-row flex-col">
+      <div className="w-[100%] flex justify-evenly gap-[16px] p-[24px] sm:flex-row flex-col">
         <div
-          className={`flex justify-between flex-wrap rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[24px] h-[300px] w-full sm:w-[${
+          className={`flex  flex-coljustify-between flex-wrap  rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[24px] h-[300px] w-full sm:w-[${
             !show ? "100%" : "50%"
           }]`}
         >
@@ -369,7 +471,7 @@ const ProfileDetails = () => {
                 alt=""
               />
             </div>
-            <div className="flex w-full flex-col sm:flex-row justify-between w-full">
+            <div className="flex  flex-col sm:flex-row justify-between w-full">
               <div>
                 <h6 className="h6-bold">{profileDetails?.name}</h6>
                 <p className="body4-bold">{profileDetails?.email}</p>
@@ -391,13 +493,9 @@ const ProfileDetails = () => {
             </div>
           </div>
         </div>
-
         {show ? (
-          <div className="flex flex-col gap-8 w-full sm:w-[50%]">
-            {/* Biography Section */}
-
-            {/* Profile Details Section */}
-            <div className="flex flex-col gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[16px] h-[300px]">
+          <div className="flex flex-col w-[49%] gap-8">
+            <div className="flex  flex-col justify-between flex-wrap  rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[24px] h-[300px]">
               <div>
                 <p className="body1-bold">Profile Details</p>
               </div>
@@ -488,6 +586,32 @@ const ProfileDetails = () => {
                 </div>
               </div>
             </div>
+            <div className="flex flex-col items-start gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-10 w-full">
+              {/* Education Qualification Section */}
+              <div className="flex flex-col items-start gap-2 w-full">
+                <div className="flex items-center gap-4">
+                  <img src={DegreeCap} alt="Degree Cap" />
+                  <p className="body1-bold">Education Qualification</p>
+                </div>
+                <p className="body4-reg break-words w-full">
+                  {profileDetails?.educational_qualification}
+                </p>
+              </div>
+
+              {/* Google Meet Section */}
+              <div className="flex flex-col items-start gap-2 w-full">
+                <div className="flex items-center gap-4">
+                  <img src={camera} alt="Camera" />
+                  <p className="body1-bold">Google Meet</p>
+                </div>
+                <p className="body4-reg break-words w-full">
+                  Meet Link : {""} {profileDetails?.educational_qualification}
+                </p>
+                <button className="h-[6rem] w-[15rem] font-medium rounded-2xl text-white bg-[#614298] text-[2.4rem] items-center justify-center flex">
+                  Start Meet
+                </button>
+              </div>
+            </div>
           </div>
         ) : (
           ""
@@ -495,71 +619,31 @@ const ProfileDetails = () => {
       </div>
 
       {show ? (
-        <>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              background: "#FCFCFC",
-              padding: "0 16px 16px 16px",
-              margin: "0 10px 0px 10px",
-              gap: "16px",
-            }}
-          >
-            <div className="w-[48%] flex flex-col gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[16px] font-bold">
-              <div style={{ display: "flex flex-row", gap: 2 }}>
+        <div className="w-[100%] flex justify-evenly gap-[16px] px-[24px] sm:flex-row flex-col">
+          <div className="flex flex-col gap-[5px] justify-between rounded-[16px] border w-[49%] border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[24px]">
+            <div className="flex gap-8">
+              <img src={DegreeCap} alt="" />
+              <p className="body1-bold">Biography</p>
+            </div>
+            <p className="body4-reg">
+              {profileDetails?.profile_details?.biography}
+            </p>
+          </div>
+          <div className="flex flex-col w-[49%] gap-8">
+            <div className="flex flex-wrap items-center gap-[2rem] rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[15px] h-[90px]">
+              <h1 className="font-bold body1-bold">Total Session Taken</h1>
+              <p className="body1-reg">{sessionTaken}</p>
+            </div>
+            <div className="flex flex-col gap-[5px] justify-between rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[24px]">
+              <div className="flex gap-2">
                 <p className="body1-bold">Expertise</p>
               </div>
               <div className="body4-reg flex flex-row  gap-4 flex-shrink flex-wrap">
-                {profileDetails?.expertise?.length > 0 ? (
-                  profileDetails?.expertise.map((expertise, index) => (
-                    <p key={index} className="p-1  rounded-md">
+                {therapistdata?.expertise?.length > 0 ? (
+                  therapistdata?.expertise.map((expertise, index) => (
+                    <div key={index} className="p-1  rounded-md">
                       {expertise?.name}
-                    </p>
-                  ))
-                ) : (
-                  <p>No expertise available</p>
-                )}
-              </div>
-            </div>
-            <div className="flex justify-between gap-3 flex-col flex-wrap rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[24px] w-[50%]">
-              <div style={{ display: "flex", gap: 8 }}>
-                <img src={DegreeCap} alt="" />
-                <p className="body1-bold">Educational Qualification</p>
-              </div>
-              <p className="body4-reg">
-                {profileDetails?.educational_qualification}
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-wrap justify-evenly px-4 gap-0 ">
-            <div className=" w-[48%] flex flex-col gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[16px] font-bold">
-              <h1>Biography</h1>
-              <p className="body4-reg">
-                {profileDetails?.profile_details?.biography}
-              </p>
-            </div>
-            <div className="w-[48%] flex flex-col gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[16px] font-bold">
-              <h1>Concern</h1>
-              <div className="flex flex-wrap gap-4">
-
-                {profileDetails?.concerns?.map((item, ind) => (
-                  <p key={ind} className="body4-reg">
-                    {item?.concern},
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="px-10 mt-8">
-            <div className=" w-[48%] flex flex-col gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[16px] font-bold">
-              <h1>Specilization</h1>
-              <div className="body4-reg flex flex-row  gap-4 flex-shrink flex-wrap">
-                {profileDetails?.specialization?.length > 0 ? (
-                  profileDetails?.specialization.map((item, index) => (
-                    <p key={index} className="p-1  rounded-md">
-                      {item?.name}
-                    </p>
+                    </div>
                   ))
                 ) : (
                   <p>No expertise available</p>
@@ -567,7 +651,7 @@ const ProfileDetails = () => {
               </div>
             </div>
           </div>
-        </>
+        </div>
       ) : (
         ""
       )}
@@ -739,9 +823,12 @@ const ProfileDetails = () => {
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
                     Date of Birth*
                   </label>
+
                   <DatePicker
                     onChange={handleDOBChange}
                     value={updateProfile.dob}
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText="Select a date"
                   />
                 </div>
                 <div style={{ width: "32%" }}>
@@ -754,7 +841,7 @@ const ProfileDetails = () => {
                     required
                     name="languages"
                     value={updateProfile?.languages}
-                    onChange={handelChage}
+                    onChange={handleLanguageChange}
                     InputProps={{
                       sx: {
                         fontSize: "18px",
@@ -786,73 +873,37 @@ const ProfileDetails = () => {
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
                     Specilization*
                   </label>
-                  <Select
+                  <TextField
                     fullWidth
-                    name="state"
-                    value={updateProfile?.state || ""} // Default to an empty string if no value is selected
-                    onChange={(e) =>
-                      handelChage({
-                        target: {
-                          name: "state",
-                          value: e.target.value,
-                        },
-                      })
-                    }
+                    type="text"
                     required
-                    displayEmpty
-                    sx={{
-                      fontSize: "18px",
-                      fontFamily: "Nunito",
-                      fontStyle: "normal",
-                      fontWeight: 400,
-                      lineHeight: "24px",
-                      letterSpacing: "0.08px",
-                      height: "48px",
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: `#d5d2d9`,
-                      },
-                      "&:hover .MuiOutlinedInput-notchedOutline": {
-                        borderColor: `#d5d2d9`,
-                      },
-                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                        borderColor: `#d5d2d9`,
-                      },
-                      "& input::placeholder": {
-                        color: `#d5d2d9`,
+                    name="specialization"
+                    value={updateProfile?.specialization}
+                    onChange={handelChage}
+                    InputProps={{
+                      sx: {
+                        fontSize: "18px",
+                        fontFamily: "Nunito",
+                        fontStyle: "normal",
+                        fontWeight: 400,
+                        lineHeight: "24px",
+                        letterSpacing: "0.08px",
+                        height: "48px",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: `#d5d2d9`,
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: `#d5d2d9`,
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: `#d5d2d9`,
+                        },
+                        "& input::placeholder": {
+                          color: `#d5d2d9`,
+                        },
                       },
                     }}
-                  >
-                    <MenuItem value="">
-                      <em
-                        style={{
-                          fontSize: "18px",
-                          fontFamily: "Nunito",
-                          fontStyle: "normal",
-                          fontWeight: 400,
-                          lineHeight: "24px",
-                          letterSpacing: "0.08px",
-                        }}
-                      >
-                        Select a Specilization
-                      </em>
-                    </MenuItem>
-                    {specialization?.map((item) => (
-                      <MenuItem
-                        sx={{
-                          fontSize: "18px",
-                          fontFamily: "Nunito",
-                          fontStyle: "normal",
-                          fontWeight: 400,
-                          lineHeight: "24px",
-                          letterSpacing: "0.08px",
-                        }}
-                        key={item?._id}
-                        value={item?._id}
-                      >
-                        {item?.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  />
                 </div>
                 <div
                   style={{
@@ -950,8 +1001,8 @@ const ProfileDetails = () => {
                     rows="4"
                     cols="500"
                     name="educationQualification"
-                    value={profileDetails?.educational_qualification}
-                    onChange={handleChange}
+                    value={updateProfile?.educationQualification}
+                    onChange={handelChage}
                     required
                   ></textarea>
                 </div>
@@ -1189,7 +1240,6 @@ const ProfileDetails = () => {
                   </Select>
                 </div>
               </div>
-              {/* CONCERN */}
               <div className="flex flex-col gap-5">
                 <div className="w-full">
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
@@ -1205,17 +1255,15 @@ const ProfileDetails = () => {
                   >
                     {concernss.map((concern) => (
                       <FormControlLabel
-                        key={concern}
+                        key={concern._id}
                         control={
                           <Checkbox
-                            value={concern}
-                            checked={profileDetails.concerns?.some(c => c._id === concern._id)}
+                            value={concern._id}
+                            checked={updateProfile?.concerns?.includes(
+                              concern._id
+                            )}
                             onChange={handleCheckboxChange}
-                            disabled
                             sx={{
-                              "&.Mui-disabled": {
-                                cursor: "not-allowed", // Apply cursor style when disabled
-                              }, // This applies to the whole checkbox
                               "& .MuiSvgIcon-root": {
                                 fontSize: 24,
                                 padding: "0px",
@@ -1233,7 +1281,6 @@ const ProfileDetails = () => {
                     ))}
                   </div>
                 </div>
-
                 <div className="w-full">
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
                     Expertise
@@ -1248,14 +1295,14 @@ const ProfileDetails = () => {
                   >
                     {expertss.map((expert) => (
                       <FormControlLabel
-                        key={expert}
+                        key={expert._id}
                         control={
                           <Checkbox
-                            value={expert}
-                            checked={profileDetails.expertise?.some(c => c._id === expert._id)}
-                            // checked={profileDetails?.expertise?.includes(expert)}
+                            value={expert._id}
+                            checked={updateProfile?.expertise?.includes(
+                              expert._id
+                            )}
                             onChange={handleCheckboxChange1}
-                            disabled
                             sx={{
                               "& .MuiSvgIcon-root": {
                                 fontSize: 24,
@@ -1267,7 +1314,47 @@ const ProfileDetails = () => {
                         }
                         label={
                           <span className="p1-reg" style={{ color: "#7D748C" }}>
-                            {expert.name}
+                            {expert?.name}
+                          </span>
+                        }
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="w-full">
+                  <label className="p2-sem" style={{ color: "#4A4159" }}>
+                    Specilization
+                  </label>
+                  <div
+                    style={{
+                      display: "grid",
+                      //  gridTemplateColumns: "repeat(2, 1fr)",
+                      gridTemplateColumns: "repeat(6, 1fr)",
+                      gap: "10px",
+                    }}
+                  >
+                    {specialization.map((specalise) => (
+                      <FormControlLabel
+                        key={specalise._id}
+                        control={
+                          <Checkbox
+                            value={specalise._id}
+                            checked={updateProfile?.specialization?.includes(
+                              specalise._id
+                            )}
+                            onChange={handleCheckboxChange2}
+                            sx={{
+                              "& .MuiSvgIcon-root": {
+                                fontSize: 24,
+                                padding: "0px",
+                                margin: "0px",
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <span className="p1-reg" style={{ color: "#7D748C" }}>
+                            {specalise?.name}
                           </span>
                         }
                       />
@@ -1282,16 +1369,14 @@ const ProfileDetails = () => {
                 >
                   <div style={{ width: "32%" }}>
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Account Holder Name*
+                      Account Holder Name
                     </label>
                     <TextField
                       fullWidth
                       type="text"
-                      required
                       name="accountHolderName"
                       value={updateProfile?.accountHolderName}
                       onChange={handelChage}
-                      disabled={isBankDetails}
                       InputProps={{
                         sx: {
                           fontSize: "16px",
@@ -1320,16 +1405,14 @@ const ProfileDetails = () => {
                   </div>
                   <div style={{ width: "32%" }}>
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Account Number*
+                      Account Number
                     </label>
                     <TextField
                       fullWidth
                       type="text"
-                      required
                       name="accountNumber"
                       value={updateProfile?.accountNumber}
                       onChange={handelChage}
-                      disabled={isBankDetails}
                       InputProps={{
                         sx: {
                           fontSize: "18px",
@@ -1357,16 +1440,14 @@ const ProfileDetails = () => {
                   </div>
                   <div style={{ width: "32%" }}>
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Bank Name*
+                      Bank Name
                     </label>
                     <TextField
                       fullWidth
                       type="text"
-                      required
                       name="bankName"
                       value={updateProfile?.bankName}
                       onChange={handelChage}
-                      disabled={isBankDetails}
                       InputProps={{
                         sx: {
                           fontSize: "18px",
@@ -1402,16 +1483,14 @@ const ProfileDetails = () => {
                 >
                   <div style={{ width: "32%" }}>
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Branch Address*
+                      Branch Address
                     </label>
                     <TextField
                       fullWidth
                       type="text"
-                      required
                       name="branchAddress"
                       value={updateProfile?.branchAddress}
                       onChange={handelChage}
-                      disabled={isBankDetails}
                       InputProps={{
                         sx: {
                           fontSize: "16px",
@@ -1440,16 +1519,14 @@ const ProfileDetails = () => {
                   </div>
                   <div style={{ width: "32%" }}>
                     <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      IFSC Code*
+                      IFSC Code
                     </label>
                     <TextField
                       fullWidth
                       type="text"
-                      required
                       name="ifscCode"
                       value={updateProfile?.ifscCode}
                       onChange={handelChage}
-                      disabled={isBankDetails}
                       InputProps={{
                         sx: {
                           fontSize: "18px",

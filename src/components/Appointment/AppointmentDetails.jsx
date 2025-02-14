@@ -163,6 +163,28 @@ const AppointmentDetails = () => {
   const [activeNotesIndex, setActiveNotesIndex] = useState(-1);
   const [dateValue, setDateValue] = useState(new Date());
 
+  const [activityType, setActivityType] = useState("");
+  const [clientName, setClientName] = useState("");
+  const activities = [
+    { value: "", label: "None" },
+    { value: "Ten", label: "Ten" },
+    { value: "Twenty", label: "Twenty" },
+    { value: "Thirty", label: "Thirty" },
+  ];
+
+  const clients = [
+    { value: "", label: "None" },
+    { value: "John Doe", label: "John Doe" },
+    { value: "Jane Smith", label: "Jane Smith" },
+    { value: "Michael Brown", label: "Michael Brown" },
+  ];
+
+  const handleSend = () => {
+    console.log("Mention:", mention);
+    console.log("Selected Activity Type:", activityType);
+    console.log("Selected Client Name:", clientName);
+  };
+
   const handleClick = (index) => {
     setActiveIndex(index === activeIndex ? -1 : index);
   };
@@ -506,121 +528,129 @@ const AppointmentDetails = () => {
   const generatePdf = () => {
     // const { jsPDF } = window.jspdf;
     var doc = new jsPDF();
-  
+
     // Set colors
     const greenColor = [200, 236, 108];
     const blackColor = [0, 0, 0];
-  
+
     // Add a logo (use your logo here if needed)
-    doc.addImage(ensolabLogo, 'PNG', 25, 10, 40, 25);
-  
+    doc.addImage(ensolabLogo, "PNG", 25, 10, 40, 25);
+
     // Invoice Title
     doc.setFontSize(30);
     doc.setFont("Nunito", "bold");
     doc.text("Invoice", 180, 25, "right");
-  
+
     // Invoice Number & Date on the Left
     doc.setFontSize(10);
     doc.setFont("Nunito", "normal");
     doc.text("Invoice Number:", 20, 50);
     doc.text("EIL/24/25/360765", 50, 50);
-  
+
     doc.text("Invoice Date:", 20, 55);
     doc.text(getformatedDate(appointDetails?.created_at), 50, 55);
-  
+
     // Company Information on the Right
     doc.text("Company Name:", 100, 50);
     doc.text("Enso Innovation Lab Pvt. Ltd.", 135, 50);
-  
+
     doc.text("Address:", 100, 55);
     doc.text("B-503, ATS Bouquet , Noida Sector - 132", 135, 55);
     doc.text("U.P - 201304", 135, 60);
-  
+
     // GST Number & Phone
     doc.text("GST No:", 20, 70);
     doc.text("GSTIN 07AAGCE434QI2B", 50, 70);
     doc.text("Phone:", 100, 70);
     doc.text("+91 9873020194", 135, 70);
-  
+
     // Billed To
     doc.setFontSize(15);
     doc.setFont("Nunito", "bold");
     doc.text("Billed To:", 20, 85);
-  
+
     doc.setFontSize(12);
     doc.setFont("Nunito", "normal");
     doc.text(`Name: ${clientDetail?.name}`, 20, 95);
     doc.text(`Address: ${clientDetail?.profile_details?.address}`, 20, 100);
     doc.text(`Phone: ${clientDetail?.phone_number}`, 20, 105);
-  
+
     // Background for the 'Particulars' Section
     doc.setFillColor(...greenColor); // Green background
-    doc.roundedRect(20, 120, 170, 10, 2 , 2 , "F"); // Draw green rectangle for heading
-  
+    doc.roundedRect(20, 120, 170, 10, 2, 2, "F"); // Draw green rectangle for heading
+
     // Particulars Section
     doc.setFontSize(12);
     doc.setFont("Nunito", "bold");
     doc.setTextColor(0, 0, 0); // White text
     doc.text("Particular", 25, 126);
     doc.text("Price", 180, 126, { align: "right" });
-  
+
     // Set text color back to black
     doc.setTextColor(...blackColor);
-  
+
     // Items with price
     doc.setFontSize(12);
     doc.setFont("Nunito", "normal");
     doc.text(
-      `${appointDetails?.booking_type.replace(/\b\w/g, (char) => char.toUpperCase())} Counselling ${appointDetails?.type.replace(/\b\w/g, (char) => char.toUpperCase())}`,
+      `${appointDetails?.booking_type.replace(/\b\w/g, (char) =>
+        char.toUpperCase()
+      )} Counselling ${appointDetails?.type.replace(/\b\w/g, (char) =>
+        char.toUpperCase()
+      )}`,
       25,
       140
-    );    
+    );
     doc.text(`${appointDetails?.amount}`, 180, 140, null, null, "right");
     doc.line(20, 145, 190, 145);
-  
+
     doc.line(20, 155, 190, 155);
-    
+
     // Total Section
     doc.setFontSize(12);
     doc.setFont("Nunito", "bold");
     doc.text("Total", 25, 161);
     doc.text(`${appointDetails?.amount}`, 180, 161, null, null, "right");
     doc.line(20, 165, 190, 165);
-  
+
     // Subtotal and total at the bottom
     doc.setFontSize(14);
     doc.setFont("Nunito", "bold");
     doc.text("Particulars", 130, 180);
-  
+
     // Subtotal and total at the bottom
     doc.setFontSize(14);
     doc.setFont("Nunito", "normal");
     doc.text("Subtotal", 130, 189);
     doc.text(`${appointDetails?.amount}`, 180, 189, null, null, "right");
-  
+
     doc.setFontSize(14);
     doc.setFont("Nunito", "normal");
     doc.text("GST (@18%)", 130, 197);
     doc.text("0", 180, 197, { align: "right" });
-  
+
     // Add green background for 'Grand Total' with rounded corners
     doc.setFillColor(...greenColor); // Set the green background color
     doc.roundedRect(125, 201, 60, 8, 2, 2, "F"); // Draw rounded rectangle with 8px radius for 'Grand Total'
-  
+
     // Grand Total Section
     doc.setFontSize(14);
     doc.setFont("Nunito", "bold");
     doc.text("Grand Total", 130, 206);
     doc.text(`${appointDetails?.amount}`, 180, 206, null, null, "right");
-  
+
     // Reset text color to black for the rest of the document
     doc.setTextColor(...blackColor);
-  
+
     // Notes section
     doc.setFontSize(12);
     doc.setFont("Nunito", "normal");
-    doc.text("Notes: This invoice is auto - generated no signature required", 50, 260);
-  
+    doc.text(
+      "Notes: This invoice is auto - generated no signature required",
+      50,
+      260
+    );
+
     // Save the PDF
     doc.save("Invoice.pdf");
   };
@@ -638,8 +668,6 @@ const AppointmentDetails = () => {
     type: appointDetails?.type,
   };
 
-
-
   const sendPaymentLink = () => {
     axios
       .post(`${API_URL}/payment/createPaymentLink`, data)
@@ -654,7 +682,7 @@ const AppointmentDetails = () => {
         toast.error("Error in sending PaymentLink");
       });
   };
-  
+
   return (
     <>
       <div
@@ -1382,7 +1410,7 @@ const AppointmentDetails = () => {
                                             >
                                               <div>
                                                 <p
-                                                  className="p2-sem"
+                                                  className="p1-sem"
                                                   style={{ color: "#4A4159" }}
                                                 >
                                                   Date
@@ -1395,7 +1423,7 @@ const AppointmentDetails = () => {
                                               </div>
                                               <div>
                                                 <p
-                                                  className="p2-sem"
+                                                  className="p1-sem"
                                                   style={{ color: "#4A4159" }}
                                                 >
                                                   Dosage
@@ -1406,7 +1434,7 @@ const AppointmentDetails = () => {
                                               </div>
                                               <div>
                                                 <p
-                                                  className="p2-sem"
+                                                  className="p1-sem"
                                                   style={{ color: "#4A4159" }}
                                                 >
                                                   Description
@@ -1425,7 +1453,7 @@ const AppointmentDetails = () => {
                                             >
                                               <div>
                                                 <p
-                                                  className="p2-sem"
+                                                  className="p1-sem"
                                                   style={{ color: "#4A4159" }}
                                                 >
                                                   Title
@@ -1436,7 +1464,7 @@ const AppointmentDetails = () => {
                                               </div>
                                               <div>
                                                 <p
-                                                  className="p2-sem"
+                                                  className="p1-sem"
                                                   style={{ color: "#4A4159" }}
                                                 >
                                                   Instruction
@@ -1706,7 +1734,7 @@ const AppointmentDetails = () => {
                                           >
                                             <div>
                                               <p
-                                                className="p2-sem"
+                                                className="p1-sem"
                                                 style={{ color: "#4A4159" }}
                                               >
                                                 Date
@@ -1717,7 +1745,7 @@ const AppointmentDetails = () => {
                                             </div>
                                             <div>
                                               <p
-                                                className="p2-sem"
+                                                className="p1-sem"
                                                 style={{ color: "#4A4159" }}
                                               >
                                                 Dosage
@@ -1728,7 +1756,7 @@ const AppointmentDetails = () => {
                                             </div>
                                             <div>
                                               <p
-                                                className="p2-sem"
+                                                className="p1-sem"
                                                 style={{ color: "#4A4159" }}
                                               >
                                                 Description
@@ -1747,7 +1775,7 @@ const AppointmentDetails = () => {
                                           >
                                             <div>
                                               <p
-                                                className="p2-sem"
+                                                className="p1-sem"
                                                 style={{ color: "#4A4159" }}
                                               >
                                                 Title
@@ -1758,7 +1786,7 @@ const AppointmentDetails = () => {
                                             </div>
                                             <div>
                                               <p
-                                                className="p2-sem"
+                                                className="p1-sem"
                                                 style={{ color: "#4A4159" }}
                                               >
                                                 Instruction
@@ -1877,7 +1905,7 @@ const AppointmentDetails = () => {
                           Intervention Note
                         </h1>
                         <div className="w-full">
-                          <h2 className="p2-sem" style={{ color: "#4A4159" }}>
+                          <h2 className="p1-sem" style={{ color: "#4A4159" }}>
                             Send to
                           </h2>
                           <div style={{ display: "flex", gap: "20px" }}>
@@ -1961,7 +1989,7 @@ const AppointmentDetails = () => {
                             />
                           </div>
                         </div>
-                        <h2 className="p2-sem" style={{ color: "#4A4159" }}>
+                        <h2 className="p1-sem" style={{ color: "#4A4159" }}>
                           Title
                         </h2>
                         <TextField
@@ -1997,7 +2025,7 @@ const AppointmentDetails = () => {
                             },
                           }}
                         />
-                        <h2 className="p2-sem" style={{ color: "#4A4159" }}>
+                        <h2 className="p1-sem" style={{ color: "#4A4159" }}>
                           Description
                         </h2>
                         <textarea
@@ -2508,8 +2536,8 @@ const AppointmentDetails = () => {
                                                   "&:hover": {
                                                     boxShadow:
                                                       "0px 4px 12px rgba(0, 0, 0, 0.2)", // Overshadow effect
-                                                  color: "#fff", // Text color white
-                                                  background: "#614298", // Keep background color the same
+                                                    color: "#fff", // Text color white
+                                                    background: "#614298", // Keep background color the same
                                                   },
                                                 }}
                                                 onClick={() => {
@@ -2631,162 +2659,114 @@ const AppointmentDetails = () => {
               </div>
             )}
           </div>
-          <div
-            style={{
-              padding: "24px",
-              borderRadius: "16px",
-              border: "1px solid #D5D2D9",
-              background: "#FCFCFC",
-              display: "flex",
-              flexDirection: "column",
-              gap: 16,
-            }}
-          >
-            <div
-              style={{ display: "flex", justifyContent: "space-between" }}
-              className="flex-col sm:flex-row sm:items-center"
-            >
-              <h5 className="h5-bold">Assessments</h5>
-              <div>
-                <Button
-                  variant="outlined"
-                  sx={{
-                    display: "flex",
-                    width: "196px",
-                    gap: 4,
-                    height: "48px",
-                    borderRadius: "8px",
-                    border: "1px solid #614298",
-                    textTransform: "capitalize",
-                    color: "#614298",
-                    "@media (max-width: 640px)": {
-                      width: "100%",
-                      marginTop: "5px",
-                    },
-                  }}
-                >
-                  <span className="btn1">Send Assessment</span>{" "}
-                </Button>
+          <div className=" border rounded-3xl border-solid border-[#4A4159] bg-[#FCFCFC] flex flex-col gap-13">
+            <div className=" rounded-[16px] p-[4rem] border border-[#4A4159] bg-[#FCFCFC] w-full">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="text-[3.4rem] font-nunito font-bold">
+                  Assesment
+                  
+                </div>
               </div>
-            </div>
 
-            <div className="flex justify-between flex-col sm:flex-row">
-              <FormControl sx={{ m: 1, minWidth: 300 }}>
-                <label
-                  className="p2-sem"
-                  style={{ color: "#4A4159" }}
-                  htmlFor=""
-                >
-                  Name of Assessment
-                </label>
-                <Select id="demo-simple-select-helper">
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
+              <div className="flex flex-col sm:flex-row gap-4 mt-4 sm:justify-between">
+                <div className="flex flex-col w-[45%] h-[10rem] ">
+                  <label  className="p1-sem text-[#4A4159]">
+                    Type Activities
+                  </label>
+                  <select
+                    className=" border-1 border-[#4A4159]  w-full text-[2.4rem] cursor-pointer h-[7rem] p-6 font-nunito rounded-2xl"
+                    value={activityType}
+                    onChange={(e) => setActivityType(e.target.value)}
+                  >
+                    {activities.map((activity) => (
+                      <option key={activity.value} value={activity.value}>
+                        {activity.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <FormControl sx={{ m: 1, minWidth: 300 }}>
-                <label
-                  className="p2-sem"
-                  style={{ color: "#4A4159" }}
-                  htmlFor=""
+                <div className="flex flex-col w-[45%]">
+                  <label  className="p1-sem">
+                    Client Name
+                  </label>
+                  <select
+                    className=" border-1 border-[#4A4159]  w-full text-[2.4rem] cursor-pointer h-[7rem] p-6 font-nunito rounded-2xl"
+                    value={clientName}
+                    onChange={(e) => setClientName(e.target.value)}
+                  >
+                    {clients.map((client) => (
+                      <option key={client.value} value={client.value}>
+                        {client.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+             
+              <div className="flex justify-end mt-4">
+                <button
+                  className="flex items-center w-[25rem] text-[1.8rem] mt-8 font-bold  cursor-pointer font-nunito p-4 justify-center gap-6  h-[6rem]  text-[#614298] bg-white  border border-[#614298] rounded-2xl capitalize hover:bg-[#614298] hover:text-white transition duration-300"
+                  onClick={handleSend}
                 >
-                  Client Name
-                </label>
-                <Select id="demo-simple-select-helper">
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
+                  Send Assesment
+                </button>
+              </div>
             </div>
           </div>
-
-          <div
-            style={{
-              padding: "24px",
-              borderRadius: "16px",
-              border: "1px solid #D5D2D9",
-              background: "#FCFCFC",
-            }}
-          >
-            <div
-              style={{ display: "flex", justifyContent: "space-between" }}
-              className="flex-col sm:flex-row sm:items-center"
-            >
-              <h5
-                className="h5-bold"
-                onClick={handleTogglePrescription}
-                style={{ cursor: "pointer", display: "flex", gap: 8 }}
-              >
-                Activities
-              </h5>
-              <div>
-                <Button
-                  variant="outlined"
-                  sx={{
-                    display: "flex",
-                    width: "196px",
-                    gap: 4,
-                    height: "48px",
-                    borderRadius: "8px",
-                    border: "1px solid #614298",
-                    textTransform: "capitalize",
-                    color: "#614298",
-                    "@media (max-width: 640px)": {
-                      width: "100%",
-                      marginTop: "5px",
-                    },
-                  }}
-                >
-                  <span className="btn1">Send activities</span>
-                </Button>
+          <div className=" border rounded-3xl border-solid border-[#4A4159] bg-[#FCFCFC] flex flex-col gap-13">
+            <div className=" rounded-[16px] p-[4rem] border border-[#4A4159] bg-[#FCFCFC] w-full">
+              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="text-[3.4rem] font-nunito font-bold">
+                  Activites
+                  
+                </div>
               </div>
-            </div>
 
-            <div className="flex justify-between flex-col sm:flex-row">
-              <FormControl sx={{ m: 1, minWidth: 300 }}>
-                <label
-                  className="p2-sem"
-                  style={{ color: "#4A4159" }}
-                  htmlFor=""
-                >
-                  Type of Activity
-                </label>
-                <Select id="demo-simple-select-helper">
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
+              <div className="flex flex-col sm:flex-row gap-4 mt-4 sm:justify-between">
+                <div className="flex flex-col w-[45%] h-[10rem] ">
+                  <label  className="p1-sem text-[#4A4159]">
+                    Type Activities
+                  </label>
+                  <select
+                    className=" border-1 border-[#4A4159]  w-full text-[2.4rem] cursor-pointer h-[7rem] p-6 font-nunito rounded-2xl"
+                    value={activityType}
+                    onChange={(e) => setActivityType(e.target.value)}
+                  >
+                    {activities.map((activity) => (
+                      <option key={activity.value} value={activity.value}>
+                        {activity.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <FormControl sx={{ m: 1, minWidth: 300 }}>
-                <label
-                  className="p2-sem"
-                  style={{ color: "#4A4159" }}
-                  htmlFor=""
+                <div className="flex flex-col w-[45%]">
+                  <label  className="p1-sem">
+                    Client Name
+                  </label>
+                  <select
+                    className=" border-1 border-[#4A4159]  w-full text-[2.4rem] cursor-pointer h-[7rem] p-6 font-nunito rounded-2xl"
+                    value={clientName}
+                    onChange={(e) => setClientName(e.target.value)}
+                  >
+                    {clients.map((client) => (
+                      <option key={client.value} value={client.value}>
+                        {client.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+             
+              <div className="flex justify-end mt-4">
+                <button
+                  className="flex items-center w-[25rem] text-[1.8rem] mt-8 font-bold  cursor-pointer font-nunito p-4 justify-center gap-6  h-[6rem]  text-[#614298] bg-white  border border-[#614298] rounded-2xl capitalize hover:bg-[#614298] hover:text-white transition duration-300"
+                  onClick={handleSend}
                 >
-                  Client Name
-                </label>
-                <Select id="demo-simple-select-helper">
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
+                  Send ACitivity
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -2902,7 +2882,7 @@ const AppointmentDetails = () => {
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   <div style={{ width: "100%" }}>
-                    <label className="p2-sem" style={{ color: "#4A4159" }}>
+                    <label className="p1-sem" style={{ color: "#4A4159" }}>
                       Name
                     </label>
                     <TextField
@@ -2946,13 +2926,13 @@ const AppointmentDetails = () => {
                   }}
                 >
                   <div style={{ width: "48%" }}>
-                    <label className="p2-sem" style={{ color: "#4A4159" }}>
+                    <label className="p1-sem" style={{ color: "#4A4159" }}>
                       Date of Birth
                     </label>
                     <DatePicker onChange={handleDateChange} value={dateValue} />
                   </div>
                   <div style={{ width: "48%" }}>
-                    <label className="p2-sem" style={{ color: "#4A4159" }}>
+                    <label className="p1-sem" style={{ color: "#4A4159" }}>
                       Age
                     </label>
                     <TextField
@@ -2996,7 +2976,7 @@ const AppointmentDetails = () => {
                   }}
                 >
                   <div style={{ width: "48%" }}>
-                    <label className="p2-sem" style={{ color: "#4A4159" }}>
+                    <label className="p1-sem" style={{ color: "#4A4159" }}>
                       Mobile No.
                     </label>
                     <TextField
@@ -3039,7 +3019,7 @@ const AppointmentDetails = () => {
                     />
                   </div>
                   <div style={{ width: "48%" }}>
-                    <label className="p2-sem" style={{ color: "#4A4159" }}>
+                    <label className="p1-sem" style={{ color: "#4A4159" }}>
                       Email
                     </label>
                     <TextField
@@ -3082,7 +3062,7 @@ const AppointmentDetails = () => {
                     width: "100%",
                   }}
                 >
-                  <label className="p2-sem" style={{ color: "#4A4159" }}>
+                  <label className="p1-sem" style={{ color: "#4A4159" }}>
                     Address
                   </label>
                   <textarea
