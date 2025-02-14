@@ -145,11 +145,10 @@ const PublicRoute = () => {
   
 
   if (role) {
-    // Redirect to the appropriate dashboard based on the role
     return <Navigate to={role === "therapist" ? "/therapist/dashboards" : "/client/dashboards"} replace />;
   }
 
-  return <Outlet />; // Render public route if no user is authenticated
+  return <Outlet />; 
 };
 const Layout = ({ children }) => {
   const { role } = useSelector((state) => state.userDetails);

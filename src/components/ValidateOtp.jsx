@@ -256,7 +256,6 @@ const ValidateOtp = () => {
             </p>
           </StyledLink>
         </div>
-        <Welcome open={open} handleClose={handleClose} id={details?._id} />
       </div>
     </>
   );

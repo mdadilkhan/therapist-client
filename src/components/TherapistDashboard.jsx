@@ -196,7 +196,10 @@ const TherapistDashboard = () => {
 
   const newAppointmentList = () => {
     axios
-      .get(`${API_URL}/getUpcomingAppointments/preconsultation`)
+    .post(`${API_URL}/getUpcomingAppointments`, {
+      type: value == "2" ? "session" : "preconsultation",
+      therapistID: userDetail._id,
+    })
       .then((res) => {
         if (res.status == 200) {
           setNewAppointment(res.data.data);
@@ -209,7 +212,10 @@ const TherapistDashboard = () => {
   };
   const oldAppointmentList = () => {
     axios
-      .get(`${API_URL}/getUpcomingAppointments/session`)
+      .post(`${API_URL}/getUpcomingAppointments`, {
+        type: value == "2" ? "session" : "preconsultation",
+        therapistID: userDetail._id,
+      })
       .then((res) => {
         if (res.status == 200) {
           // setNewAppointment(res.data.data);
@@ -260,7 +266,9 @@ const TherapistDashboard = () => {
   };
   const dashboardCounter = () => {
     axios
-      .get(`${API_URL}/getDashboardCounter`)
+      .post(`${API_URL}/getDashboardCounterByTherapist`,{
+        therapistId:userDetail._id
+      })
       .then((res) => {
         if (res.status == 200) {
           setDashboardCount(res.data.data);
@@ -358,7 +366,7 @@ const TherapistDashboard = () => {
               </button>
             </div>
             <h1 className="dashboard-detils-amount text-left">
-              ₹{therapistDetail?.totalEarnings}/-
+              ₹{therapistDetail?.totalEarnings?.toFixed(2)}/-
             </h1>
             <div className="flex justify-between mb-[14px] mt-4">
               <div>
@@ -625,7 +633,7 @@ const TherapistDashboard = () => {
                                       align="left"
                                       className="body3-reg"
                                     >
-                                      <div>{row?.clientName}</div>
+                                      <div>{row?.userDetails?.name}</div>
                                     </TableCell>
                                     <TableCell
                                       align="left"
@@ -956,7 +964,7 @@ const TherapistDashboard = () => {
                                 <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                                   <div className="body3-sem w-[50%]">Name</div>
                                   <div className="body3-reg pr-2 w-[50%]">
-                                    {item?.clientName}
+                                    {item?.userDetails?.name}
                                   </div>
                                 </div>
                                 <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
@@ -1145,7 +1153,7 @@ const TherapistDashboard = () => {
                                       align="left"
                                       className="body3-reg"
                                     >
-                                      <div>{row?.clientName}</div>
+                                      <div>{row?.userDetails?.name}</div>
                                     </TableCell>
                                     <TableCell
                                       align="left"
@@ -1472,7 +1480,7 @@ const TherapistDashboard = () => {
                                 <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                                   <div className="body3-sem w-[50%]">Name</div>
                                   <div className="body3-reg pr-2 w-[50%]">
-                                    {item?.clientName}
+                                    {item?.userDetails?.name}
                                   </div>
                                 </div>
                                 <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">

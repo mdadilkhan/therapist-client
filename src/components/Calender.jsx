@@ -110,7 +110,7 @@ const Calender = () => {
   const [searchParams] = useSearchParams();
   const refralClientId = searchParams.get("client");
 
-  const therapistId = details?.id;
+  const therapistId = details?._id;
   const socket = useSocket();
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -300,7 +300,7 @@ const Calender = () => {
   };
   const getpreSlots = () => {
     const data = {
-      therapistId: details?.id,
+      therapistId: details?._id,
       date: formatDate(dateValue),
     };
     axios
@@ -319,8 +319,10 @@ const Calender = () => {
   const getSlots = () => {
     const data = {
       date: formatDate(dateValue),
-      therapistId: therapistId,
+      therapistId: details?._id,
     };
+    console.log(data,"hello data ");
+    
     axios
       .post(`${API_URL}/getTherapistSlots`, data)
       .then((res) => {
@@ -512,12 +514,13 @@ const Calender = () => {
         .post(`${API_URL}/rescheduleAppointment`, rescheduleData)
         .then((res) => {
           if (res.status == 200) {
-            socket.emit("client", {
-              title: "Upcoming Appointment",
-              message: `${clientData?.name}  your appointment has been reschdule  by ${details?.name} at ${selectedSlots} on ${formattedDateValue} `,
-              role: "user",
-              userId: clientData?._id,
-            });
+          console.log("reschdule sucessfully");
+            // socket.emit("client", {
+            //   title: "Upcoming Appointment",
+            //   message: `${clientData?.name}  your appointment has been reschdule  by ${details?.name} at ${selectedSlots} on ${formattedDateValue} `,
+            //   role: "user",
+            //   userId: clientData?._id,
+            // });
             toast.success(`Appointment has been Reschdule`, {
               position: "top-center", // Set the position to top-right
               duration: 3000, // Display for 3 seconds (3000 ms)
@@ -526,6 +529,8 @@ const Calender = () => {
                 fontSize: "14px", // Smaller text
               },
             });
+            handleCloseAppointment();
+            console.log("reschdule1 sucessfully");
             navigate("/therapist/upcomming-appointments");
           }
         })
@@ -883,7 +888,7 @@ const Calender = () => {
                         backgroundColor: "#ffffff",
                       }}
                     >
-                      <span>Close</span>
+                      <span>Closer</span>
                     </button>
                   </DialogActions>
                 </form>

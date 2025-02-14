@@ -141,6 +141,7 @@ const Wallet = () => {
         amount: amt,
         order_id: oid,
         payment_id: pid,
+        userId:userDetails._id
       });
       if (res.status === 200) {
         getWalletDetails(); // Refresh wallet details

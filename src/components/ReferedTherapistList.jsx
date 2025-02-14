@@ -114,7 +114,7 @@ const ReferedTherapistList = () => {
   const [therapist,setTherapist]=useState([])
 
   useEffect(()=>{
-     axios.get(`${API_URL}//getListOfTherapistSuggestedToUser`).then((res)=>{
+     axios.get(`${API_URL}/getListOfTherapistSuggestedToUser`).then((res)=>{
       if(res.status===200){
         setTherapist(res.data.data)
       }

@@ -17,7 +17,6 @@ import EditIcon from "../assets/EditProfileIcon.svg";
 import { API_URL } from "../constant/ApiConstant";
 import { useDispatch, useSelector } from "react-redux";
 import { userDetails } from "../store/slices/userSlices";
-
 import { Button, TextField } from "@mui/material";
 import { getformatedDate } from "../constant/constatnt";
 import DatePicker from "react-date-picker";
@@ -258,7 +257,7 @@ const ClientProfileDetails = () => {
                 alt=""
               />
               <img
-                className="absolute left-[25%] top-[70%] cursor-pointer"
+                className="absolute left-[18rem] top-[18rem] cursor-pointer"
                 onClick={() => {
                   fileRef.current.click();
                 }}
@@ -337,28 +336,6 @@ const ClientProfileDetails = () => {
                   <img src={Email} alt="" />
                   <p className="body4-reg">Email ID</p>
                 </div>
-                {/* <div
-                  style={{
-                    display: "flex",
-                    gap: 4,
-                    height: "20px",
-                    alignItems: "center",
-                  }}
-                >
-                  <img src={Designation} alt="" />
-                  <p className="body4-reg">Designation</p>
-                </div> */}
-                {/* <div
-                  style={{
-                    display: "flex",
-                    gap: 4,
-                    height: "20px",
-                    alignItems: "center",
-                  }}
-                >
-                  <img src={Buildings} alt="" />
-                  <p className="body4-reg">Organisation Name</p>
-                </div> */}
                 <div
                   style={{
                     display: "flex",
@@ -389,19 +366,8 @@ const ClientProfileDetails = () => {
                     alignItems: "center",
                   }}
                 >
-                  <img src={Key} alt="" />
-                  <p className="body4-reg">Password</p>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 4,
-                    height: "20px",
-                    alignItems: "center",
-                  }}
-                >
                   <img src={Calendar1} alt="" />
-                  <p className="body4-reg">Added On:</p>
+                  <p className="body4-reg">Added  On:</p>
                 </div>
               </div>
               <div
@@ -464,16 +430,6 @@ const ClientProfileDetails = () => {
                   }}
                 >
                   <p className="body4-reg">{profileDetails?.email}</p>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 4,
-                    height: "20px",
-                    alignItems: "center",
-                  }}
-                >
-                  <p className="body4-reg">##########</p>
                 </div>
                 <div
                   style={{
