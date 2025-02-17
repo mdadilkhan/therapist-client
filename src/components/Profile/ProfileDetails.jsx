@@ -21,6 +21,9 @@ import {
   MenuItem,
   Checkbox,
   Select,
+  Autocomplete,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { getformatedDate } from "../../constant/constatnt";
 import toast from "react-hot-toast";
@@ -28,6 +31,19 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-calendar/dist/Calendar.css";
 import { useDispatch, useSelector } from "react-redux";
+
+const languageOptions = [
+  "English",
+  "Spanish",
+  "French",
+  "German",
+  "Hindi",
+  "Mandarin",
+  "Japanese",
+  "Russian",
+  "Arabic",
+  "Portuguese",
+];
 
 const editButtonStyle = {
   display: "flex",
@@ -268,22 +284,6 @@ const ProfileDetails = () => {
         console.log(error);
       });
   };
-  const handleCheckboxChange = (event) => {
-    const concernId = event.target.value;
-
-    setUpdateProfile((prevProfile) => {
-      const isAlreadySelected = prevProfile?.concerns?.includes(concernId);
-
-      const newConcerns = isAlreadySelected
-        ? prevProfile.concerns.filter((id) => id !== concernId)
-        : [...(prevProfile?.concerns || []), concernId];
-
-      return {
-        ...prevProfile,
-        concerns: newConcerns,
-      };
-    });
-  };
   const handleCheckboxChange2 = (event) => {
     const specId = event.target.value;
 
@@ -422,11 +422,9 @@ const ProfileDetails = () => {
 
   const handleLanguageChange = (event) => {
     const { value } = event.target;
-    const languagesArray = value.trim().split(/\s+/).filter(Boolean);
-
     setUpdateProfile((prevProfile) => ({
       ...prevProfile,
-      languages: languagesArray,
+      languages: value, // Directly store selected languages
     }));
   };
 
@@ -835,15 +833,13 @@ const ProfileDetails = () => {
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
                     Languages
                   </label>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    required
-                    name="languages"
-                    value={updateProfile?.languages}
-                    onChange={handleLanguageChange}
-                    InputProps={{
-                      sx: {
+                  <FormControl fullWidth required>
+                    <Select
+                      multiple
+                      value={updateProfile.languages}
+                      onChange={handleLanguageChange}
+                      renderValue={(selected) => selected.join(", ")} // Display selected languages
+                      sx={{
                         fontSize: "18px",
                         fontFamily: "Nunito",
                         fontStyle: "normal",
@@ -860,26 +856,37 @@ const ProfileDetails = () => {
                         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                           borderColor: `#d5d2d9`,
                         },
-                        "& input::placeholder": {
-                          color: `#d5d2d9`,
-                        },
-                      },
-                    }}
-                  />
+                      }}
+                    >
+                      {languageOptions.map((language) => (
+                        <MenuItem
+                          key={language}
+                          value={language}
+                          sx={{
+                            fontSize: "18px",
+                            fontFamily: "Nunito",
+                            fontWeight: "500",
+                            padding: "10px",
+                          }}
+                        >
+                          {language}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div style={{ width: "32%" }}>
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    Specilization*
+                    OtherFiled*
                   </label>
                   <TextField
                     fullWidth
                     type="text"
-                    required
                     name="specialization"
-                    value={updateProfile?.specialization}
-                    onChange={handelChage}
+                    // value={updateProfile?.specialization}
+                    // onChange={handelChage}
                     InputProps={{
                       sx: {
                         fontSize: "18px",
@@ -1262,7 +1269,6 @@ const ProfileDetails = () => {
                             checked={updateProfile?.concerns?.includes(
                               concern._id
                             )}
-                            onChange={handleCheckboxChange}
                             sx={{
                               "& .MuiSvgIcon-root": {
                                 fontSize: 24,
@@ -1378,6 +1384,7 @@ const ProfileDetails = () => {
                       value={updateProfile?.accountHolderName}
                       onChange={handelChage}
                       InputProps={{
+                        readOnly: updateProfile.ifscCode !== "",
                         sx: {
                           fontSize: "16px",
                           fontFamily: "Nunito",
@@ -1449,6 +1456,7 @@ const ProfileDetails = () => {
                       value={updateProfile?.bankName}
                       onChange={handelChage}
                       InputProps={{
+                        readOnly: updateProfile.ifscCode !== "",
                         sx: {
                           fontSize: "18px",
                           fontFamily: "Nunito",
@@ -1492,6 +1500,7 @@ const ProfileDetails = () => {
                       value={updateProfile?.branchAddress}
                       onChange={handelChage}
                       InputProps={{
+                        readOnly: updateProfile.ifscCode !== "",
                         sx: {
                           fontSize: "16px",
                           fontFamily: "Nunito",
@@ -1528,6 +1537,7 @@ const ProfileDetails = () => {
                       value={updateProfile?.ifscCode}
                       onChange={handelChage}
                       InputProps={{
+                          readOnly: updateProfile.ifscCode !== "",
                         sx: {
                           fontSize: "18px",
                           fontFamily: "Nunito",

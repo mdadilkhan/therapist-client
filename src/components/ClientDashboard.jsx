@@ -252,10 +252,11 @@ const ClientDashboard = () => {
     setAnchorThree(null);
   };
   const handleOpenModal = () => {
+    setAnchorThree(null);
     setOpenModal(true);
   };
   const handleOpenReasonModal = (data) => {
-    // setCancellId(data);
+
     setReasonModal(true);
   };
   const handleCloseReasonModal = () => {
@@ -663,7 +664,7 @@ const ClientDashboard = () => {
                                     >
                                       <img src={Cancel} alt="" />
                                       <p className="h-[40px] flex items-center text-[#614298] text-[14px] px-6 cursor-pointer">
-                                        Cancel Appoinment
+                                        Cancelss Appoinment
                                       </p>
                                     </div>
                                   </div>
