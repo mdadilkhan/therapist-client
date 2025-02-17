@@ -242,7 +242,7 @@ const ClientDashboard = () => {
     setIsChatOpen(!isChatOpen);
   };
   const handleThreeDotClicked = (event,data) => {
-    console.log(data,"hello row data item");
+    console.log(data,"hello row data item by pop");
     setPopdata(data);
     setAnchorThree(event.target);
   };
@@ -259,7 +259,6 @@ const ClientDashboard = () => {
     setReasonModal(true);
   };
   const handleCloseReasonModal = () => {
-    setCancellId(null);
     setReasonModal(false);
   };
 
@@ -659,7 +658,7 @@ const ClientDashboard = () => {
                                       className="flex justify-start pl-4"
                                       onClick={(event) => {
                                         event.stopPropagation();
-                                        handleCloseModal();
+                                        handleOpenModal();
                                       }}
                                     >
                                       <img src={Cancel} alt="" />
@@ -1200,7 +1199,6 @@ const ClientDashboard = () => {
                                               event.stopPropagation();
                                               handleOpenReasonModal(row?._id);
                                               handleCloseModal();
-                                              handleClose();
                                             }}
                                           >
                                             Yes
