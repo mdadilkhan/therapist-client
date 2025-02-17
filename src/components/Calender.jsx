@@ -359,7 +359,7 @@ const Calender = () => {
       .then((res) => {
         if (res.status === 200) {
           setValue(res?.data?.data?.appointmentDetails?.type);
-          setClientId(res?.data?.data?.userDetails._id);
+          setClientId(res?.data?.data?.userDetails?._id);
         }
       })
       .catch((err) => {
@@ -491,6 +491,7 @@ const Calender = () => {
       return;
     }
     const appointmentData = {
+      therapistId:details._id,
       bookingDate: formattedDateValue,
       bookingSlots: selectedSlots,
       duration: duration,
@@ -543,12 +544,12 @@ const Calender = () => {
         .then((res) => {
           if (res.status == 200) {
             handleCloseModal();
-            socket.emit("client", {
-              title: "Upcoming Appoitment",
-              message: `${details.name} book  a session for you `,
-              role: "user",
-              userId: clientData._id,
-            });
+            // socket.emit("client", {
+            //   title: "Upcoming Appoitment",
+            //   message: `${details.name} book  a session for you `,
+            //   role: "user",
+            //   userId: clientData._id,
+            // });
             toast.success(`Appointment book Successfull`, {
               position: "top-center", // Set the position to top-right
               duration: 3000, // Display for 3 seconds (3000 ms)

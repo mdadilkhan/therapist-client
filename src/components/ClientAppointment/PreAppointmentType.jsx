@@ -38,8 +38,10 @@ const PreAppointmentType = () => {
   //   (state) => state.preAppointmentDetails
   // );
 
-  const socket = useSocket();
-  const userDetails = useSelector((state) => state.useDetails);
+  // const socket = useSocket();
+  const userDetails = useSelector((state) => state.userDetails);
+  console.log(userDetails,"pay via");
+  
 
   const appointmentDetails = useSelector(
     (state) => state.preAppointmentDetails
@@ -69,6 +71,7 @@ const PreAppointmentType = () => {
   };
   const bookAppointment = () => {
     const data = {
+      userId:userDetails._id,
       bookingDate: updatedAppointmentDetails.t_appointment_date,
       bookingSlots: [
         {

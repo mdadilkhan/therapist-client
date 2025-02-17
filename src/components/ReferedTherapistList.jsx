@@ -36,7 +36,7 @@ const Card = ({therapist})=>{
     <div className="flex gap-[25px]">
       {/* Therapist image */}
       <div>
-        <img src={therapist?.profile_image} alt="" className='w-[210px] h-[250px] rounded-[8px]'/>
+        <img src={therapist?.profile_image||"https://corportal.s3.ap-south-1.amazonaws.com/upload/profilePic/8fa8309ef1ff45adf70311e077f11f81"} alt="" className='w-[210px] h-[250px] rounded-[8px]'/>
       </div>
       {/* Therapist information */}
       <div className="flex flex-col gap-3 justify-center">
@@ -56,7 +56,7 @@ const Card = ({therapist})=>{
         <div className="flex items-center gap-3 mb-2 h-[30px]">
           <img src={GraduationCap} alt="" />
           <h4 className="ovr1-reg text-[#635B73]">
-            {therapist?.educational_qualification?.degrees[0]}
+            {therapist?.educational_qualification}
           </h4>
         </div>
         <div className="flex items-center gap-3 mb-2 h-[20px]">
@@ -97,15 +97,21 @@ const Card = ({therapist})=>{
         <span>₹{therapist?.sessionPricing?.in_person?.["30"]}</span>
       </h2>
       <button
-        className="w-[123px] h-[48px] bg-[#614298] rounded-[8px] border-none text-[#fff] p1-reg cursor-pointer"
-        onClick={() =>
-          navigate(
-            `/client/appointments/therapist/?therapistId=${therapist?._id}`
-          )
-        }
-      >
-        Book Now
-      </button>
+                className={`w-[123px] h-[48px] rounded-[8px] border-none text-[#fff] p1-reg cursor-pointer ${
+                  therapist?.slots?.length
+                    ? "bg-[#614298]"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
+                onClick={() =>
+                  therapist?.slots?.length &&
+                  navigate(
+                    `/client/appointments/therapist/?therapistId=${therapist?._id}`
+                  )
+                }
+                disabled={!therapist?.slots?.length}
+              >
+                Book Now
+              </button>
     </div>
   </div>
   )

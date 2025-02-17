@@ -126,7 +126,6 @@ const ClientGroupSessationDetials = lazy(() =>
 const PrivateRoute = ({ allowedRoles }) => {
   const { role } = useSelector((state) => state.userDetails);
   const location = useLocation();
-
   if (!allowedRoles.includes(role)) {
     const redirectPath = "/client";
     return <Navigate to={redirectPath} state={{ from: location }} replace />;
@@ -140,10 +139,7 @@ const PublicRoute = () => {
   //  const { phoneNumber, countryCode, email, role } = useSelector(
   //     (state) => state.smsData
   //   );
-  const location = useLocation();
   console.log(role," public route exist roles");
-  
-
   if (role) {
     return <Navigate to={role === "therapist" ? "/therapist/dashboards" : "/client/dashboards"} replace />;
   }
@@ -170,7 +166,6 @@ const Layout = ({ children }) => {
     "/validateotp",
     "/validateotp/",
     "/contact-us/",
-    "/contact-us",
   ];
 
   return (
@@ -188,9 +183,6 @@ const Layout = ({ children }) => {
 function App() {
   const { token } = useSelector((state) => state.userDetails);
   const dispatch = useDispatch();
-
-console.log(token);
-
 
   useEffect(() => {
     let logoutTimer;
@@ -251,7 +243,6 @@ console.log(token);
               <Route path="/therapist" element={<TherapistLogin />} />
               <Route path="/verifyotp" element={<VerifyOtp />} />
               <Route path="/validateotp" element={<ValidateOtp />} />
-              <Route path="/contactsupport" element={<ContactSupport />} />
               <Route path="/contact-us" element={<ContactSupport />} />
               <Route path="/forgotpassword" element={<ForgotPassword />} />
               <Route path="/signup" element={<ClientSignUp />} />
@@ -368,6 +359,7 @@ console.log(token);
               {/* Protected Routes for user*/}
              
                 <Route path="/client/wallet" element={<Wallet />} />
+              <Route path="/contactsupport" element={<ContactSupport />} />
                 <Route
                   path="/client/therapist-list"
                   element={<ListOfTherapist />}

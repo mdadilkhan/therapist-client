@@ -14,20 +14,19 @@ const AppointmentBooked = () => {
     preAppointmentDetails: state.preAppointmentDetails,
     appointmentDetails: state.appointmentDetails,
   }));
+  console.log(appointmentData, "in Got to dashboard");
 
   // Check if preAppointmentDetails has content; otherwise, use appointmentDetails
-  const selectedAppointmentDetails = 
-    appointmentData?.preAppointmentDetails && Object.keys(appointmentData?.preAppointmentDetails).length
+  const selectedAppointmentDetails =
+    appointmentData?.preAppointmentDetails &&
+    Object.keys(appointmentData?.preAppointmentDetails).length
       ? appointmentData?.preAppointmentDetails
       : appointmentData?.appointmentDetails;
-
   const navigate = useNavigate();
 
   const handleReset = () => {
-    dispatch(resetAppointmentDetails());  // Resetting Redux state
+    dispatch(resetAppointmentDetails()); // Resetting Redux state
     dispatch(resetPreAppointmentDetails());
-
-    // Clearing data from localStorage
     localStorage.removeItem("appointmentDetails");
     localStorage.removeItem("preAppointmentDetails");
 
@@ -76,7 +75,14 @@ const AppointmentBooked = () => {
             fontFamily: "nunito",
           }}
         >
-          {convertTo12HourFormat(selectedAppointmentDetails?.t_appointment_time[0]?.m_schd_from)}
+          {convertTo12HourFormat(
+            selectedAppointmentDetails?.t_appointment_time?.m_schd_from
+          )}
+
+          <span className="body3-reg"> to</span>
+          {convertTo12HourFormat(
+            selectedAppointmentDetails?.t_appointment_time?.m_schd_to
+          )}
         </span>
       </div>
       <Button

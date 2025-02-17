@@ -48,8 +48,7 @@ const TherapistAppointmentType = () => {
   const [selectedSessionType, setSelectedSessionType] = useState("one-session");
   const [openModal2, setOpenModal2] = useState(false);
   const socket = useSocket();
-  const userDetails = useSelector((state) => state.userDetails);
-
+ const userDetails = useSelector((state) => state.userDetails);
   const handleOpenModal2 = () => {
     setOpenModal2(true);
     setTimeout(() => {
@@ -79,8 +78,8 @@ const TherapistAppointmentType = () => {
           setProfileDetials(res.data?.data);
           setSessationPrice(res.data?.data.sessionPricing?.in_person?.["30"]);
           setTotalPay(
-            parseFloat(res.data?.data?.sessionPricing) +
-              parseFloat(res.data?.data?.sessionPricing) * 0.18
+            parseFloat(res.data?.data?.sessionPricing?.in_person?.["30"]) +
+              parseFloat(res.data?.data?.sessionPricing?.in_person?.["30"]) * 0.18
           );
         }
       })
@@ -91,6 +90,7 @@ const TherapistAppointmentType = () => {
 
   const bookAppointment = () => {
     const data = {
+      userId:userDetails?._id,
       therapistId: updatedAppointmentDetails?.m_counselor_id,
       bookingDate: formatDate(updatedAppointmentDetails?.t_appointment_date),
       bookingType: selectedButton,
@@ -111,16 +111,16 @@ const TherapistAppointmentType = () => {
               fontSize: "14px", // Smaller text
             },
           });
-          socket.emit("therapist", {
-            title: "Upcoming Appointment",
-            message: `${
-              userDetails.name
-            } book  a session to you at ${formatDate(
-              updatedAppointmentDetails?.t_appointment_date
-            )} on ${updatedAppointmentDetails.t_appointment_time} `,
-            role: "therapist",
-            userId: data.therapistId,
-          });
+          // socket.emit("therapist", {
+          //   title: "Upcoming Appointment",
+          //   message: `${
+          //     userDetails.name
+          //   } book  a session to you at ${formatDate(
+          //     updatedAppointmentDetails?.t_appointment_date
+          //   )} on ${updatedAppointmentDetails.t_appointment_time} `,
+          //   role: "therapist",
+          //   userId: data.therapistId,
+          // });
           navigate("/client/appointment-booked");
         }
       })
