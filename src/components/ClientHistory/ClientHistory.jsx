@@ -62,7 +62,8 @@ const ClientHistory = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [openPrescription, setOpenPrescription] = useState(false);
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
-  const [dateValue, setDateValue] = useState(employeeHistory?.dateOfIntake);
+  const [dateValue, setDateValue] = useState(new Date());
+  console.log(dateValue,"hello date value");
   const handleAddField = () => {
     setClientHistory({
       ...employeeHistory,
@@ -173,8 +174,9 @@ const ClientHistory = () => {
       setClientHistory((prevClientHistory) => ({
         ...prevClientHistory,
         name: res.data.data.name,
-        age: calculateAge(res.data.data.profile_details.dob)
+        age: calculateAge(res?.data?.data?.age),
       }));
+      setDateValue(res?.data?.data?.dateOfIntake)
     })
     .catch((err) => {
       console.log(err);
@@ -261,9 +263,6 @@ useEffect(() => {
     getImageUrl();
   }
 }, [image]);
-
-console.log("cbhjsdbc>>",employeeHistory);
-
   return (
     <>
       <div

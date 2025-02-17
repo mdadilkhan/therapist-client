@@ -326,7 +326,7 @@ const ProfileDetails = () => {
       email: profileDetails?.email,
       gender: profileDetails?.profile_details?.gender,
       dob: profileDetails?.profile_details?.dob,
-      languages: profileDetails?.profile_details?.languages,
+      languages: profileDetails?.profile_details?.languages||[],
       specialization:
         profileDetails?.specialization?.map((spec) => spec._id) || [],
       designation: profileDetails?.profile_details?.designation,
@@ -1384,7 +1384,7 @@ const ProfileDetails = () => {
                       value={updateProfile?.accountHolderName}
                       onChange={handelChage}
                       InputProps={{
-                        readOnly: updateProfile.ifscCode !== "",
+                        readOnly: profileDetails?.bank_details?.account_holder_name,
                         sx: {
                           fontSize: "16px",
                           fontFamily: "Nunito",
@@ -1421,6 +1421,7 @@ const ProfileDetails = () => {
                       value={updateProfile?.accountNumber}
                       onChange={handelChage}
                       InputProps={{
+                        readOnly: profileDetails?.bank_details?.account_number,
                         sx: {
                           fontSize: "18px",
                           fontFamily: "Nunito",
@@ -1456,7 +1457,7 @@ const ProfileDetails = () => {
                       value={updateProfile?.bankName}
                       onChange={handelChage}
                       InputProps={{
-                        readOnly: updateProfile.ifscCode !== "",
+                        readOnly: profileDetails?.bank_details?.account_holder_name,
                         sx: {
                           fontSize: "18px",
                           fontFamily: "Nunito",
@@ -1500,7 +1501,7 @@ const ProfileDetails = () => {
                       value={updateProfile?.branchAddress}
                       onChange={handelChage}
                       InputProps={{
-                        readOnly: updateProfile.ifscCode !== "",
+                        readOnly: profileDetails?.bank_details?.branch_address,
                         sx: {
                           fontSize: "16px",
                           fontFamily: "Nunito",
@@ -1537,7 +1538,7 @@ const ProfileDetails = () => {
                       value={updateProfile?.ifscCode}
                       onChange={handelChage}
                       InputProps={{
-                          readOnly: updateProfile.ifscCode !== "",
+                        readOnly: profileDetails?.bank_details?.ifsc_code,
                         sx: {
                           fontSize: "18px",
                           fontFamily: "Nunito",

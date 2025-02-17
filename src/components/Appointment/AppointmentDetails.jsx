@@ -2659,7 +2659,8 @@ const AppointmentDetails = () => {
               </div>
             )}
           </div>
-          <div className=" border rounded-3xl border-solid border-[#4A4159] bg-[#FCFCFC] flex flex-col gap-13">
+          {/* Assesment and Activites */}
+          {/* <div className=" border rounded-3xl border-solid border-[#4A4159] bg-[#FCFCFC] flex flex-col gap-13">
             <div className=" rounded-[16px] p-[4rem] border border-[#4A4159] bg-[#FCFCFC] w-full">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="text-[3.4rem] font-nunito font-bold">
@@ -2713,8 +2714,8 @@ const AppointmentDetails = () => {
                 </button>
               </div>
             </div>
-          </div>
-          <div className=" border rounded-3xl border-solid border-[#4A4159] bg-[#FCFCFC] flex flex-col gap-13">
+          </div> */}
+          {/* <div className=" border rounded-3xl border-solid border-[#4A4159] bg-[#FCFCFC] flex flex-col gap-13">
             <div className=" rounded-[16px] p-[4rem] border border-[#4A4159] bg-[#FCFCFC] w-full">
               <div className="flex flex-col sm:flex-row gap-4">
               <div className="text-[3.4rem] font-nunito font-bold">
@@ -2768,7 +2769,7 @@ const AppointmentDetails = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="flex flex-col space-y-7">
           <div className="right">
