@@ -211,14 +211,15 @@ const TherapistAppointment = () => {
           .post(`${API_URL}/rescheduleAppointment`, data)
           .then((res) => {
             if (res.status == 200) {
-              socket.emit("therapist", {
-                title:"Upcoming Appointment",
-                message: `this  appoint has been  reshcdule by ${
-                  userDetails.name
-                } on  ${formatDate(dateValue)} at ${selectedSlot} `,
-                userId: params.therapistId,
-                role: "therapist",
-              });
+              alert("ur reshcduling the appointemnet",data)
+              // socket.emit("therapist", {
+              //   title:"Upcoming Appointment",
+              //   message: `this  appoint has been  reshcdule by ${
+              //     userDetails.name
+              //   } on  ${formatDate(dateValue)} at ${selectedSlot} `,
+              //   userId: params.therapistId,
+              //   role: "therapist",
+              // });
               navigate("/client/dashboards");
             }
           })
@@ -238,7 +239,7 @@ const TherapistAppointment = () => {
           gap: 16,
         }}
       >
-        <h5 className="h5-bold ml-[32px]">Appointments</h5>
+        <h5 className="h5-bold ml-[32px]">Appointmentss</h5>
         <div className="w-[85%] sm:w-[45%] h-[335px] sm:h-[228px] rounded-[15px] bg-[#F4EDFF] shadow-custom ml-[32px] my-0 sm:my-8 flex sm:flex-row flex-col gap-5 px-4 py-6">
           <div className="w-[50rem] h-full">
             <img src={profileDetials?.profile_image||"https://corportal.s3.ap-south-1.amazonaws.com/upload/profilePic/8fa8309ef1ff45adf70311e077f11f81"} alt="" className="w-full h-full object-cover rounded-[0.8rem]" />

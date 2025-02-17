@@ -94,7 +94,7 @@ const Navbar = () => {
                     className="flex p-4 gap-6 border-4 items-center cursor-pointer"
                     onClick={() => {
                       navigate("/therapist/profileDetails");
-                      setAnchorEl(null); // Close the popover
+                      setAnchorEl(null);
                     }}
                   >
                     <div className="w-[32px] h-[32px] rounded-full overflow-hidden object-cover">

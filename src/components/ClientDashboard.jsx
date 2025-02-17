@@ -64,6 +64,7 @@ const getStatusColor = (status) => {
 };
 
 const oldAppointmentStatus = {
+  0:"Pending",
   1: "Pending",
   2: "Complete",
   3: "Refer to Sage",
@@ -216,13 +217,13 @@ const ClientDashboard = () => {
   const [anchorThree, setAnchorThree] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [reasonModal, setReasonModal] = useState(false);
+  const [popdata,setPopdata]=useState();
   const openThree = Boolean(anchorThree);
   const ids = openThree ? "qwerty" : undefined;
   const [isChatOpen, setIsChatOpen] = useState(false);
   const userDetails = useSelector((state) => state.userDetails);
   const [selectedReason, setSelectedReason] = useState("");
   const [reasoninput, setReasonInput] = useState("");
-  const [cancellId, setCancellId] = useState(null);
   const [openWelcome, setOpen] = useState(!userDetails?.userType ? true : false);
   console.log(
     userDetails ,
@@ -240,18 +241,21 @@ const ClientDashboard = () => {
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
-  const handleThreeDotClicked = (event) => {
+  const handleThreeDotClicked = (event,data) => {
+    console.log(data,"hello row data item");
+    setPopdata(data);
     setAnchorThree(event.target);
   };
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    setAnchorThree(null);
   };
   const handleOpenModal = () => {
     setOpenModal(true);
   };
   const handleOpenReasonModal = (data) => {
-    setCancellId(data);
+    // setCancellId(data);
     setReasonModal(true);
   };
   const handleCloseReasonModal = () => {
@@ -275,7 +279,7 @@ const ClientDashboard = () => {
   const handleCancelAppointment = () => {
     axios
       .post(`${API_URL}/cancelAppointment`, {
-        app_id: cancellId,
+        app_id: popdata._id,
         reason: selectedReason,
         reason_dec: reasoninput,
       })
@@ -359,9 +363,6 @@ const ClientDashboard = () => {
     getAllIAppointment();
     getPrescriptionList();
   }, [value]);
-  const handleClose = () => {
-    setAnchorThree(null);
-  };
 
   // const open = Boolean(anchorEl);
   // const id = open ? "simple-popover" : undefined;
@@ -634,7 +635,7 @@ const ClientDashboard = () => {
                                     onClick={(event) => {
                                       event.stopPropagation();
                                       if (row.booking_status != 5) {
-                                        handleThreeDotClicked(event);
+                                        handleThreeDotClicked(event,row);
                                       }
                                     }}
                                   />
@@ -645,7 +646,7 @@ const ClientDashboard = () => {
                                   anchorEl={anchorThree}
                                   onClose={(event) => {
                                     event.stopPropagation();
-                                    handleClose();
+                                    handleCloseModal();
                                   }}
                                   anchorOrigin={{
                                     vertical: "bottom",
@@ -653,26 +654,12 @@ const ClientDashboard = () => {
                                   }}
                                 >
                                   <div className="w-[190px] h-auto mx-4 my-4 flex flex-col justify-between ">
-                                    {/* <div
-                                      className="flex justify-start pl-4"
-                                      onClick={(event) => {
-                                        event.stopPropagation();
-                                        navigate(
-                                          `/client/appointments/therapist?therapistId=${row?.therapist_id}&&appointmentId=${row?._id}&&type=pre`
-                                        );
-                                      }}
-                                    >
-                                      <img src={Calendar} alt="" />
-                                      <p className="h-[40px] text-[14px] flex items-center text-[#614298] px-6 cursor-pointer">
-                                        Reschedule
-                                      </p>
-                                    </div>
-                                    <hr className="px-4" /> */}
+                                 
                                     <div
                                       className="flex justify-start pl-4"
                                       onClick={(event) => {
                                         event.stopPropagation();
-                                        handleOpenModal();
+                                        handleCloseModal();
                                       }}
                                     >
                                       <img src={Cancel} alt="" />
@@ -1104,7 +1091,7 @@ const ClientDashboard = () => {
                                     onClick={(event) => {
                                       event.stopPropagation();
                                       if (row.booking_status != 5) {
-                                        handleThreeDotClicked(event);
+                                        handleThreeDotClicked(event,row);
                                       }
                                     }}
                                   />
@@ -1113,11 +1100,9 @@ const ClientDashboard = () => {
                                   id={ids}
                                   open={openThree}
                                   anchorEl={anchorThree}
-                                  onClick={(event) => {
+                                  onClose={(event) => {
                                     event.stopPropagation();
-                                    if (row.booking_status != 5) {
-                                      handleThreeDotClicked(event);
-                                    }
+                                    handleCloseModal();
                                   }}
                                   anchorOrigin={{
                                     vertical: "bottom",
@@ -1129,14 +1114,16 @@ const ClientDashboard = () => {
                                       className="flex justify-start pl-4"
                                       onClick={(event) => {
                                         event.stopPropagation();
+                                        console.log(row,"data of Appointment");
+                                        
                                         navigate(
-                                          `/client/appointments/therapist?therapistId=${row?.therapist_id}&&appointmentId=${row?._id}&&type=sess`
+                                          `/client/appointments/therapist?therapistId=${popdata?.therapist_id}&&appointmentId=${popdata?._id}&&type=sess`
                                         );
                                       }}
                                     >
                                       <img src={Calendar} alt="" />
                                       <p className="h-[40px] text-[14px] flex items-center text-[#614298] px-6 cursor-pointer">
-                                        Reschedule
+                                        Rescheduless
                                       </p>
                                     </div>
                                     <hr className="px-4" />

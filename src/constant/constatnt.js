@@ -293,7 +293,7 @@ export const pageTitles = {
   "/therapist": "Therapist Login | Sage Turtle",
   "/verifyotp": "Verify OTP | Sage Turtle",
   "/validateotp": "Validate OTP | Sage Turtle",
-  "/contactsupport": "Contact Support | Sage Turtle",
+  "//contact-us": "Contact Support | Sage Turtle",
   "/forgotpassword": "Forgot Password | Sage Turtle",
   "/signup": "Client Signup | Sage Turtle",
   "/signup/therapist": "Therapist Signup | Sage Turtle",

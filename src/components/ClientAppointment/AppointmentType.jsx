@@ -77,6 +77,7 @@ const AppointmentType = () => {
           if (res.data.success === true) {
             // socket.emit();
             navigate("/client/appointmentbooked");
+            navigate('/client/dashboard')
           }
         })
         .catch((err) => {
