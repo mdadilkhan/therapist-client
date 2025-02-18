@@ -9,7 +9,7 @@ import { Chip, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { API_URI, API_URL } from "../constant/ApiConstant";
 import axios from "axios";
-import { truncateString } from "../constant/constatnt";
+import { calculateExperience, truncateString } from "../constant/constatnt";
 import getMatched from "../assets/GetMatched.svg";
 
 const Header = () => {
@@ -63,7 +63,7 @@ const Card = ({therapist})=>{
           <img src={CalnedarCheck} alt="" />
           <h4 className="ovr1-reg text-[#635B73]">
             <span className="ovr1-bold">Experience :</span>{" "}
-            {therapist?.profile_details?.experience}
+            {calculateExperience(therapist?.profile_details?.experience)}
           </h4>
         </div>
         <div className="flex items-center gap-3 mb-2 h-[20px]">
@@ -84,7 +84,7 @@ const Card = ({therapist})=>{
           <h4 className="ovr1-reg text-[#635B73]">
             <span className="ovr1-bold">Expertise :</span>{" "}
             {therapist?.expertise?.map((language, index) => (
-              <span key={index}>{language + " "}</span>
+              <span key={index}>{language.name} , </span>
             ))}
           </h4>
         </div>

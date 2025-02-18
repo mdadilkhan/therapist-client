@@ -344,3 +344,20 @@ export const pageTitles = {
   "*": "Page Not Found | Sage Turtle",
 };
 
+export function calculateExperience(startDateString) {
+  if (!startDateString) return "Not available";
+
+  const startDate = new Date(startDateString);
+  const currentDate = new Date();
+
+  let years = currentDate.getFullYear() - startDate.getFullYear();
+  let months = currentDate.getMonth() - startDate.getMonth();
+
+  // Adjust if months are negative
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  return `${years} years ${months} months`;
+}

@@ -25,7 +25,7 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import { getformatedDate } from "../../constant/constatnt";
+import { calculateExperience, getformatedDate } from "../../constant/constatnt";
 import toast from "react-hot-toast";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -556,7 +556,7 @@ const ProfileDetails = () => {
                   </div>
                   <div>
                     <p className="body4-reg">
-                      {profileDetails?.profile_details?.experience}
+                      {calculateExperience(profileDetails?.profile_details?.experience)}
                     </p>
                   </div>
                   <div>
@@ -866,41 +866,31 @@ const ProfileDetails = () => {
                 </div>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div style={{ width: "32%" }}>
-                  <label className="p2-sem" style={{ color: "#4A4159" }}>
-                    OtherFiled*
-                  </label>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    name="specialization"
-                    // value={updateProfile?.specialization}
-                    // onChange={handelChage}
-                    InputProps={{
-                      sx: {
-                        fontSize: "18px",
-                        fontFamily: "Nunito",
-                        fontStyle: "normal",
-                        fontWeight: 400,
-                        lineHeight: "24px",
-                        letterSpacing: "0.08px",
-                        height: "48px",
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor: `#d5d2d9`,
-                        },
-                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                          borderColor: `#d5d2d9`,
-                        },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                          borderColor: `#d5d2d9`,
-                        },
-                        "& input::placeholder": {
-                          color: `#d5d2d9`,
-                        },
-                      },
-                    }}
-                  />
-                </div>
+              <div
+                   style={{
+                    width: "32%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                  >
+                    <label className="p2-sem" style={{ color: "#4A4159" }}>
+                      Experience*
+                    </label>
+                    <textarea
+                      style={{
+                        width: "100%",
+                        borderRadius: "8px",
+                        height: "50px",
+                      }} // Added height to make equal
+                      id="myTextArea"
+                      rows="4"
+                      cols="500"
+                      required
+                      name="experience"
+                      value={calculateExperience(updateProfile?.experience)}
+                      disabled={true}
+                    ></textarea>
+                  </div>
                 <div
                   style={{
                     width: "32%",
@@ -1006,7 +996,7 @@ const ProfileDetails = () => {
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    width: "32%",
+                    width: "66%",
                   }}
                 >
                   <label className="p2-sem" style={{ color: "#4A4159" }}>
@@ -1022,65 +1012,6 @@ const ProfileDetails = () => {
                     value={updateProfile?.biography}
                     onChange={handelChage}
                   ></textarea>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "32%",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      width: "100%",
-                      height: "60px", // Optional spacing between elements
-                    }}
-                  >
-                    <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Experience*
-                    </label>
-                    <textarea
-                      style={{
-                        width: "100%",
-                        borderRadius: "8px",
-                        height: "50px",
-                      }} // Added height to make equal
-                      id="myTextArea"
-                      rows="4"
-                      cols="500"
-                      required
-                      name="experience"
-                      value={updateProfile?.experience}
-                      onChange={handelChage}
-                    ></textarea>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      width: "100%",
-                      height: "60px", // Optional spacing between elements
-                    }}
-                  >
-                    <label className="p2-sem" style={{ color: "#4A4159" }}>
-                      Organisation*
-                    </label>
-                    <textarea
-                      style={{
-                        width: "100%",
-                        borderRadius: "8px",
-                        height: "50px",
-                      }} // Added height to make equal
-                      id="myTextArea"
-                      rows="4"
-                      cols="500"
-                      name="organiztion"
-                      value={updateProfile?.organiztion}
-                      onChange={handelChage}
-                    ></textarea>
-                  </div>
                 </div>
               </div>
               <div
@@ -1235,6 +1166,30 @@ const ProfileDetails = () => {
                     ))}
                   </Select>
                 </div>
+                <div
+                   style={{
+                    width: "32%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                  >
+                    <label className="p2-sem" style={{ color: "#4A4159" }}>
+                      Organisation*
+                    </label>
+                    <textarea
+                      style={{
+                        width: "100%",
+                        borderRadius: "8px",
+                        height: "50px",
+                      }} // Added height to make equal
+                      id="myTextArea"
+                      rows="4"
+                      cols="500"
+                      name="organiztion"
+                      value={updateProfile?.organiztion}
+                      onChange={handelChage}
+                    ></textarea>
+                  </div>
               </div>
               <div className="flex flex-col gap-5">
                 <div className="w-full">
