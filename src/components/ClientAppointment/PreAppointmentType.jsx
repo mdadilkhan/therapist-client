@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LeftArrow from "../../assets/LeftArrow.svg";
@@ -29,6 +29,9 @@ import {
 import { API_URL } from "../../constant/ApiConstant";
 import { useSocket } from "../../getSocket";
 import toast from "react-hot-toast";
+import { detailsStore } from "../../store/slices/appointmentSlice";
+import { useDateField } from "@mui/x-date-pickers/DateField/useDateField";
+import { preAppointmentDetails } from "../../store/slices/preAppointmentSlice";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -39,6 +42,7 @@ const PreAppointmentType = () => {
   // );
 
   // const socket = useSocket();
+  const dispatch=useDispatch();
   const userDetails = useSelector((state) => state.userDetails);
   console.log(userDetails,"pay via");
   
@@ -96,6 +100,7 @@ const PreAppointmentType = () => {
               fontSize: "14px",
             },
           });
+          dispatch(preAppointmentDetails(res?.data?.data))
           navigate("/client/appointment-booked");
 
           socket.emit("therapist", {

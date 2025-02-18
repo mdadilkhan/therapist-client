@@ -4,8 +4,9 @@ import { Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { API_URI, API_URL } from "../constant/ApiConstant";
 import { useSocket } from "../getSocket";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { appointmentDetails, detailsStore } from "../store/slices/appointmentSlice";
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -18,6 +19,7 @@ function formatDate(dateString) {
 
 const RazorPay = ({ appointmentData, agree }) => {
   const userDetails = useSelector((state) => state.userDetails);
+  const dispatch=useDispatch();
   const [paymentStatus, setPaymentStatus] = useState("undefined");
   const location = useLocation();
   const navigate = useNavigate();
@@ -71,6 +73,7 @@ const RazorPay = ({ appointmentData, agree }) => {
               fontSize: "14px", // Smaller text
             },
           });
+          dispatch(appointmentDetails(res?.data?.data))
           navigate("/client/appointment-booked");
 
           appointmentData?.type == "pre"

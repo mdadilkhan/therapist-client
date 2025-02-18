@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import LeftArrow from "../../assets/LeftArrow.svg";
@@ -32,9 +32,11 @@ import WalletGif from "../../assets/WalletGif.gif";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 import { useSocket } from "../../getSocket.js";
 import toast from "react-hot-toast";
+import { detailsStore } from "../../store/slices/appointmentSlice.jsx";
 
 const TherapistAppointmentType = () => {
   const navigate = useNavigate();
+  const dispatch=useDispatch();
   const [profileDetials, setProfileDetials] = useState({});
   const [agree, setAgree] = useState(false);
   const [selectedButton, setSelectedButton] = useState("in_person");
@@ -121,6 +123,7 @@ const TherapistAppointmentType = () => {
           //   role: "therapist",
           //   userId: data.therapistId,
           // });
+          dispatch(detailsStore(res?.data?.data));
           navigate("/client/appointment-booked");
         }
       })

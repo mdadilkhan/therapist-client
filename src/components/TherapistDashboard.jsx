@@ -46,7 +46,7 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 const columns = [
   {
-    id: "Appointment Id",
+    id: "Appointment No",
     align: "right",
   },
   {
@@ -625,7 +625,7 @@ const TherapistDashboard = () => {
                                       className="body3-reg"
                                     >
                                       <div style={{ textDecoration: "none" }}>
-                                        {row?._id?.slice(-10)}
+                                        {row?.appointment_no ? row?.appointment_no :"APT00000"}
                                       </div>
                                     </TableCell>
 
@@ -955,10 +955,10 @@ const TherapistDashboard = () => {
                               <div className="w-full flex flex-col justify-between">
                                 <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                                   <div className="body3-sem w-[50%]">
-                                    Appointment Id
+                                    Appointment No
                                   </div>
                                   <div className="body3-reg pr-2 w-[50%]">
-                                    {item?._id?.slice(-10)}
+                                    {item?.appointment_no ? item?.appointment_no : "APT00000"}
                                   </div>
                                 </div>
                                 <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
@@ -1145,7 +1145,7 @@ const TherapistDashboard = () => {
                                       className="body3-reg"
                                     >
                                       <div style={{ textDecoration: "none" }}>
-                                        {row?._id?.slice(-10)}
+                                        {row?.appointment_no ? row?.appointment_no : "APT00000"}
                                       </div>
                                     </TableCell>
 
@@ -1471,10 +1471,10 @@ const TherapistDashboard = () => {
                               <div className="w-full flex flex-col justify-between">
                                 <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                                   <div className="body3-sem w-[50%]">
-                                    Appointment Id
+                                    Appointment No
                                   </div>
                                   <div className="body3-reg pr-2 w-[50%]">
-                                    {item?._id?.slice(-10)}
+                                    {item?.appointment_no ? item?.appointment_no : "APT00000"}
                                   </div>
                                 </div>
                                 <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">

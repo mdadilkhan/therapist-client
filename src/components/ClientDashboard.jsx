@@ -139,7 +139,7 @@ const columns = [
     align: "right",
   },
   {
-    id: "Appointment Id",
+    id: "Appointment No",
     align: "right",
   },
   {
@@ -556,7 +556,7 @@ const ClientDashboard = () => {
                                 {/* one is therapist id and another for appointment id */}
                                 <TableCell align="left" className="body3-reg">
                                   <div style={{ textDecoration: "none" }}>
-                                    {row?._id?.slice(-10)}
+                                    {row?.appointment_no ? row?.appointment_no : "APT00000"}
                                   </div>
                                 </TableCell>
 
@@ -834,10 +834,10 @@ const ClientDashboard = () => {
                           <div className="w-full flex flex-col justify-between">
                             <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                               <div className="body3-sem w-[50%]">
-                                Appointment Id
+                                Appointment No
                               </div>
                               <div className="body3-reg pr-2 w-[50%]">
-                                {item?._id?.slice(-10)}
+                                {item?.appointment_no ? item?.appointment_no : "APT00000"}
                               </div>
                             </div>
                             <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
@@ -1015,7 +1015,7 @@ const ClientDashboard = () => {
                                 </TableCell>
 
                                 <TableCell align="left" className="body3-reg">
-                                  <div>{row?._id?.slice(-10)}</div>
+                                  <div>{row?.appointment_no ? row?.appointment_no : "APT00000"}</div>
                                 </TableCell>
                                 <TableCell align="left" className="body3-reg">
                                   <div>
@@ -1306,10 +1306,10 @@ const ClientDashboard = () => {
                           <div className="w-full flex flex-col justify-between">
                             <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                               <div className="body3-sem w-[50%]">
-                                Appointment Id
+                                Appointment No
                               </div>
                               <div className="body3-reg pr-2 w-[50%]">
-                                {item?._id?.slice(-10)}
+                                {item?.appointment_no ? item?.appointment_no : "APT00000"}
                               </div>
                             </div>
                             <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">

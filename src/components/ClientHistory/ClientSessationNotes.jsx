@@ -190,7 +190,7 @@ const ClientSessationNotes = () => {
             {" "}
             <img src={LeftArrow} alt="" />
           </div>
-          <h5 className="h5-bold">Session Notes bcjhd</h5>
+          <h5 className="h5-bold">Session Notes</h5>
         </div>
         {viewportWidth >= 640 ? (
           <div style={{ display: "flex" }}>

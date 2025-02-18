@@ -467,11 +467,13 @@ const AppointmentDetails = () => {
       .post(`${API_URL}/changeBookingStatus`, app_id)
       .then((res) => {
         if (res.status == 200) {
+          toast.success("Complete consultation done")
           getAppointmentDetails();
           handleCloseModal();
         }
       })
       .catch((err) => {
+        toast.error(err?.response?.data?.message)
         console.error("Error:", err);
       });
   };
@@ -790,7 +792,7 @@ const AppointmentDetails = () => {
             >
               <div className="flex flex-col gap-2">
                 <h5 className="body2-sem">Appointment No</h5>
-                <h5 className="body3-reg">{appointDetails._id?.slice(-10)}</h5>
+                <h5 className="body3-reg">{appointDetails?.appointment_no ? appointDetails?.appointment_no : "APT00000"}</h5>
               </div>
               <div className="flex flex-col gap-2">
                 <h5 className="body2-sem">Date</h5>
@@ -2659,7 +2661,8 @@ const AppointmentDetails = () => {
               </div>
             )}
           </div>
-          <div className=" border rounded-3xl border-solid border-[#4A4159] bg-[#FCFCFC] flex flex-col gap-13">
+          {/* Assesment and Activites */}
+          {/* <div className=" border rounded-3xl border-solid border-[#4A4159] bg-[#FCFCFC] flex flex-col gap-13">
             <div className=" rounded-[16px] p-[4rem] border border-[#4A4159] bg-[#FCFCFC] w-full">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="text-[3.4rem] font-nunito font-bold">
@@ -2713,8 +2716,8 @@ const AppointmentDetails = () => {
                 </button>
               </div>
             </div>
-          </div>
-          <div className=" border rounded-3xl border-solid border-[#4A4159] bg-[#FCFCFC] flex flex-col gap-13">
+          </div> */}
+          {/* <div className=" border rounded-3xl border-solid border-[#4A4159] bg-[#FCFCFC] flex flex-col gap-13">
             <div className=" rounded-[16px] p-[4rem] border border-[#4A4159] bg-[#FCFCFC] w-full">
               <div className="flex flex-col sm:flex-row gap-4">
               <div className="text-[3.4rem] font-nunito font-bold">
@@ -2768,7 +2771,7 @@ const AppointmentDetails = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="flex flex-col space-y-7">
           <div className="right">
@@ -2790,10 +2793,10 @@ const AppointmentDetails = () => {
                   </div>
                   <div>
                     <h5 className="body2-sem" style={{ color: "#06030D" }}>
-                      Client ID:
+                      Client No:
                     </h5>
                     <p className="body3-reg" style={{ color: "#06030D" }}>
-                      {clientDetail?._id ? clientDetail._id.slice(-10) : ""}
+                      {clientDetail?.client_no ? clientDetail?.client_no : "USR00000"}
                     </p>
                   </div>
                   <div>

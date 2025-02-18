@@ -40,7 +40,7 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 const columns = [
   {
-    id: "Client ID",
+    id: "Client No",
     align: "right",
   },
   {
@@ -810,7 +810,7 @@ const Clients = () => {
                                 >
                                   <TableCell align="left" className="body3-reg">
                                     <div style={{ textDecoration: "none" }}>
-                                      {row?._id.slice(-10)}
+                                      {row?.client_no ? row?.client_no : "USR00000"}
                                     </div>
                                   </TableCell>
 
@@ -954,7 +954,7 @@ const Clients = () => {
                             <div className="w-full flex flex-col justify-between">
                               <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                                 <div className="body3-sem w-[40%]">
-                                  Client Id
+                                  Client No
                                 </div>
                                 <div className="body3-reg pr-2 w-[60%]">
                                   {item.emp_id}
@@ -1063,7 +1063,7 @@ const Clients = () => {
                                 >
                                   <TableCell align="left" className="body3-reg">
                                     <div style={{ textDecoration: "none" }}>
-                                      {row._id.slice(-12)}
+                                      {row?.client_no ? row?.client_no : "USR00000"}
                                     </div>
                                   </TableCell>
 

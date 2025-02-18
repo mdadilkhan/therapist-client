@@ -420,14 +420,14 @@ const Refrals = () => {
               fontSize: "14px", // Smaller text
             },
           });
-          socket.emit("client", {
-            title: "Accepted Referal",
-            message: ` Dr ${details.name} is accepet your refferal `,
-            userId: data.clientId,
-            role: "user",
-          });
-          handleCloseModal2();
+          // socket.emit("client", {
+          //   title: "Accepted Referal",
+          //   message: ` Dr ${details.name} is accepet your refferal `,
+          //   userId: data.clientId,
+          //   role: "user",
+          // });
           ReceivedRefralToTherapistsession();
+          handleCloseModal2();
         }
       })
       .catch((err) => {
@@ -590,8 +590,8 @@ const Refrals = () => {
   return (
     <>
       <div style={{ padding: "16px 32px" }}>
-        <div className="flex flex-row space-x-5">
-          <h5 className="h5-bold">Referrals</h5>
+        <div className="flex flex-row  space-x-5">
+          <h5 className="h5-bold items-start mr-[10rem]">Referrals</h5>
           <FormControl
             variant="outlined"
             sx={{
@@ -599,6 +599,7 @@ const Refrals = () => {
               height: "40px",
               border: "1px solid #787486",
               display: "flex",
+              justifyItems:"center",
               gap: "10px",
               borderRadius: "6px",
               flexDirection: "row",
