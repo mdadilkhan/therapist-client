@@ -8,7 +8,7 @@ import { Chip, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { API_URI, API_URL } from "../constant/ApiConstant";
 import axios from "axios";
-import { truncateString } from "../constant/constatnt";
+import { calculateExperience, truncateString } from "../constant/constatnt";
 import getMatched from "../assets/GetMatched.svg";
 
 const ListOfTherapist = () => {
@@ -324,7 +324,7 @@ const ListOfTherapist = () => {
                   <img src={CalnedarCheck} alt="" />
                   <h4 className="ovr1-reg text-[#635B73]">
                     <span className="ovr1-bold">Experience :</span>{" "}
-                    {therapist?.profile_details?.experience} years
+                    {calculateExperience(therapist?.profile_details?.experience)} years
                   </h4>
                 </div>
                 <div className="flex items-center gap-3 mb-2 h-[20px]">

@@ -46,7 +46,7 @@ import {
   InputAdornment,
   Checkbox,
 } from "@mui/material";
-import { calculateAge, getformatedDate } from "../../constant/constatnt";
+import { calculateAge, calculateExperience, getformatedDate } from "../../constant/constatnt";
 import vector from "../../assets/Vector.svg";
 import { useSocket } from "../../getSocket";
 import toast from "react-hot-toast";
@@ -1043,7 +1043,7 @@ const ClientDetails = () => {
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">
                                     <div>
-                                      {row?.profile_details?.experience}
+                                      {calculateExperience(row?.profile_details?.experience)}
                                     </div>
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">
@@ -1311,7 +1311,7 @@ const ClientDetails = () => {
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">
                                     <div>
-                                      {row?.profile_details?.experience}
+                                      {calculateExperience(row?.profile_details?.experience)}
                                     </div>
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">

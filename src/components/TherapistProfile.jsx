@@ -17,6 +17,7 @@ import DegreeCap from "../assets/DegreeCap.svg";
 import { useParams } from "react-router-dom";
 import DummyImg from "../assets/Frame.png";
 import { API_URL } from "../constant/ApiConstant";
+import { calculateExperience } from "../constant/constatnt";
 
 const Navbar = lazy(() => import("./Navbar"));
 
@@ -157,7 +158,7 @@ const TherapistProfile = () => {
               </div>
               <div>
                 <p className="body4-reg">
-                  {profileDetails.profile_details?.experience}
+                  {calculateExperience(profileDetails?.profile_details?.experience)}
                 </p>
               </div>
 
