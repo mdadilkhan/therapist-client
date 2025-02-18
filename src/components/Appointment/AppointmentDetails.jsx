@@ -467,11 +467,13 @@ const AppointmentDetails = () => {
       .post(`${API_URL}/changeBookingStatus`, app_id)
       .then((res) => {
         if (res.status == 200) {
+          toast.success("Complete consultation done")
           getAppointmentDetails();
           handleCloseModal();
         }
       })
       .catch((err) => {
+        toast.error(err?.response?.data?.message)
         console.error("Error:", err);
       });
   };
@@ -790,7 +792,7 @@ const AppointmentDetails = () => {
             >
               <div className="flex flex-col gap-2">
                 <h5 className="body2-sem">Appointment No</h5>
-                <h5 className="body3-reg">{appointDetails._id?.slice(-10)}</h5>
+                <h5 className="body3-reg">{appointDetails?.appointment_no ? appointDetails?.appointment_no : "APT00000"}</h5>
               </div>
               <div className="flex flex-col gap-2">
                 <h5 className="body2-sem">Date</h5>
@@ -2791,10 +2793,10 @@ const AppointmentDetails = () => {
                   </div>
                   <div>
                     <h5 className="body2-sem" style={{ color: "#06030D" }}>
-                      Client ID:
+                      Client No:
                     </h5>
                     <p className="body3-reg" style={{ color: "#06030D" }}>
-                      {clientDetail?._id ? clientDetail._id.slice(-10) : ""}
+                      {clientDetail?.client_no ? clientDetail?.client_no : "USR00000"}
                     </p>
                   </div>
                   <div>

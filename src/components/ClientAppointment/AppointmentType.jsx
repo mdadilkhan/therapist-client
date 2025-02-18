@@ -88,13 +88,14 @@ const AppointmentType = () => {
         .post(`${API_URL}/bookAppointment`, appointmentData)
         .then((res) => {
           if (res.data.success === true) {
-            socket.emit("newAppointment ", {
-              title: "you have an new appointment",
-              slots: appointmentDetails?.t_appointment_time,
-              emp_id: details?.emp_id,
-              organisation_Id: details?.organisation_Id,
-              role: "counsellor",
-            });
+            // socket.emit("newAppointment ", {
+            //   title: "you have an new appointment",
+            //   slots: appointmentDetails?.t_appointment_time,
+            //   emp_id: details?.emp_id,
+            //   organisation_Id: details?.organisation_Id,
+            //   role: "counsellor",
+            // });
+             dispatch(appointmentDetails(res?.data?.data))
             navigate("/client/appointmentbooked");
           }
         })

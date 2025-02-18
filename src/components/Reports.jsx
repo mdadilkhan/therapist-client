@@ -31,7 +31,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const columns = [
   {
-    id: "Client Id",
+    id: "Client No",
     align: "right",
   },
   {

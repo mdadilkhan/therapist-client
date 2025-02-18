@@ -31,20 +31,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-calendar/dist/Calendar.css";
 import { useDispatch, useSelector } from "react-redux";
-
-const languageOptions = [
-  "English",
-  "Spanish",
-  "French",
-  "German",
-  "Hindi",
-  "Mandarin",
-  "Japanese",
-  "Russian",
-  "Arabic",
-  "Portuguese",
-];
-
+import {languageOptions} from "../../constant/ApiConstant"
 const editButtonStyle = {
   display: "flex",
   width: "196px",
@@ -62,12 +49,11 @@ const editButtonStyle = {
 
 const ProfileDetails = () => {
   const dispatch = useDispatch();
-  const userDetails = useSelector((state) => state.userDetails);
-  const therapistId = userDetails._id;
+  const details = useSelector((state) => state.userDetails);
+  const therapistId = details._id;
   const fileRef = useRef(null);
   const [image, setImage] = useState(null);
   const [indianStates, setIndianStates] = useState([]);
-
   const [totalEarnings, setTotalEarnings] = useState(0);
   const [chartData, setChartData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -326,7 +312,7 @@ const ProfileDetails = () => {
       email: profileDetails?.email,
       gender: profileDetails?.profile_details?.gender,
       dob: profileDetails?.profile_details?.dob,
-      languages: profileDetails?.profile_details?.languages||[],
+      languages: profileDetails?.profile_details?.languages || [],
       specialization:
         profileDetails?.specialization?.map((spec) => spec._id) || [],
       designation: profileDetails?.profile_details?.designation,
@@ -584,7 +570,26 @@ const ProfileDetails = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-start gap-8 rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-10 w-full">
+            
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
+
+      {show ? (
+        <div className="w-[100%] flex justify-evenly gap-[16px] px-[24px] sm:flex-row flex-col">
+          <div className="flex flex-col gap-[5px] justify-between rounded-[16px] border w-[49%] border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[24px]">
+            <div className="flex gap-8">
+              <img src={DegreeCap} alt="" />
+              <p className="body1-bold">Biography</p>
+            </div>
+            <p className="body4-reg">
+              {profileDetails?.profile_details?.biography}
+            </p>
+          </div>
+          <div className="flex flex-col w-[49%] gap-8">
+          <div className="flex flex-col gap-[5px] justify-between rounded-[16px] border w-[100%] border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[24px]">
               {/* Education Qualification Section */}
               <div className="flex flex-col items-start gap-2 w-full">
                 <div className="flex items-center gap-4">
@@ -610,24 +615,7 @@ const ProfileDetails = () => {
                 </button>
               </div>
             </div>
-          </div>
-        ) : (
-          ""
-        )}
-      </div>
-
-      {show ? (
-        <div className="w-[100%] flex justify-evenly gap-[16px] px-[24px] sm:flex-row flex-col">
-          <div className="flex flex-col gap-[5px] justify-between rounded-[16px] border w-[49%] border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[24px]">
-            <div className="flex gap-8">
-              <img src={DegreeCap} alt="" />
-              <p className="body1-bold">Biography</p>
-            </div>
-            <p className="body4-reg">
-              {profileDetails?.profile_details?.biography}
-            </p>
-          </div>
-          <div className="flex flex-col w-[49%] gap-8">
+          <div className="flex flex-col w-[100%] gap-8">
             <div className="flex flex-wrap items-center gap-[2rem] rounded-[16px] border border-solid border-[#D5D2D9] bg-[#FCFCFC] p-[15px] h-[90px]">
               <h1 className="font-bold body1-bold">Total Session Taken</h1>
               <p className="body1-reg">{sessionTaken}</p>
@@ -648,6 +636,7 @@ const ProfileDetails = () => {
                 )}
               </div>
             </div>
+          </div>
           </div>
         </div>
       ) : (
@@ -1384,7 +1373,8 @@ const ProfileDetails = () => {
                       value={updateProfile?.accountHolderName}
                       onChange={handelChage}
                       InputProps={{
-                        readOnly: profileDetails?.bank_details?.account_holder_name,
+                        readOnly:
+                          profileDetails?.bank_details?.account_holder_name,
                         sx: {
                           fontSize: "16px",
                           fontFamily: "Nunito",
@@ -1457,7 +1447,8 @@ const ProfileDetails = () => {
                       value={updateProfile?.bankName}
                       onChange={handelChage}
                       InputProps={{
-                        readOnly: profileDetails?.bank_details?.account_holder_name,
+                        readOnly:
+                          profileDetails?.bank_details?.account_holder_name,
                         sx: {
                           fontSize: "18px",
                           fontFamily: "Nunito",

@@ -14,6 +14,8 @@ import {persistor} from "../store/store"
 
 const Navbar = () => {
   const userDetail = useSelector((state) => state.userDetails);
+  console.log(userDetail,"user Details in navbar");
+  
   const dispatch=useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);

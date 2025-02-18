@@ -167,21 +167,28 @@ const ClientHistory = () => {
     setOpenPrescription(false);
   };
 
-  const getClientDetails = () =>{
+  const getClientDetails = () => {
     axios
-    .get(`${API_URL}/getUserDetails/${id}`)
-    .then((res) => {
-      setClientHistory((prevClientHistory) => ({
-        ...prevClientHistory,
-        name: res.data.data.name,
-        age: calculateAge(res?.data?.data?.age),
-      }));
-      setDateValue(res?.data?.data?.dateOfIntake)
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+      .get(`${API_URL}/getUserDetails/${id}`)
+      .then((res) => {
+        const userData = res.data.data;
+  
+        setClientHistory((prevClientHistory) => ({
+          ...prevClientHistory,
+          name: userData?.name || "",
+          age: userData?.age,
+          dateOfIntake: userData?.dateOfIntake || "", // Store date in state
+        }));
+  
+        // Convert dateOfIntake to a Date object
+        if (userData?.dateOfIntake) {
+          setDateValue(new Date(userData.dateOfIntake));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };  
 
   const getClientHistory = () => {
     axios

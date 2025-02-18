@@ -8,31 +8,25 @@ import { resetAppointmentDetails } from "../../store/slices/appointmentSlice";
 
 const AppointmentBooked = () => {
   const dispatch = useDispatch();
-
-  // Using a single useSelector call for appointment data
   const appointmentData = useSelector((state) => ({
     preAppointmentDetails: state.preAppointmentDetails,
     appointmentDetails: state.appointmentDetails,
   }));
   console.log(appointmentData, "in Got to dashboard");
-
-  // Check if preAppointmentDetails has content; otherwise, use appointmentDetails
   const selectedAppointmentDetails =
-    appointmentData?.preAppointmentDetails &&
-    Object.keys(appointmentData?.preAppointmentDetails).length
-      ? appointmentData?.preAppointmentDetails
-      : appointmentData?.appointmentDetails;
+  appointmentData?.preAppointmentDetails && 
+  Object.keys(appointmentData.preAppointmentDetails).length > 0
+    ? appointmentData.preAppointmentDetails
+    : appointmentData?.appointmentDetails || {};
+    console.log(selectedAppointmentDetails,"selectedAppointmentDetails");
   const navigate = useNavigate();
-
   const handleReset = () => {
     dispatch(resetAppointmentDetails()); // Resetting Redux state
     dispatch(resetPreAppointmentDetails());
     localStorage.removeItem("appointmentDetails");
     localStorage.removeItem("preAppointmentDetails");
-
     navigate("/client/dashboards");
   };
-
   return (
     <div
       style={{
@@ -76,12 +70,12 @@ const AppointmentBooked = () => {
           }}
         >
           {convertTo12HourFormat(
-            selectedAppointmentDetails?.t_appointment_time?.m_schd_from
+            selectedAppointmentDetails?.booking_slots[0]?.m_schd_from
           )}
 
           <span className="body3-reg"> to</span>
           {convertTo12HourFormat(
-            selectedAppointmentDetails?.t_appointment_time?.m_schd_to
+            selectedAppointmentDetails?.booking_slots[0]?.m_schd_to
           )}
         </span>
       </div>

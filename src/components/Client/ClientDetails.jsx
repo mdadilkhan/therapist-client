@@ -1836,9 +1836,9 @@ const ClientDetails = () => {
           <div className="flex justify-between flex-col sm:flex-row">
             <div className="flex flex-row sm:flex-col gap-[25px]">
               <div>
-                <p className="body2-sem">Client ID</p>
+                <p className="body2-sem">Client No</p>
                 <p className="p2-sem" style={{ color: "#4A4159" }}>
-                  {id}
+                  {employeeData?.client_no ? employeeData?.client_no : "USR00000"}
                 </p>
               </div>
               <div>
@@ -2560,7 +2560,7 @@ const ClientDetails = () => {
             </div>
           </div>
 
-          <div
+          {/* <div
             className="w-full"
             style={{
               padding: "24px",
@@ -2825,7 +2825,7 @@ const ClientDetails = () => {
                 </div>
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </>

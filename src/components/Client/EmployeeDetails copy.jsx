@@ -681,7 +681,7 @@ const ClientDetails = () => {
           <div className="flex justify-between flex-col sm:flex-row">
             <div className="flex flex-row sm:flex-col gap-[25px]">
               <div>
-                <p className="body2-sem">Client ID</p>
+                <p className="body2-sem">Client IDss</p>
                 <p className="p2-sem" style={{ color: "#4A4159" }}>
                   {id}
                 </p>

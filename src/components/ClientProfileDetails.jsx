@@ -386,7 +386,7 @@ const ClientProfileDetails = () => {
                     alignItems: "center",
                   }}
                 >
-                  <p className="body4-reg">{profileDetails?._id}</p>
+                  <p className="body4-reg">{profileDetails?.client_no!=null?profileDetails?.client_no:"USR00000"}</p>
                 </div>
                 <div
                   style={{

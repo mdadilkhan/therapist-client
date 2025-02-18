@@ -33,7 +33,7 @@ import { useSelector } from "react-redux";
 
 const columns = [
   {
-    id: "Appointment Id",
+    id: "Appointment No",
     align: "right",
   },
   {
@@ -342,12 +342,12 @@ const PastAppointment = () => {
                                 >
                                   <TableCell align="left" className="body3-reg">
                                     <div style={{ textDecoration: "none" }}>
-                                      {row?._id?.slice(-10)}
+                                      {row?.appointment_no ? row?.appointment_no : "APT00000"}
                                     </div>
                                   </TableCell>
 
                                   <TableCell align="left" className="body3-reg">
-                                    <div>{row?.clientName}</div>
+                                    <div>{row?.userDetails?.name}</div>
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">
                                     <div>
@@ -635,16 +635,16 @@ const PastAppointment = () => {
                             <div className="w-full flex flex-col justify-between">
                               <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                                 <div className="body3-sem w-[50%]">
-                                  Appointment Id
+                                  Appointment No
                                 </div>
                                 <div className="body3-reg pr-2 w-[50%]">
-                                  {item?._id?.slice(-10)}
+                                  {item?.appointment_no ? item?.appointment_no : "APT00000"}
                                 </div>
                               </div>
                               <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                                 <div className="body3-sem w-[50%]">Name</div>
                                 <div className="body3-reg pr-2 w-[50%]">
-                                  {item?.clientName}
+                                  {item?.userDetails?.name}
                                 </div>
                               </div>
                               <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
@@ -801,12 +801,12 @@ const PastAppointment = () => {
                                 >
                                   <TableCell align="left" className="body3-reg">
                                     <div style={{ textDecoration: "none" }}>
-                                      {row?._id?.slice(-10)}
+                                      {row?.appointment_no ? row?.appointment_no : "APT00000"}
                                     </div>
                                   </TableCell>
 
                                   <TableCell align="left" className="body3-reg">
-                                    <div>{row?.clientName}</div>
+                                    <div>{row?.userDetails?.name}</div>
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">
                                     <div>
@@ -1082,10 +1082,6 @@ const PastAppointment = () => {
                             className="flex justify-between cursor-pointer items-center"
                             onClick={() => handleClick(index)}
                           >
-                            <div className="w-full px-2 py-3 flex flex-row justify-between">
-                              <div className="body3-sem w-[50%]">Client</div>
-                              <div className="body3-reg pr-2 w-[50%]">kaif</div>
-                            </div>
                             {index === activeIndex ? (
                               <KeyboardArrowUpIcon fontSize="large" />
                             ) : (
@@ -1099,13 +1095,13 @@ const PastAppointment = () => {
                                   Appointment Id
                                 </div>
                                 <div className="body3-reg pr-2 w-[50%]">
-                                  {item?._id?.slice(-10)}
+                                  {item?.appointment_no ? item?.appointment_no : "APT00000"}
                                 </div>
                               </div>
                               <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
                                 <div className="body3-sem w-[50%]">Name</div>
                                 <div className="body3-reg pr-2 w-[50%]">
-                                  {item?.clientName}
+                                  {item?.userDetails?.name}
                                 </div>
                               </div>
                               <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">

@@ -18,3 +18,16 @@ export const getLoggedInUserDetails = () => {
     console.error("No data found in localStorage for the key 'persist:root'.");
   }
 };
+
+export const languageOptions = [
+  "English",
+  "Spanish",
+  "French",
+  "German",
+  "Hindi",
+  "Mandarin",
+  "Japanese",
+  "Russian",
+  "Arabic",
+  "Portuguese",
+];
