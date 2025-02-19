@@ -415,7 +415,7 @@ const AppointmentDetails = () => {
 
   const handleCancelAppointment = () => {
     axios
-      .post(`${API_URL}/cancelAppointment`, { app_id: appointDetails._id })
+      .post(`${API_URL}/cancelAppointmentByTherapist`, { app_id: appointDetails._id })
       .then((res) => {
         if (res.status === 200) {
           getAppointmentDetails();
