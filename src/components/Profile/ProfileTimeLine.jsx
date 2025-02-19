@@ -229,6 +229,7 @@ const ProfileTimeline = () => {
 
   const deleteTimeSlot = (day, slot) => {
     const body = {
+      therapistId:therapistId,
       day: day,
       start_time: slot.m_schd_from,
       end_time: slot.m_schd_to,

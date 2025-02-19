@@ -88,6 +88,7 @@ const Calender = () => {
   const [openModal, setOpenModal] = useState(false);
   const [clientData, setClientData] = useState({});
   const [clientId, setClientId] = useState();
+  const[allUsers,setAllUsers]=useState([]);
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
@@ -368,15 +369,12 @@ const Calender = () => {
   };
 
   // Fetch therapist user details when input changes
-  const fetchUserSuggestions = async (inputValue) => {
+  const fetchUserSuggestions = async () => {
     axios
-      .get(`${API_URL}/getAllUsersByTherapist`)
+      .get(`${API_URL}/user/getAllUser`)
       .then((res) => {
         if (res.status === 200) {
-          const filteredUsers = res.data.data.filter((user) =>
-            user.name.toLowerCase().includes(inputValue.toLowerCase())
-          );
-          setUserSuggestions(filteredUsers);
+          setAllUsers(res?.data)
         }
       })
       .catch((err) => {
@@ -387,9 +385,17 @@ const Calender = () => {
   // Handle input change in the Autocomplete
   const handleInputChange = (event, newInputValue) => {
     if (newInputValue) {
-      fetchUserSuggestions(newInputValue);
+      const filteredUsers = allUsers?.filter((user) =>
+        user?.name?.toLowerCase().includes(newInputValue.toLowerCase())
+      );
+      console.log(filteredUsers,"kljfdjslkjflkd");
+      
+      setUserSuggestions(filteredUsers);
     }
   };
+  useEffect(()=>{
+    fetchUserSuggestions();
+  },[])
 
   // Handle selection from dropdown
   const handleUserSelect = (event, newValue) => {
@@ -459,6 +465,7 @@ const Calender = () => {
             city: "",
             address2: "",
           });
+          fetchUserSuggestions();
           toast.success(`Client Add Successfully`, {
             position: "top-center", // Set the position to top-right
             duration: 3000, // Display for 3 seconds (3000 ms)
