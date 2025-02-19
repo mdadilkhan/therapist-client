@@ -7,6 +7,7 @@ import { useSocket } from "../getSocket";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { appointmentDetails, detailsStore } from "../store/slices/appointmentSlice";
+import { preAppointmentDetails } from "../store/slices/preAppointmentSlice";
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -73,7 +74,8 @@ const RazorPay = ({ appointmentData, agree }) => {
               fontSize: "14px", // Smaller text
             },
           });
-          dispatch(appointmentDetails(res?.data?.data))
+           dispatch(detailsStore(res?.data?.data));
+           dispatch(preAppointmentDetails(res?.data?.data));
           navigate("/client/appointment-booked");
 
           appointmentData?.type == "pre"

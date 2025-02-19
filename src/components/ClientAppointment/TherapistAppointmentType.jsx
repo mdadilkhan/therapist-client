@@ -46,6 +46,7 @@ const TherapistAppointmentType = () => {
   const [sessationPrice, setSessationPrice] = useState("");
   const [totalPay, setTotalPay] = useState();
   const appointmentDetails = useSelector((state) => state.appointmentDetails);
+  
   const therapistId = appointmentDetails.m_counselor_id;
   const [selectedSessionType, setSelectedSessionType] = useState("one-session");
   const [openModal2, setOpenModal2] = useState(false);
@@ -339,16 +340,17 @@ const TherapistAppointmentType = () => {
                   selectedSessionType === "six-session"
                     ? "3px solid #614298"
                     : "",
-                background: "var(--White, #FCFCFC)",
+                // background: "var(--White, #FCFCFC)",
+                background: "#D9D9D9",
                 boxShadow: "4px 4px 16px 0px rgba(0, 0, 0, 0.16)",
                 cursor: "pointer",
               }}
-              onClick={() =>
-                handleSessionTypeClick(
-                  "six-session",
-                  appointmentDetails?.sel_min
-                )
-              }
+              // onClick={() =>
+              //   handleSessionTypeClick(
+              //     "six-session",
+              //     appointmentDetails?.sel_min
+              //   )
+              // }
               className="w-full sm:w-[322px]"
             >
               <div
@@ -511,7 +513,9 @@ const TherapistAppointmentType = () => {
           <h2 className="body1-sem">Session Slot</h2>
           <h3 className="body3-sem">
             {convertTo12HourFormat(
-              appointmentDetails?.t_appointment_time.m_schd_from
+              appointmentDetails?.t_appointment_time[0]?.m_schd_from
+            )} - {convertTo12HourFormat(
+              appointmentDetails?.t_appointment_time[0]?.m_schd_to
             )}
           </h3>
         </div>
