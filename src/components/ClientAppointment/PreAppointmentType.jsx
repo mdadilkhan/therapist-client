@@ -50,6 +50,8 @@ const PreAppointmentType = () => {
   const appointmentDetails = useSelector(
     (state) => state.preAppointmentDetails
   );
+  console.log(appointmentDetails,"appointmentDetails in online in preappointment");
+  
   const [agree, setAgree] = useState(false);
   const [payVia, setPayVia] = useState("online");
   const [sessationPrice, setSessationPrice] = useState(750);
@@ -282,13 +284,15 @@ const PreAppointmentType = () => {
           </div>
           <div className="flex justify-between w-[75%] mb-7">
             <h2 className="body1-sem">Session Date</h2>
-            {/* <h3 className="body3-sem">{formatDateAndDay(appointmentDetails?.t_appointment_date)}</h3> */}
+            <h3 className="body3-sem">{formatDateAndDay(appointmentDetails?.t_appointment_date)}</h3>
           </div>
           <div className="flex justify-between w-[75%] mb-14">
             <h2 className="body1-sem">Session Slot</h2>
             <h3 className="body3-sem">
               {convertTo12HourFormat(
                 appointmentDetails?.t_appointment_time?.m_schd_from
+              )}- {convertTo12HourFormat(
+                appointmentDetails?.t_appointment_time?.m_schd_to
               )}
             </h3>
           </div>
