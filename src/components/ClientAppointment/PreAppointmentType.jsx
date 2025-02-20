@@ -102,7 +102,7 @@ const PreAppointmentType = () => {
               fontSize: "14px",
             },
           });
-          dispatch(preAppointmentDetails(res?.data?.data))
+          // dispatch(preAppointmentDetails(res?.data?.data))
           navigate("/client/appointment-booked");
 
           socket.emit("therapist", {

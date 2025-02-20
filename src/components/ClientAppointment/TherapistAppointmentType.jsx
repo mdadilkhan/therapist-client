@@ -124,6 +124,7 @@ const TherapistAppointmentType = () => {
           //   role: "therapist",
           //   userId: data.therapistId,
           // });
+          // dispatch(appointmentDetails(res?.data?.data))
           dispatch(detailsStore(res?.data?.data));
           navigate("/client/appointment-booked");
         }
