@@ -95,7 +95,8 @@ const AppointmentType = () => {
             //   organisation_Id: details?.organisation_Id,
             //   role: "counsellor",
             // });
-             dispatch(appointmentDetails(res?.data?.data))
+            
+            //  dispatch(appointmentDetails(res?.data?.data))
             navigate("/client/appointmentbooked");
           }
         })

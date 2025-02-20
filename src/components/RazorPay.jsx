@@ -74,26 +74,28 @@ const RazorPay = ({ appointmentData, agree }) => {
               fontSize: "14px", // Smaller text
             },
           });
+          // appointmentData?.type == "pre"? dispatch(preAppointmentDetails(res?.data?.data)):dispatch(appointmentDetails(res?.data?.data));
            dispatch(detailsStore(res?.data?.data));
-           dispatch(preAppointmentDetails(res?.data?.data));
+
+          //  dispatch(preAppointmentDetails(res?.data?.data));
           navigate("/client/appointment-booked");
 
-          appointmentData?.type == "pre"
-            ? socket.emit("therapist", {
-                title: "Upcoming Appointment",
-                message: `${userDetails.name} book for preconsultation  at ${
-                  appointmentData?.t_appointment_time.m_schd_from
-                } on ${formatDate(appointmentData?.t_appointment_date)}`,
-                role: "therapist",
-              })
-            : socket.emit("therapist", {
-                title: "Upcoming Appointment",
-                message: `${userDetails.name} book  a session to you at ${
-                  appointmentData?.t_appointment_time[0]?.m_schd_from
-                } on ${formatDate(appointmentData?.t_appointment_date)}`,
-                role: "therapist",
-                userId: data.therapistId,
-              });
+          // appointmentData?.type == "pre"
+          //   ? socket.emit("therapist", {
+          //       title: "Upcoming Appointment",
+          //       message: `${userDetails.name} book for preconsultation  at ${
+          //         appointmentData?.t_appointment_time.m_schd_from
+          //       } on ${formatDate(appointmentData?.t_appointment_date)}`,
+          //       role: "therapist",
+          //     })
+          //   : socket.emit("therapist", {
+          //       title: "Upcoming Appointment",
+          //       message: `${userDetails.name} book  a session to you at ${
+          //         appointmentData?.t_appointment_time[0]?.m_schd_from
+          //       } on ${formatDate(appointmentData?.t_appointment_date)}`,
+          //       role: "therapist",
+          //       userId: data.therapistId,
+          //     });
         }
       })
       .catch((err) => {
