@@ -727,7 +727,7 @@ const AppointmentDetails = () => {
                   },
                 }}
                 onClick={() => {
-                  navigate(`/therapist/calendar/${appointDetails._id}`);
+                  navigate(`/therapist/calendar/${appointDetails._id}/${appointDetails?.user_id}`);
                 }}
                 disabled={appointDetails.booking_status == 5 ? true : false}
               >
@@ -1121,7 +1121,7 @@ const AppointmentDetails = () => {
                   },
                 }}
                 onClick={() =>
-                  navigate(`/therapist/calendar/${appointDetails._id}`)
+                  navigate(`/therapist/calendar/client?client=${appointDetails?.user_id}`)
                 }
                 disabled={appointDetails.booking_status == 5 ? true : false}
               >

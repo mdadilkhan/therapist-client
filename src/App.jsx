@@ -302,9 +302,13 @@ function App() {
                   path="/therapist/earning-details"
                   element={<EarningDetails />}
                 />
-                <Route path="/therapist/calendar/:id?" element={<Calender />} />
+                <Route path="/therapist/calendar/:id/:userId?" element={<Calender />} />
                 <Route
                   path="/therapist/calendar/client/:empId?"
+                  element={<Calender />}
+                />
+                  <Route
+                  path="/therapist/calendar"
                   element={<Calender />}
                 />
                 <Route
