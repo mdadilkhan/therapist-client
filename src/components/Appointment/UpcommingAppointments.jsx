@@ -130,6 +130,7 @@ const UpcommingAppointment = () => {
   const [anchorThree, setAnchorThree] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useState("");
+  const navigate = useNavigate();
   const handleThreeDotClicked = (event, appId) => {
     setModalData(appId);
     setAnchorThree(event.target);
@@ -155,6 +156,7 @@ const UpcommingAppointment = () => {
   const handleOpenModal = (id) => {
     setCancelId(id);
     setOpenModal(true);
+    setAnchorThree(null);
   };
 
   useEffect(() => {
@@ -167,8 +169,6 @@ const UpcommingAppointment = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  const navigate = useNavigate();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };

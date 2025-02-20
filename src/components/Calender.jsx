@@ -74,7 +74,7 @@ const getDatetoDayName = (dateString) => {
 };
 
 const Calender = () => {
-  const { id, empId } = useParams();
+  const { id, userId } = useParams();
   const [selectedUser, setSelectedUser] = useState(null);
   const [slotList, setSlotList] = useState([]);
   const [selectedSlots, setSelectedSlots] = useState([]);
@@ -110,6 +110,8 @@ const Calender = () => {
 
   const [searchParams] = useSearchParams();
   const refralClientId = searchParams.get("client");
+  console.log(refralClientId,"refralClientId");
+  
 
   const therapistId = details?._id;
   const socket = useSocket();

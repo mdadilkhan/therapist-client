@@ -439,7 +439,9 @@ const PastAppointment = () => {
                                       src={ThreeDot}
                                       onClick={(event) => {
                                         event.stopPropagation();
-                                        handleThreeDotClicked(event, row._id);
+                                        if (row.booking_status != 5) {
+                                          handleThreeDotClicked(event, row._id);
+                                        }
                                       }}
                                     />
 
@@ -898,7 +900,9 @@ const PastAppointment = () => {
                                       src={ThreeDot}
                                       onClick={(event) => {
                                         event.stopPropagation();
-                                        handleThreeDotClicked(event, row._id);
+                                        if (row.booking_status != 5) {
+                                          handleThreeDotClicked(event, row._id);
+                                        }
                                       }}
                                     />
 

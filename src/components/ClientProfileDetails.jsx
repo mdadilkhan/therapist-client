@@ -524,7 +524,6 @@ const ClientProfileDetails = () => {
                     required
                     name="phoneNumber"
                     value={updateProfile?.phoneNumber || ""}
-                    disabled={!!updateProfile?.phoneNumber}
                     onChange={handelChage}
                     InputProps={{
                       sx: {
@@ -644,7 +643,6 @@ const ClientProfileDetails = () => {
                   <TextField
                     fullWidth
                     type="text"
-                    required
                     name="bloodGroup"
                     value={updateProfile.bloodGroup}
                     onChange={handelChage}
