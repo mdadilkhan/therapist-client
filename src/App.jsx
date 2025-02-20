@@ -268,6 +268,7 @@ function App() {
                   path="/therapist/dashboards"
                   element={<TherapistDashboard />}
                 />
+              <Route path="/contactsupport" element={<ContactSupport />} />
                 <Route
                   path="/therapist/group-session"
                   element={<TherapistGroupSession />}
@@ -439,6 +440,7 @@ function App() {
                 />
               </Route>
               <Route path="*" element={<Navigate to="/client" />} />
+
             </Routes>
           </Layout>
         </Suspense>

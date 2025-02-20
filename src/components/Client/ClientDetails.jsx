@@ -754,7 +754,7 @@ const ClientDetails = () => {
 
   const getSessationList = () => {
     axios
-      .post(`${API_URL}/getAllSessionNotesByUserId`, { userId: id })
+      .post(`${API_URL}/getAllSessionNotesByUserId`, { userId: id,therapistId:details._id})
       .then((res) => {
         // const temp = res.data.data;
         if (res.status == 200) {
@@ -2362,6 +2362,7 @@ const ClientDetails = () => {
               <div style={{ display: "flex", gap: 10 }}>
                 <Button
                   variant="outlined"
+                  disabled={sessationList.length === 0}
                   sx={{
                     display: "flex",
                     width: "223px",
@@ -2369,9 +2370,11 @@ const ClientDetails = () => {
                     height: "48px",
                     padding: "14px 15px 14px 12px",
                     borderRadius: "8px",
-                    border: "1px solid #614298",
+                    border: sessationList.length === 0 ? "1px solid #BDBDBD" : "1px solid #614298", // Gray border when disabled
                     textTransform: "capitalize",
-                    color: "#614298",
+                    color: sessationList.length === 0 ? "#BDBDBD" : "#614298", // Gray text when disabled
+                    cursor: sessationList.length === 0 ? "not-allowed" : "pointer", // Prevents interaction when disabled
+                    backgroundColor: sessationList.length === 0 ? "#F5F5F5" : "transparent", // Light gray background when disabled
                     "@media (max-width: 640px)": {
                       width: "100%",
                       marginTop: "10px",
@@ -2515,7 +2518,7 @@ const ClientDetails = () => {
                                       background: "#614298", // Image background color
                                     }}
                                   />
-                                  <span className="btn2">Download Consent</span>
+                                  <span className="btn2">Download</span>
                                 </Button>
                               </div>
                             </div>

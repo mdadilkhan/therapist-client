@@ -129,17 +129,35 @@ const Welcome = ({ open, handleClose, id }) => {
   const handleBack = () => {
     if (step > 1) setStep(step - 1);
   };
-
   const handleContinue = () => {
-    if (step === 1 && !type) return alert("Please select an option.");
-    if (step === 2 && !name) return alert("Please enter your full name.");
-    setStep(step + 1);
-    console.log(step, "Number of  step");
+    console.log(step, "Step Value");
 
-    if (step >= 3) {
-      updateProfile();
+    // Step 1 validation (User Type Selection)
+    if (step === 1 && !type) {
+      toast.error("Please select an option.");
+      return;
     }
-  };
+
+    // Step 2 validation (Full Name Entry)
+    if (step === 2 && !name) {
+      toast.error("Please enter your full name.");
+      return;
+    }
+
+    // If Step 2 and no concerns exist → hit API and return
+    if (step === 2 && concernLists.length === 0) {
+      updateProfile();
+      return;
+    }
+    if (step === 3) {
+      updateProfile();
+      return;
+    }
+    if (step < 3) {
+      setStep(step + 1);
+    }
+};
+
 
   return (
     <Modal open={open}  sx={{padding: "0"}}>

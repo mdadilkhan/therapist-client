@@ -441,6 +441,8 @@ const Calender = () => {
       age: formData.age,
       address: formData.address,
       city: formData.city,
+      therapistId:therapistId,
+
     };
     axios
       .post(`${API_URL}/addUser`, data)
