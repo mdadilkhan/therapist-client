@@ -8,13 +8,14 @@ import {
   Navigate,
   Outlet,
   Route,
+  Router,
   Routes,
   useLocation,
   useNavigate,
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import LinearProgress from "@mui/material/LinearProgress";
-import Sidebar from "./pages/Sidebar/Sidebar.jsx"; 
+import Sidebar from "./pages/Sidebar/Sidebar.jsx";
 const ClientLogin = lazy(() => import("./components/ClientLogin"));
 const TherapistLogin = lazy(() => import("./components/TherapistLogin"));
 const ClientSignUp = lazy(() => import("./components/ClientSignUp"));
@@ -66,7 +67,7 @@ const AddClientInSessation = lazy(() =>
 // const ClientWelcome=lazy(()=>{
 //   import("./components/Clientwelcome.jsx")
 // })
-import ClientWelcome from "./components/Clientwelcome.jsx"
+import ClientWelcome from "./components/Clientwelcome.jsx";
 
 const TherapistLiveChat = lazy(() =>
   import("./components/TherapistLiveChat/TherapistLiveChat.jsx")
@@ -133,18 +134,31 @@ const PrivateRoute = ({ allowedRoles }) => {
 
   return <Outlet />;
 };
-
 const PublicRoute = () => {
   const { role } = useSelector((state) => state.userDetails);
-  //  const { phoneNumber, countryCode, email, role } = useSelector(
-  //     (state) => state.smsData
-  //   );
-  console.log(role," public route exist roles");
-  if (role) {
-    return <Navigate to={role === "therapist" ? "/therapist/dashboards" : "/client/dashboards"} replace />;
+  const isLoading = useSelector((state) => state.userDetails.isLoading); // Assume you have a loading state
+
+  console.log(role, "PublicRoute Role Check");
+
+  // While user details are loading, prevent unnecessary redirections
+  if (isLoading) {
+    return null; // Or show a loader/spinner
   }
 
-  return <Outlet />; 
+  // Redirect authenticated users based on their role
+  if (role) {
+    return (
+      <Navigate
+        to={
+          role === "therapist" ? "/therapist/dashboards" : "/client/dashboards"
+        }
+        replace
+      />
+    );
+  }
+
+  // Allow access to public routes
+  return <Outlet />;
 };
 const Layout = ({ children }) => {
   const { role } = useSelector((state) => state.userDetails);
@@ -177,8 +191,6 @@ const Layout = ({ children }) => {
     </div>
   );
 };
-
-
 
 function App() {
   const { token } = useSelector((state) => state.userDetails);
@@ -238,20 +250,20 @@ function App() {
           <Navbar />
           <Layout>
             <Routes>
-            <Route element={<PublicRoute />}>
-              <Route path="/client" element={<ClientLogin />} />
-              <Route path="/therapist" element={<TherapistLogin />} />
-              <Route path="/verifyotp" element={<VerifyOtp />} />
-              <Route path="/validateotp" element={<ValidateOtp />} />
-              <Route path="/contact-us" element={<ContactSupport />} />
-              <Route path="/forgotpassword" element={<ForgotPassword />} />
-              <Route path="/signup" element={<ClientSignUp />} />
-              <Route path="/signup/therapist" element={<TherapistSignUp />} />
+              <Route element={<PublicRoute />}>
+                <Route path="/" element={<Navigate to="/client" replace />} />{" "}
+                {/* Default redirect */}
+                <Route path="/client" element={<ClientLogin />} />
+                <Route path="/therapist" element={<TherapistLogin />} />
+                <Route path="/verifyotp" element={<VerifyOtp />} />
+                <Route path="/validateotp" element={<ValidateOtp />} />
+                <Route path="/contact-us" element={<ContactSupport />} />
+                <Route path="/forgotpassword" element={<ForgotPassword />} />
+                <Route path="/signup" element={<ClientSignUp />} />
+                <Route path="/signup/therapist" element={<TherapistSignUp />} />
               </Route>
-              
               {/* Protected Routes for therapist*/}
               <Route element={<PrivateRoute allowedRoles={["therapist"]} />}>
-
                 <Route
                   path="/therapist/dashboards"
                   element={<TherapistDashboard />}
@@ -352,14 +364,16 @@ function App() {
                   path="/therapist/clientsessationnotes/:id"
                   element={<ClientSessationNotes />}
                 />
-                 <Route path="*" element={<Navigate to="/therapist/dashboards"/>} />
+                <Route
+                  path="*"
+                  element={<Navigate to="/therapist/dashboards" />}
+                />
               </Route>
               <Route element={<PrivateRoute allowedRoles={["user"]} />}>
+                {/* Protected Routes for user*/}
 
-              {/* Protected Routes for user*/}
-             
                 <Route path="/client/wallet" element={<Wallet />} />
-              <Route path="/contactsupport" element={<ContactSupport />} />
+                <Route path="/contactsupport" element={<ContactSupport />} />
                 <Route
                   path="/client/therapist-list"
                   element={<ListOfTherapist />}
@@ -419,9 +433,12 @@ function App() {
                   path="/client/client-group-sessation-details/:sessationId"
                   element={<ClientGroupSessationDetials />}
                 />
-                <Route path="*" element={<Navigate to="/client/dashboards"/>} />
+                <Route
+                  path="*"
+                  element={<Navigate to="/client/dashboards" />}
+                />
               </Route>
-              <Route path="*" element={<Navigate to="/client"/>} />
+              <Route path="*" element={<Navigate to="/client" />} />
             </Routes>
           </Layout>
         </Suspense>

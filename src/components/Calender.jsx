@@ -371,10 +371,10 @@ const Calender = () => {
   // Fetch therapist user details when input changes
   const fetchUserSuggestions = async () => {
     axios
-      .get(`${API_URL}/user/getAllUser`)
+      .get(`${API_URL}/getAllUsersByTherapist`)
       .then((res) => {
         if (res.status === 200) {
-          setAllUsers(res?.data)
+          setAllUsers(res?.data?.data)
         }
       })
       .catch((err) => {
@@ -389,7 +389,6 @@ const Calender = () => {
         user?.name?.toLowerCase().includes(newInputValue.toLowerCase())
       );
       console.log(filteredUsers,"kljfdjslkjflkd");
-      
       setUserSuggestions(filteredUsers);
     }
   };
@@ -399,7 +398,10 @@ const Calender = () => {
 
   // Handle selection from dropdown
   const handleUserSelect = (event, newValue) => {
+    setClientData(newValue);
     setSelectedUser(newValue);
+    console.log(clientData,"after slection");
+    
     if (newValue) {
       setEmail(newValue.email); // Automatically fill email
     }
@@ -896,7 +898,7 @@ const Calender = () => {
                         backgroundColor: "#ffffff",
                       }}
                     >
-                      <span>Closer</span>
+                      <span>Close</span>
                     </button>
                   </DialogActions>
                 </form>
