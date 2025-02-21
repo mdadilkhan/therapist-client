@@ -141,7 +141,7 @@ export function getformatedDate(inputDate) {
   const dateObject = new Date(inputDate);
 
   if (isNaN(dateObject.getTime())) {
-    return "Invalid date";
+    return "----";
   }
 
   const day = String(dateObject.getDate()).padStart(2, "0");

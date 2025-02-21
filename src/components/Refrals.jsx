@@ -506,7 +506,7 @@ const Refrals = () => {
       .get(`${API_URL}/getReceivedPreconsultationReferralList`)
       .then((res) => {
         if (res.status === 200) {
-          // setRecieveRefral(res.data.data);
+           setRecieveRefral(res.data.data);
           // setRecieveRefralsess(res.data.data);
         }
       })
@@ -1593,7 +1593,7 @@ const Refrals = () => {
                                       align="left"
                                       className="body3-reg"
                                     >
-                                      <div>{row.clientName} </div>
+                                      <div>{row.clientName}  </div>
                                     </TableCell>
                                     <TableCell
                                       align="left"
@@ -1606,7 +1606,7 @@ const Refrals = () => {
                                       className="body3-reg"
                                     >
                                       <div>
-                                        {getformatedDate(row?.createdAt)}pre
+                                        {getformatedDate(row?.createdAt)}
                                       </div>
                                     </TableCell>
 
@@ -1654,7 +1654,7 @@ const Refrals = () => {
                                             {row.referralStatus}
                                           </div>
                                         ) : (
-                                          <div>{row?.referralStatus}</div>
+                                          <div>Accepted</div>
                                         )}
                                       </div>
                                     </TableCell>

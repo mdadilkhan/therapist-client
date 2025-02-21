@@ -10,29 +10,29 @@ const normalizeAppointmentData = (data) => {
   let startTime, endTime;
 
   // If `t_appointment_time` is an array (like in `appointmentDetails`)
-  if (Array.isArray(data.t_appointment_time) && data.t_appointment_time.length > 0) {
-    startTime = data.t_appointment_time[0].m_schd_from;
-    endTime = data.t_appointment_time[data.t_appointment_time.length-1].m_schd_to;
+  if (Array.isArray(data?.t_appointment_time) && data?.t_appointment_time.length > 0) {
+    startTime = data?.t_appointment_time[0]?.m_schd_from;
+    endTime = data?.t_appointment_time[data?.t_appointment_time.length-1]?.m_schd_to;
   }
   // If `t_appointment_time` is an object (like in `preAppointmentDetails`)
-  else if (typeof data.t_appointment_time === "object" && data.t_appointment_time !== null) {
-    startTime = data.t_appointment_time.m_schd_from;
-    endTime = data.t_appointment_time.m_schd_from;
+  else if (typeof data?.t_appointment_time === "object" && data?.t_appointment_time !== null) {
+    startTime = data?.t_appointment_time?.m_schd_from;
+    endTime = data?.t_appointment_time?.m_schd_from;
   }
 
   return {
-    appointmentDate: data.t_appointment_date,
+    appointmentDate: data?.t_appointment_date,
     startTime,
     endTime,
-    duration: data.sel_min,
+    duration: data?.sel_min,
   };
 };
 
 const AppointmentBooked = () => {
   const dispatch = useDispatch();
   const appointmentData = useSelector((state) => ({
-    preAppointmentDetails: state.preAppointmentDetails,
-    appointmentDetails: state.appointmentDetails,
+    preAppointmentDetails: state?.preAppointmentDetails,
+    appointmentDetails: state?.appointmentDetails,
   }));
   console.log(appointmentData, "in Got to dashboard");
   const selectedAppointmentDetails =
