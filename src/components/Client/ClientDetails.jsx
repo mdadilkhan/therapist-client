@@ -46,7 +46,11 @@ import {
   InputAdornment,
   Checkbox,
 } from "@mui/material";
-import { calculateAge, calculateExperience, getformatedDate } from "../../constant/constatnt";
+import {
+  calculateAge,
+  calculateExperience,
+  getformatedDate,
+} from "../../constant/constatnt";
 import vector from "../../assets/Vector.svg";
 import { useSocket } from "../../getSocket";
 import toast from "react-hot-toast";
@@ -754,7 +758,10 @@ const ClientDetails = () => {
 
   const getSessationList = () => {
     axios
-      .post(`${API_URL}/getAllSessionNotesByUserId`, { userId: id,therapistId:details._id})
+      .post(`${API_URL}/getAllSessionNotesByUserId`, {
+        userId: id,
+        therapistId: details._id,
+      })
       .then((res) => {
         // const temp = res.data.data;
         if (res.status == 200) {
@@ -808,9 +815,25 @@ const ClientDetails = () => {
     //do not have apptId and referId
   };
 
-  const downloadFile = (url) => {
-    //todo
+  const downloadFile = async (url) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      console.log(blob, "type of image or pdf");
+      const blobUrl = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = url.split("/").pop();
+      link.click();
+
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Error downloading the image:", error);
+    }
   };
+
+  //todo
   // const handleSelectAllCheckboxChangeForAddEmp = (event) => {
   //   if (event.target.checked) {
   //     const allEmployeeIds = filteredtotalEmployee.map(
@@ -1043,7 +1066,9 @@ const ClientDetails = () => {
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">
                                     <div>
-                                      {calculateExperience(row?.profile_details?.experience)}
+                                      {calculateExperience(
+                                        row?.profile_details?.experience
+                                      )}
                                     </div>
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">
@@ -1311,7 +1336,9 @@ const ClientDetails = () => {
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">
                                     <div>
-                                      {calculateExperience(row?.profile_details?.experience)}
+                                      {calculateExperience(
+                                        row?.profile_details?.experience
+                                      )}
                                     </div>
                                   </TableCell>
                                   <TableCell align="left" className="body3-reg">
@@ -1838,7 +1865,9 @@ const ClientDetails = () => {
               <div>
                 <p className="body2-sem">Client No</p>
                 <p className="p2-sem" style={{ color: "#4A4159" }}>
-                  {employeeData?.client_no ? employeeData?.client_no : "USR00000"}
+                  {employeeData?.client_no
+                    ? employeeData?.client_no
+                    : "USR00000"}
                 </p>
               </div>
               <div>
@@ -1894,7 +1923,7 @@ const ClientDetails = () => {
               <div>
                 <p className="body2-sem">Age </p>
                 <p className="p2-sem" style={{ color: "#4A4159" }}>
-                  {calculateAge(employeeData?.profile_details?.dob)}
+                  {employeeData?.profile_details?.age}
                 </p>
               </div>
             </div>
@@ -2370,11 +2399,16 @@ const ClientDetails = () => {
                     height: "48px",
                     padding: "14px 15px 14px 12px",
                     borderRadius: "8px",
-                    border: sessationList.length === 0 ? "1px solid #BDBDBD" : "1px solid #614298", // Gray border when disabled
+                    border:
+                      sessationList.length === 0
+                        ? "1px solid #BDBDBD"
+                        : "1px solid #614298", // Gray border when disabled
                     textTransform: "capitalize",
                     color: sessationList.length === 0 ? "#BDBDBD" : "#614298", // Gray text when disabled
-                    cursor: sessationList.length === 0 ? "not-allowed" : "pointer", // Prevents interaction when disabled
-                    backgroundColor: sessationList.length === 0 ? "#F5F5F5" : "transparent", // Light gray background when disabled
+                    cursor:
+                      sessationList.length === 0 ? "not-allowed" : "pointer", // Prevents interaction when disabled
+                    backgroundColor:
+                      sessationList.length === 0 ? "#F5F5F5" : "transparent", // Light gray background when disabled
                     "@media (max-width: 640px)": {
                       width: "100%",
                       marginTop: "10px",
@@ -2492,30 +2526,44 @@ const ClientDetails = () => {
                                 <Button
                                   variant="contained"
                                   type="submit"
+                                  disabled={!item.attachment} // Disable when item.attachment does not exist
                                   sx={{
                                     width: "209px",
                                     height: "48px",
                                     borderRadius: "8px",
-                                    border: "1px solid #614298",
+                                    border: "1px solid",
                                     textTransform: "capitalize",
-                                    background: "#614298",
+                                    background: item.attachment
+                                      ? "#614298"
+                                      : "#BDBDBD", // Grey when disabled
                                     color: "white",
                                     gap: 1,
+                                    cursor: item.attachment
+                                      ? "pointer"
+                                      : "not-allowed", // Prevents clicking when disabled
+                                    borderColor: item.attachment
+                                      ? "#614298"
+                                      : "#BDBDBD", // Grey border when disabled
                                     "&:hover": {
-                                      boxShadow:
-                                        "0px 4px 12px rgba(0, 0, 0, 0.2)",
-                                      background: "#614298",
+                                      boxShadow: item.attachment
+                                        ? "0px 4px 12px rgba(0, 0, 0, 0.2)"
+                                        : "none",
+                                      background: item.attachment
+                                        ? "#614298"
+                                        : "#BDBDBD",
                                     },
                                   }}
                                   onClick={() => {
-                                    downloadFile(item.imageName);
+                                    if (item.attachment)
+                                      downloadFile(item.attachment); // Ensure it only downloads if available
                                   }}
                                 >
                                   <img
                                     src={DownloadIcon}
                                     alt=""
                                     style={{
-                                      background: "#614298", // Image background color
+                                      background: "transparent", // Keeping it neutral
+                                      opacity: item.attachment ? 1 : 0.5, // Reduce opacity when disabled
                                     }}
                                   />
                                   <span className="btn2">Download</span>

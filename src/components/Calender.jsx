@@ -839,7 +839,7 @@ const Calender = () => {
                           <FormControlLabel
                             value="2"
                             control={<Radio sx={{ fontSize: "16px" }} />}
-                            label="Video"
+                            label="Audio"
                             sx={{
                               fontSize: "16px",
                               "& .MuiFormControlLabel-label": {
@@ -850,7 +850,7 @@ const Calender = () => {
                           <FormControlLabel
                             value="3"
                             control={<Radio sx={{ fontSize: "16px" }} />}
-                            label="Call"
+                            label="Video"
                             sx={{
                               fontSize: "16px",
                               "& .MuiFormControlLabel-label": {
