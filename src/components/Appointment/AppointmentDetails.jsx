@@ -512,7 +512,22 @@ const AppointmentDetails = () => {
     });
   };
 
-  const openImageInBrowser = (imageName) => {
+  const openImageInBrowser = async(imageName) => {
+    try {
+      const response = await fetch(imageName);
+      const blob = await response.blob();
+      console.log(blob, "type of image or pdf");
+      const blobUrl = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = imageName.split("/").pop();
+      link.click();
+
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Error downloading the image:", error);
+    }
     window.open(imageName, "_blank");
   };
 
@@ -2256,7 +2271,7 @@ const AppointmentDetails = () => {
                                                       alt=""
                                                     />
                                                     <span className="btn2 text-[#fff]">
-                                                      Download Consent
+                                                      Download 
                                                     </span>
                                                   </Button>
                                                 </div>
@@ -2553,7 +2568,7 @@ const AppointmentDetails = () => {
                                                   alt=""
                                                 />
                                                 <span className="btn2 text-[#fff]">
-                                                  Download Consent
+                                                  Download
                                                 </span>
                                               </Button>
                                             </div>
