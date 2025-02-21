@@ -229,6 +229,14 @@ const ProfileDetails = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const openMeeting = (url) => {
+    if (!url) {
+      alert("Meeting link is not available");
+      return;
+    }
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+  
 
   const navigate = useNavigate();
   const expertList = () => {
@@ -608,9 +616,11 @@ const ProfileDetails = () => {
                   <p className="body1-bold">Google Meet</p>
                 </div>
                 <p className="body4-reg break-words w-full">
-                  Meet Link : {""} {profileDetails?.educational_qualification}
+                  Meet Link : {""} {profileDetails?.profile_details?.google_meet_link}
                 </p>
-                <button className="h-[6rem] w-[15rem] font-medium rounded-2xl text-white bg-[#614298] text-[2.4rem] items-center justify-center flex">
+                <button className="h-[6rem] w-[15rem] cursor-pointer font-medium rounded-2xl text-white bg-[#614298] text-[2.4rem] items-center justify-center flex"
+                  onClick={() => openMeeting(profileDetails?.profile_details?.google_meet_link)} // Replace with your actual meeting link
+>
                   Start Meet
                 </button>
               </div>
