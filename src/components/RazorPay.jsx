@@ -76,8 +76,7 @@ const RazorPay = ({ appointmentData, agree }) => {
           });
           // appointmentData?.type == "pre"? dispatch(preAppointmentDetails(res?.data?.data)):dispatch(appointmentDetails(res?.data?.data));
            dispatch(detailsStore(res?.data?.data));
-
-          //  dispatch(preAppointmentDetails(res?.data?.data));
+          //dispatch(preAppointmentDetails(res?.data?.data));
           navigate("/client/appointment-booked");
 
           // appointmentData?.type == "pre"

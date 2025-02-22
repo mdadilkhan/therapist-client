@@ -16,6 +16,7 @@ const StyledLink = styled(Link)`
   color: #06030d;
 `;
 import { socket } from "../constant/socket";
+import { detailsStore } from "../../store/slices/appointmentSlice";
 function formatDate(dateString) {
   const date = new Date(dateString);
   const year = date.getFullYear();
@@ -95,7 +96,8 @@ const AppointmentType = () => {
             //   organisation_Id: details?.organisation_Id,
             //   role: "counsellor",
             // });
-            
+            console.log(res?.data?.data,"preconsultaion using wallet ");
+             dispatch(detailsStore(res?.data?.data));
             //  dispatch(appointmentDetails(res?.data?.data))
             navigate("/client/appointmentbooked");
           }

@@ -415,7 +415,7 @@ const AppointmentDetails = () => {
 
   const handleCancelAppointment = () => {
     axios
-      .post(`${API_URL}/cancelAppointmentByTherapist`, { app_id: appointDetails._id })
+      .post(`${API_URL}/cancelAppointmentByTherapist`, { app_id: id })
       .then((res) => {
         if (res.status === 200) {
           getAppointmentDetails();
@@ -742,7 +742,7 @@ const AppointmentDetails = () => {
                   },
                 }}
                 onClick={() => {
-                  navigate(`/therapist/calendar/${appointDetails._id}/${appointDetails?.user_id}`);
+                  navigate(`/therapist/calendar/${id}/${appointDetails?.user_id}`);
                 }}
                 disabled={appointDetails.booking_status == 5 ? true : false}
               >
@@ -1080,7 +1080,7 @@ const AppointmentDetails = () => {
                 disabled={appointDetails.booking_status == 5 ? true : false}
                 onClick={() => {
                   navigate(
-                    `/therapist/clientsessationnotes/${appointDetails._id}`
+                    `/therapist/clientsessationnotes/${id}`
                   );
                 }}
               >

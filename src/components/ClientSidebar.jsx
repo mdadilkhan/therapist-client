@@ -11,9 +11,9 @@ import ContactSupport from "../assets/ContactSupport.svg";
 import Logout from "../assets/Logout.svg";
 import Clients from "../assets/Students.svg";
 import { useNavigate } from "react-router-dom";
-import { userDetails,resetStateDetail } from "../store/slices/userSlices";
-import { setRole,resetStaterole } from "../store/slices/smsSlices";
-import {persistor} from "../store/store"
+import { userDetails, resetStateDetail } from "../store/slices/userSlices";
+import { setRole, resetStaterole } from "../store/slices/smsSlices";
+import { persistor } from "../store/store";
 const Navbar = lazy(() => import("./Navbar"));
 
 import { NavLink, useLocation } from "react-router-dom";
@@ -143,9 +143,7 @@ const ClientSidebar = ({ children }) => {
   return (
     <>
       {viewportWidth >= 640 ? (
-        <div
-          style={{ display: "flex", height: "100vh-64px" }}
-        >
+        <div style={{ display: "flex", height: "100vh-64px" }}>
           <div
             style={{
               display:
@@ -249,7 +247,7 @@ const ClientSidebar = ({ children }) => {
                 onClick={() => {
                   dispatch(resetStaterole());
                   dispatch(resetStateDetail());
-                     persistor.purge();
+                  persistor.purge();
                   localStorage.clear();
                   navigate("/client");
                 }}

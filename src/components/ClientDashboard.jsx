@@ -64,7 +64,7 @@ const getStatusColor = (status) => {
 };
 
 const oldAppointmentStatus = {
-  0:"Pending",
+  0: "Pending",
   1: "Pending",
   2: "Complete",
   3: "Refer to Sage",
@@ -207,7 +207,6 @@ const ClientDashboard = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [value, setValue] = useState("1");
-
   const [appointmentList, setAppointmentList] = useState([]);
   const [prescriptionList, setPrescriptionList] = useState([]);
   const [openDescriptions, setOpenDescriptions] = useState(
@@ -217,20 +216,18 @@ const ClientDashboard = () => {
   const [anchorThree, setAnchorThree] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [reasonModal, setReasonModal] = useState(false);
-  const [popdata,setPopdata]=useState();
+  const [popdata, setPopdata] = useState();
   const openThree = Boolean(anchorThree);
   const ids = openThree ? "qwerty" : undefined;
   const [isChatOpen, setIsChatOpen] = useState(false);
   const userDetails = useSelector((state) => state.userDetails);
   const [selectedReason, setSelectedReason] = useState("");
   const [reasoninput, setReasonInput] = useState("");
-  const [openWelcome, setOpen] = useState(!userDetails?.userType ? true : false);
-  console.log(
-    userDetails ,
-    "userdetais in client Dashboard"
+  const [openWelcome, setOpen] = useState(
+    !userDetails?.userType ? true : false
   );
-  
-  
+  console.log(userDetails, "userdetais in client Dashboard");
+
   const handleCloseWelcome = () => {
     setOpen(false);
   };
@@ -241,8 +238,8 @@ const ClientDashboard = () => {
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
-  const handleThreeDotClicked = (event,data) => {
-    console.log(data,"hello row data item by pop");
+  const handleThreeDotClicked = (event, data) => {
+    console.log(data, "hello row data item by pop");
     setPopdata(data);
     setAnchorThree(event.target);
   };
@@ -256,7 +253,6 @@ const ClientDashboard = () => {
     setOpenModal(true);
   };
   const handleOpenReasonModal = (data) => {
-
     setReasonModal(true);
   };
   const handleCloseReasonModal = () => {
@@ -556,7 +552,9 @@ const ClientDashboard = () => {
                                 {/* one is therapist id and another for appointment id */}
                                 <TableCell align="left" className="body3-reg">
                                   <div style={{ textDecoration: "none" }}>
-                                    {row?.appointment_no ? row?.appointment_no : "APT00000"}
+                                    {row?.appointment_no
+                                      ? row?.appointment_no
+                                      : "APT00000"}
                                   </div>
                                 </TableCell>
 
@@ -635,7 +633,7 @@ const ClientDashboard = () => {
                                     onClick={(event) => {
                                       event.stopPropagation();
                                       if (row.booking_status != 5) {
-                                        handleThreeDotClicked(event,row);
+                                        handleThreeDotClicked(event, row);
                                       }
                                     }}
                                   />
@@ -654,7 +652,6 @@ const ClientDashboard = () => {
                                   }}
                                 >
                                   <div className="w-[190px] h-auto mx-4 my-4 flex flex-col justify-between ">
-                                 
                                     <div
                                       className="flex justify-start pl-4"
                                       onClick={(event) => {
@@ -837,7 +834,9 @@ const ClientDashboard = () => {
                                 Appointment No
                               </div>
                               <div className="body3-reg pr-2 w-[50%]">
-                                {item?.appointment_no ? item?.appointment_no : "APT00000"}
+                                {item?.appointment_no
+                                  ? item?.appointment_no
+                                  : "APT00000"}
                               </div>
                             </div>
                             <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">
@@ -1015,7 +1014,11 @@ const ClientDashboard = () => {
                                 </TableCell>
 
                                 <TableCell align="left" className="body3-reg">
-                                  <div>{row?.appointment_no ? row?.appointment_no : "APT00000"}</div>
+                                  <div>
+                                    {row?.appointment_no
+                                      ? row?.appointment_no
+                                      : "APT00000"}
+                                  </div>
                                 </TableCell>
                                 <TableCell align="left" className="body3-reg">
                                   <div>
@@ -1091,7 +1094,7 @@ const ClientDashboard = () => {
                                     onClick={(event) => {
                                       event.stopPropagation();
                                       if (row.booking_status != 5) {
-                                        handleThreeDotClicked(event,row);
+                                        handleThreeDotClicked(event, row);
                                       }
                                     }}
                                   />
@@ -1114,8 +1117,8 @@ const ClientDashboard = () => {
                                       className="flex justify-start pl-4"
                                       onClick={(event) => {
                                         event.stopPropagation();
-                                        console.log(row,"data of Appointment");
-                                        
+                                        console.log(row, "data of Appointment");
+
                                         navigate(
                                           `/client/appointments/therapist?therapistId=${popdata?.therapist_id}&&appointmentId=${popdata?._id}&&type=sess`
                                         );
@@ -1309,7 +1312,9 @@ const ClientDashboard = () => {
                                 Appointment No
                               </div>
                               <div className="body3-reg pr-2 w-[50%]">
-                                {item?.appointment_no ? item?.appointment_no : "APT00000"}
+                                {item?.appointment_no
+                                  ? item?.appointment_no
+                                  : "APT00000"}
                               </div>
                             </div>
                             <div className="flex flex-row flex-wrap pl-2 pr-11 py-3 justify-between">

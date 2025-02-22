@@ -2,9 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const appointmentSlice = createSlice({
   name: "appointmentType",
-  initialState: {},
+  initialState: {
+    res:null
+  },
   reducers: {
-    // Updates the state with the payload
     appointmentDetails(state, action) {
       Object.assign(state, action.payload);
     },
@@ -13,7 +14,9 @@ const appointmentSlice = createSlice({
       return {};
     },
     detailsStore(state,action){
-      Object.assign(state, action.payload);
+        console.log("hello details Store is dispatch");
+        state.res=action.payload;
+      // Object.assign(state, action.payload);
 
     },
 
