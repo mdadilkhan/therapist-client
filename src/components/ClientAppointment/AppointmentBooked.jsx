@@ -34,7 +34,9 @@ const AppointmentBooked = () => {
     preAppointmentDetails: state?.preAppointmentDetails,
     appointmentDetails: state?.appointmentDetails,
   }));
-  console.log(appointmentData, "in Got to dashboard");
+  const detail=useSelector((state)=>state.appointmentDetails.res)
+  console.log(detail,"detail of response  using detail store");
+  console.log(appointmentData, "in Go to dashboard");
   const selectedAppointmentDetails =
   appointmentData?.preAppointmentDetails && 
   Object.keys(appointmentData.preAppointmentDetails).length > 0
@@ -93,7 +95,7 @@ const AppointmentBooked = () => {
             fontFamily: "nunito",
           }}
         >
-          {getNamedDate(appointmentDate)}
+          {getNamedDate(detail?.booking_date)}
         </span>
         <span className="body3-reg">at</span>
         <span
@@ -104,14 +106,16 @@ const AppointmentBooked = () => {
             fontFamily: "nunito",
           }}
         >
-          {convertTo12HourFormat(
+          {/* {convertTo12HourFormat(
            startTime
-          )}
+          )} */}
+          {detail?.booking_slots[0]?.m_schd_from}
 
           <span className="body3-reg"> to</span>
-          {convertTo12HourFormat(
+          {/* {convertTo12HourFormat(
             endTime
-          )}
+          )} */}
+           {detail?.booking_slots[detail?.booking_slots.length-1]?.m_schd_to}
         </span>
       </div>
       <Button

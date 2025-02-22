@@ -124,10 +124,10 @@ const ClientGroupSessationDetials = lazy(() =>
   import("./components/GroupSession/ClientGroupSessationDetials.jsx")
 );
 
-const PrivateRoute = ({ allowedRoles }) => {
+const PrivateRoute = ( allowedRoles ) => {
   const { role } = useSelector((state) => state.userDetails);
   const location = useLocation();
-  if (!allowedRoles.includes(role)) {
+  if (allowedRoles==="users"||allowedRoles==="therapist") {
     const redirectPath = "/client";
     return <Navigate to={redirectPath} state={{ from: location }} replace />;
   }
@@ -263,7 +263,7 @@ function App() {
                 <Route path="/signup/therapist" element={<TherapistSignUp />} />
               </Route>
               {/* Protected Routes for therapist*/}
-              <Route element={<PrivateRoute allowedRoles={["therapist"]} />}>
+              <Route element={<PrivateRoute allowedRoles={"therapist"} />}>
                 <Route
                   path="/therapist/dashboards"
                   element={<TherapistDashboard />}
@@ -374,7 +374,7 @@ function App() {
                   element={<Navigate to="/therapist/dashboards" />}
                 />
               </Route>
-              <Route element={<PrivateRoute allowedRoles={["user"]} />}>
+              <Route element={<PrivateRoute allowedRoles={"user"} />}>
                 {/* Protected Routes for user*/}
 
                 <Route path="/client/wallet" element={<Wallet />} />

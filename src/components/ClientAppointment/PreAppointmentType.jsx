@@ -102,7 +102,10 @@ const PreAppointmentType = () => {
               fontSize: "14px",
             },
           });
-          // dispatch(preAppointmentDetails(res?.data?.data))
+          console.log(res?.data?.data,"preconsultaion using wallet ");
+          
+          dispatch(detailsStore(res?.data?.data))
+          //  dispatch(preAppointmentDetails(res?.data?.data))
           navigate("/client/appointment-booked");
 
           socket.emit("therapist", {
